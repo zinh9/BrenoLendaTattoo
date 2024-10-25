@@ -41,6 +41,7 @@ public class WebSegurityConfig {
 						.anyRequest()
 						.authenticated()
 						)
+				.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
 				.build();
 	}
 	
