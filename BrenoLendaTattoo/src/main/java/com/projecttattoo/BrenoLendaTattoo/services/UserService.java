@@ -3,6 +3,7 @@ package com.projecttattoo.BrenoLendaTattoo.services;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
@@ -43,12 +44,6 @@ public class UserService implements UserInterfaceService{
 	@Autowired
 	private AuthenticatedService authenticatedService;
 	
-	private final JavaMailSender sender;
-	
-	public UserService(JavaMailSender sender) {
-		this.sender = sender;
-	}
-
 	@Override
 	public ResponseEntity<ResponseDto> register(RequestRegisterDto body) {
 		Cliente cliente = registerRepository.findByEmail(body.email());
@@ -65,15 +60,12 @@ public class UserService implements UserInterfaceService{
 			newCliente.setSobrenome(body.sobrenome());
 			newCliente.setTelefone(body.telefone());
 			newCliente.setSenha(encoder.encode(body.senha()));
-			
-			String code = sendEmail(body.email());
-			
+						
 			Logins logins = new Logins();
 			
 			logins.setEmail(newCliente.getEmail());
 			logins.setNome(newCliente.getNome());
 			logins.setSenha(newCliente.getSenha());
-			logins.setVerificationCode(code);
 			logins.setUserRole(Roles.USER);
 			logins.setVerifiedAccount(false);
 			
@@ -116,17 +108,6 @@ public class UserService implements UserInterfaceService{
 			return false;
 		}
 	}
-	
-	@Override
-	public String sendEmail(String to) {
-		var message = new SimpleMailMessage();
-		Random random = new Random();
-		message.setTo(to);
-		message.setText("CÓDIGO DE \nSEGURANÇA \n\nUse o código de segurança para confirmar sua conta \n\nclique no link abaixo \n\nhttp://localhost:8080/confirm \n\ncódigo de segurança: "+ random.nextInt(1000,9999));
-		sender.send(message);
-		
-		return message.getText().replace("CÓDIGO DE \nSEGURANÇA \n\nUse o código de segurança para confirmar sua conta \n\nclique no link abaixo \n\nhttp://localhost:8080/confirm \n\ncódigo de segurança: ", "").trim();
-	}
 
 	@Override
 	public ResponseEntity<ResponseConfirmedDto> confirmEmail(String code) {
@@ -143,20 +124,6 @@ public class UserService implements UserInterfaceService{
 	}
 
 	@Override
-	public String redifinedPassword(String body) {
-		Logins cliente = loginsRepository.findByEmail(body);
-		
-		if(cliente != null) {
-			String code = sendEmail(body);
-			loginsRepository.save(cliente);
-			
-			return code;
-		}
-		
-		return null;
-	}
-
-	@Override
 	public ResponseEntity<String> resetPassword(String email, LoginDto senha) {
 		Cliente cliente = registerRepository.findByEmail(email);
 		
@@ -167,14 +134,6 @@ public class UserService implements UserInterfaceService{
 		}
 		
 		return ResponseEntity.badRequest().build();
-	}
-
-	@Override
-	public void sendLink(String to, String msg) {
-		var message = new SimpleMailMessage();
-		message.setTo(to);
-		message.setText(msg);
-		sender.send(message);
 	}
 
 	@Override
@@ -212,6 +171,19 @@ public class UserService implements UserInterfaceService{
 		}
 		
 		return false;
+	}
+
+	@Override
+	public ResponseEntity<ResponseConfirmedDto> redifinedPassword(String body) {
+		Logins cliente = loginsRepository.findByEmail(body);
+		
+		if(cliente != null) {
+			loginsRepository.save(cliente);
+			
+			return ResponseEntity.ok().body(new ResponseConfirmedDto("Senha redefinida"));
+		}
+		
+		return null;
 	}
 
 }
