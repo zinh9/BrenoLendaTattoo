@@ -1,0 +1,14 @@
+@font-face {
+    font-family: fonte-tattoo;
+    src: url(\src\main\resources\static\css\font\Madinah-Authentic.otf);
+}
+
+header{
+    background-color: black;
+}
+
+.titulo{
+    font-family: "fonte-tattoo";
+    color: white;
+    left: 10%;
+}
