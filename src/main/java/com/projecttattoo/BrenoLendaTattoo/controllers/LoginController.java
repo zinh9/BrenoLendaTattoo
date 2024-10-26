@@ -26,7 +26,7 @@ public class LoginController {
 	
 	@GetMapping("/")
     public String home() {
-        return "Hello, World!";
+        return "login.html";
     }
 	
 	@PostMapping("/login")

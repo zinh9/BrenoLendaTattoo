@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.projecttattoo.BrenoLendaTattoo.enums.Roles;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,15 +29,30 @@ public class Logins implements UserDetails{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+
+	@Column(name = "email", nullable = false, length = 255)
 	private String email;
+
+	@Column(name = "nome", nullable = false, length = 100)
 	private String nome;
+
+	@Column(name = "senha", nullable = false)
 	private String senha;
+
+	@Column(name = "verified_account", nullable = false)
 	private boolean verifiedAccount;
+
+	@Column(name = "token", length = 255)
 	private String token;
+
 	@OneToOne
 	@JoinColumn(name = "id_Cliente")
 	private Cliente cliente;
+
+	@Column(name = "verificationCode", length = 10)
 	private String verificationCode;
+
+	@Column(name = "userRole")
 	private Roles userRole;
 	
 	@Override

@@ -20,17 +20,17 @@ import ch.qos.logback.core.filter.Filter;
 @EnableWebSecurity
 public class WebSegurityConfig {
 	@Autowired
-	private jakarta.servlet.Filter filter;
-	
+	private com.projecttattoo.BrenoLendaTattoo.filters.Filter jwtFilter;
+
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http
 				.csrf(csrf -> csrf.disable())
 				.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers(HttpMethod.GET, "/cliente").permitAll()
-						.requestMatchers(HttpMethod.POST, "/clinte/register").permitAll()
+						.requestMatchers(HttpMethod.POST, "/cliente/register").permitAll()
 						.requestMatchers(HttpMethod.POST, "/cliente/login").permitAll()
 						.requestMatchers(HttpMethod.GET, "/cliente/confirm").permitAll()
 						.requestMatchers(HttpMethod.GET, "/cliente/redifine").permitAll()
@@ -39,17 +39,16 @@ public class WebSegurityConfig {
 						.requestMatchers(HttpMethod.GET, "/cliente/verify").permitAll()
 						.requestMatchers(HttpMethod.GET, "/cliente/get-token").permitAll()
 						.anyRequest()
-						.authenticated()
-						)
-				//.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
+						.authenticated())
+				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 				.build();
 	}
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticate) throws Exception {
 		return authenticate.getAuthenticationManager();
