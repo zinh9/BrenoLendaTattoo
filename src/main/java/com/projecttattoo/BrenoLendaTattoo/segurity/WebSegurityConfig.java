@@ -29,7 +29,7 @@ public class WebSegurityConfig {
 				.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(authorize -> authorize
-						.requestMatchers(HttpMethod.GET, "/").permitAll()
+						.requestMatchers(HttpMethod.GET, "/cliente").permitAll()
 						.requestMatchers(HttpMethod.POST, "/clinte/register").permitAll()
 						.requestMatchers(HttpMethod.POST, "/cliente/login").permitAll()
 						.requestMatchers(HttpMethod.GET, "/cliente/confirm").permitAll()
@@ -41,7 +41,7 @@ public class WebSegurityConfig {
 						.anyRequest()
 						.authenticated()
 						)
-				.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
+				//.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
 				.build();
 	}
 	
