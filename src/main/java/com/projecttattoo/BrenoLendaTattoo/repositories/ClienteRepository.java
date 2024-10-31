@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.projecttattoo.BrenoLendaTattoo.models.Cliente;
 
-public interface RegisterRepository extends JpaRepository<Cliente, Integer>{
-	public Cliente findByEmail(String email);
-	public Cliente findByCpf(String cpf);
+public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
+	public Cliente findById(int id);
 }

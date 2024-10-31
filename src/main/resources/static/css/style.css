@@ -3,7 +3,18 @@
     src: url(/src/main/resources/static/css/font/Madinah-Authentic.otf);
 }
 
-h1{
+* {
+    box-sizing: border-box;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow-x: hidden;
+}
+
+h1 {
     font-family: "fonte-tattoo";
 }
 
@@ -14,8 +25,11 @@ header {
     top: 0;
     left: 0;
     right: 0;
-    padding: 10px 20px;
+    padding: 3px 20px;
     z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 nav ul {
@@ -35,18 +49,12 @@ nav ul li a:hover {
     text-decoration: underline;
 }
 
-body,
-html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-}
-
 .fundo {
     position: relative;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 50px);
     overflow: hidden;
+    overflow-y: auto;
 }
 
 .fundo img {
@@ -66,22 +74,27 @@ html {
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: 60%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.7);
-    padding: 50px;
+    padding: 40px;
     border-radius: 10px;
     color: white;
+    max-width: 400px;
+    width: 90%;
+    max-height: 80vh;
 }
 
-.form-container h2{
+.form-container h2 {
     font-family: "fonte-tattoo";
     text-align: center;
 }
 
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+input[type="email"],
+input[type="date"] {
     display: block;
     width: 100%;
     margin: 10px 0;
@@ -90,15 +103,19 @@ input[type="password"] {
     border-radius: 5px;
 }
 
+.form-container label {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
 .form-container button {
-    width: 50%;
+    width: 100%;
     padding: 10px;
     border: none;
     border-radius: 5px;
     background-color: #fff;
     color: black;
     cursor: pointer;
+    display: flex;
     justify-content: center;
     align-items: center;
-    
 }

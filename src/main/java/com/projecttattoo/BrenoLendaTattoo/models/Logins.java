@@ -28,7 +28,7 @@ public class Logins implements UserDetails{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 
 	@Column(name = "email", nullable = false, length = 255)
 	private String email;
@@ -78,7 +78,7 @@ public class Logins implements UserDetails{
 	@Override
 	public String getUsername() {
 		// TODO Auto-generated method stub
-		return null;
+		return email;
 	}
 
 	@Override

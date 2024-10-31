@@ -23,8 +23,7 @@ public class AuthenticatedService implements UserDetailsService{
 	@Autowired
 	private LoginsRepository repository;
 	
-	@Value("key.auth.token")
-	private String key;
+	private String key = "puts";
 	
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
