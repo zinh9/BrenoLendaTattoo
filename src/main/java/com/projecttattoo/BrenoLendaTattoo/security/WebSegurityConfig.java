@@ -1,4 +1,4 @@
-package com.projecttattoo.BrenoLendaTattoo.segurity;
+package com.projecttattoo.BrenoLendaTattoo.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +32,7 @@ public class WebSegurityConfig {
 						.requestMatchers("/auth").permitAll()
 						.requestMatchers( "/cliente").permitAll()
 						.requestMatchers("/produto").permitAll()
+						.requestMatchers("/agendamento").permitAll()
 						.requestMatchers(HttpMethod.GET, "/cliente/**").permitAll()
 						.requestMatchers(HttpMethod.DELETE, "/cliente/**").permitAll()
 						.requestMatchers(HttpMethod.PUT, "/cliente/**").permitAll()
@@ -41,6 +42,7 @@ public class WebSegurityConfig {
 						.requestMatchers(HttpMethod.GET, "/produto/**").permitAll()
 						.requestMatchers(HttpMethod.PUT, "/produto/**").permitAll()
 						.requestMatchers(HttpMethod.DELETE, "/produto/**").permitAll()
+						.requestMatchers(HttpMethod.POST, "/agendamento/agendar").permitAll()
 						.anyRequest()
 						.authenticated())
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

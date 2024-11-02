@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
-import com.projecttattoo.BrenoLendaTattoo.dto.RequestProdutoDto;
-import com.projecttattoo.BrenoLendaTattoo.dto.ResponseProdutoDto;
+import com.projecttattoo.BrenoLendaTattoo.dto.produto.RequestProdutoDto;
+import com.projecttattoo.BrenoLendaTattoo.dto.produto.ResponseProdutoDto;
 
 public interface ProdutoInterfaceService {
 	public ResponseEntity<ResponseProdutoDto> register(RequestProdutoDto body);

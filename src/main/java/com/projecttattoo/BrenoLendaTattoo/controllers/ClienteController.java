@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.projecttattoo.BrenoLendaTattoo.dto.ClienteDto;
-import com.projecttattoo.BrenoLendaTattoo.dto.RequestRegisterDto;
 import com.projecttattoo.BrenoLendaTattoo.dto.ResponseDto;
-import com.projecttattoo.BrenoLendaTattoo.dto.UpdateClienteDto;
+import com.projecttattoo.BrenoLendaTattoo.dto.cliente.ClienteDto;
+import com.projecttattoo.BrenoLendaTattoo.dto.cliente.RequestRegisterDto;
+import com.projecttattoo.BrenoLendaTattoo.dto.cliente.UpdateClienteDto;
 import com.projecttattoo.BrenoLendaTattoo.services.ClienteService;
 
 @CrossOrigin(origins = "*")

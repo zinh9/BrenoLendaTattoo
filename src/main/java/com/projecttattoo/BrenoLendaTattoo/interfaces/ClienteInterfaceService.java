@@ -5,12 +5,12 @@ import java.util.List;
 import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 
-import com.projecttattoo.BrenoLendaTattoo.dto.ClienteDto;
 import com.projecttattoo.BrenoLendaTattoo.dto.LoginDto;
-import com.projecttattoo.BrenoLendaTattoo.dto.RequestRegisterDto;
 import com.projecttattoo.BrenoLendaTattoo.dto.ResponseConfirmedDto;
 import com.projecttattoo.BrenoLendaTattoo.dto.ResponseDto;
-import com.projecttattoo.BrenoLendaTattoo.dto.UpdateClienteDto;
+import com.projecttattoo.BrenoLendaTattoo.dto.cliente.ClienteDto;
+import com.projecttattoo.BrenoLendaTattoo.dto.cliente.RequestRegisterDto;
+import com.projecttattoo.BrenoLendaTattoo.dto.cliente.UpdateClienteDto;
 import com.projecttattoo.BrenoLendaTattoo.models.Logins;
 
 public interface ClienteInterfaceService {

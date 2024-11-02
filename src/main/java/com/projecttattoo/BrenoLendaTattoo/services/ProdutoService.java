@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.projecttattoo.BrenoLendaTattoo.dto.ClienteDto;
-import com.projecttattoo.BrenoLendaTattoo.dto.RequestProdutoDto;
-import com.projecttattoo.BrenoLendaTattoo.dto.ResponseProdutoDto;
+import com.projecttattoo.BrenoLendaTattoo.dto.cliente.ClienteDto;
+import com.projecttattoo.BrenoLendaTattoo.dto.produto.RequestProdutoDto;
+import com.projecttattoo.BrenoLendaTattoo.dto.produto.ResponseProdutoDto;
 import com.projecttattoo.BrenoLendaTattoo.interfaces.ProdutoInterfaceService;
 import com.projecttattoo.BrenoLendaTattoo.models.Produto;
 import com.projecttattoo.BrenoLendaTattoo.repositories.ProdutoRepository;

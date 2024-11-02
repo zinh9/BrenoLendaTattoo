@@ -15,12 +15,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.projecttattoo.BrenoLendaTattoo.dto.ClienteDto;
 import com.projecttattoo.BrenoLendaTattoo.dto.LoginDto;
-import com.projecttattoo.BrenoLendaTattoo.dto.RequestRegisterDto;
 import com.projecttattoo.BrenoLendaTattoo.dto.ResponseConfirmedDto;
 import com.projecttattoo.BrenoLendaTattoo.dto.ResponseDto;
-import com.projecttattoo.BrenoLendaTattoo.dto.UpdateClienteDto;
+import com.projecttattoo.BrenoLendaTattoo.dto.cliente.ClienteDto;
+import com.projecttattoo.BrenoLendaTattoo.dto.cliente.RequestRegisterDto;
+import com.projecttattoo.BrenoLendaTattoo.dto.cliente.UpdateClienteDto;
 import com.projecttattoo.BrenoLendaTattoo.enums.Roles;
 import com.projecttattoo.BrenoLendaTattoo.interfaces.ClienteInterfaceService;
 import com.projecttattoo.BrenoLendaTattoo.models.Cliente;

@@ -1,4 +1,4 @@
-package com.projecttattoo.BrenoLendaTattoo.dto;
+package com.projecttattoo.BrenoLendaTattoo.dto.cliente;
 
 import java.time.LocalDate;
 
