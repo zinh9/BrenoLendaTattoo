@@ -14,27 +14,30 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-@Table(name = "produto")
-public class Produto {
-	
+@Table(name = "orcamentos")
+public class Orcamento {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(nullable = false, name = "imagem")
+	@Column(nullable = false)
 	private String imagem;
 	
-	@Column(nullable = false, name = "nome")
-	private String nome;
-	
-	@Column(nullable = false, name = "lagura")
+	@Column(nullable = false)
 	private Double largura;
 	
-	@Column(nullable = false, name = "altura")
+	@Column(nullable = false)
 	private Double altura;
 	
+	@Column(name = "parte_corpo", nullable = false)
+	private String parteCorpo;
+	
+	@Column(nullable = false)
 	private String descricao;
 	
-	@Column(nullable = false, name = "valor")
+	@Column(name = "valor")
 	private Double valor;
+	
+	@Column(name = "status_orcamento", nullable = false)
+	private String statusOrcamento;
 }

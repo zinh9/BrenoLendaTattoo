@@ -5,14 +5,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.projecttattoo.BrenoLendaTattoo.dto.LoginDto;
-import com.projecttattoo.BrenoLendaTattoo.dto.ResponseDto;
-import com.projecttattoo.BrenoLendaTattoo.dto.cliente.RequestRegisterDto;
 import com.projecttattoo.BrenoLendaTattoo.services.ClienteService;
 
 @CrossOrigin(origins = "*")

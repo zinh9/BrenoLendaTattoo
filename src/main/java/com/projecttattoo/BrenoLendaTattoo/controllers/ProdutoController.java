@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,8 +33,11 @@ public class ProdutoController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<ResponseProdutoDto>> getAll(){
-		return produtoService.getAll();
+	public String getAll(Model model){
+		ResponseEntity<List<ResponseProdutoDto>> response = produtoService.getAll();
+		List<ResponseProdutoDto> produtos = response.getBody();
+		model.addAttribute("produtos", produtos);
+		return "catalogo";
 	}
 	
 	@GetMapping("/{id}")

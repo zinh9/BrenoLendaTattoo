@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atualizar Orçamento - Studio de Tatuagem</title>
+    <link rel="stylesheet" href="../static/style2.css">
+</head>
+<body>
+    <div class="page-layout">
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="historico.html">Meu Histórico</a>
+                <a href="meus_orcamentos.html" class="active">Orçamento</a>
+                <a href="#">Agendamentos</a>
+                <a href="#">Minha Conta</a>
+                <a href="#">Sair</a>
+            </nav>
+            <button class="sidebar-close">×</button>
+        </aside>
+        <div class="sidebar-overlay"></div>
+
+        <!-- Main Content -->
+        <div class="main-with-sidebar">
+            <!-- Header -->
+            <header>
+                <div class="container header-content">
+                    <div class="header-left">
+                        <button class="menu-button" aria-label="Toggle Menu">☰</button>
+                        <img src="../static/Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="header-logo">
+                    </div>
+                    <nav class="main-nav">
+                        <a href="#">Minha Conta</a>
+                        <a href="#">Sair</a>
+                    </nav>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="container">
+                <div class="page-header">
+                    <h1>Atualizar Orçamento</h1>
+                </div>
+
+                <!-- Formulário de Atualização -->
+                <form class="quote-form" action="/orcamentos/atualizar-orcamento/{id}" method="post" enctype="multipart/form-data">
+                    <!-- Campo oculto para o método PUT -->
+                    <input type="hidden" name="_method" value="put">
+                    <!-- Campo oculto para ID -->
+                    <input type="hidden" name="id" th:value="${orcamento.id}">
+                    
+                    <div class="form-section">
+                        <h2>Referência Visual</h2>
+                        <div class="image-upload">
+                            <input type="file" id="tattoo-image" accept="image/*" class="file-input" name="imagem">
+                            <label for="tattoo-image" class="file-label">
+                                <div class="upload-icon">+</div>
+                                <span>Adicionar foto de referência</span>
+                                <p class="upload-hint">Clique para selecionar</p>
+                            </label>
+                            <div class="image-preview" style="display: none;">
+                                <img th:src="${orcamento.imagem}" alt="Preview" id="image-preview">
+                                <button type="button" class="remove-image">×</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2>Detalhes da Tatuagem</h2>
+                        
+                        <div class="form-group">
+                            <label for="size">Tamanho aproximado (em cm)</label>
+                            <div class="size-inputs">
+                                <input type="number" id="width" name="largura" placeholder="Largura" min="1" max="100" th:value="${orcamento.largura}" required>
+                                <span>x</span>
+                                <input type="number" id="height" name="altura" placeholder="Altura" min="1" max="100" th:value="${orcamento.altura}" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="body-part">Parte do corpo</label>
+                            <select id="body-part" name="parteCorpo" required>
+                                <option value="" th:selected="${orcamento.parteCorpo == null}">Selecione a parte do corpo</option>
+                                <option value="braco" th:selected="${orcamento.parteCorpo == 'braco'}">Braço</option>
+                                <option value="antebraco" th:selected="${orcamento.parteCorpo == 'antebraco'}">Antebraço</option>
+                                <option value="perna" th:selected="${orcamento.parteCorpo == 'perna'}">Perna</option>
+                                <option value="costas" th:selected="${orcamento.parteCorpo == 'costas'}">Costas</option>
+                                <option value="peito" th:selected="${orcamento.parteCorpo == 'peito'}">Peito</option>
+                                <option value="costela" th:selected="${orcamento.parteCorpo == 'costela'}">Costela</option>
+                                <option value="pescoco" th:selected="${orcamento.parteCorpo == 'pescoco'}">Pescoço</option>
+                                <option value="pe" th:selected="${orcamento.parteCorpo == 'pe'}">Pé</option>
+                                <option value="outro" th:selected="${orcamento.parteCorpo == 'outro'}">Outro</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Descrição e detalhes adicionais</label>
+                            <textarea id="description" name="descricao" rows="4" placeholder="Descreva os detalhes da sua tatuagem..." th:text="${orcamento.descricao}" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="button-secondary">Cancelar</button>
+                        <button type="submit" class="button-primary">Atualizar Orçamento</button>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </div>
+    <script src="/src/main/resources/static/script.js"></script>
+</body>
+</html>

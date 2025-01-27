@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Orçamentos - Studio de Tatuagem</title>
+    <link rel="stylesheet" href="../static/style2.css">
+</head>
+<body>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="historico.html">Meu Histórico</a>
+                <a href="novo_orcamento.html" class="active">Orçamentos</a>
+                <a href="#">Agendamentos</a>
+                <a href="#">Minha Conta</a>
+                <a href="#">Sair</a>
+            </nav>
+            <button class="sidebar-close">×</button>
+        </aside>
+        <div class="sidebar-overlay"></div>
+
+        <!-- Main Content -->
+        <div class="main-with-sidebar">
+            <!-- Header -->
+            <header>
+                <div class="container header-content">
+                    <div class="header-left">
+                        <button class="menu-button" aria-label="Toggle Menu">☰</button>
+                        <img src="..\static\Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="header-logo">
+                    </div>
+                    <nav class="main-nav">
+                        <a href="#">Conta</a>
+                        <a href="#">Sair</a>
+                    </nav>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="container">
+                <div class="page-header">
+                    <h1>Meus Orçamentos</h1>
+                </div>
+
+                <div class="budget-grid">
+                    <!-- Existing Budget Card -->
+                    <div th:each="orcamento : ${orcamentos}" class="budget-card">
+                        <img th:src="${orcamento.imagem}" alt="Orçamento">
+                        <div class="budget-details">
+                            <p><strong>Tamanho: </strong><span th:text="${orcamento.altura} + ' x ' + ${orcamento.largura}"></span></p>
+                            <p><strong>Valor: </strong><span th:text="'R$' + ${orcamento.valor}"></span></p>
+                            <p><strong>Descrição: </strong><span th:text="${orcamento.descricao}"></span>
+                            <p><strong>Status: </strong><span th:text="${orcamento.statusOrcamento}"></span></p>
+                            <div class="history-item-actions">
+                                <button class="button-secondary">Cancelar</button>
+                                <button class="button-primary" onclick="location.href='atualizar-orcamento.html'">Atualizar</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <button class="add-budget-card" onclick="location.href='novo_orcamento.html'">
+                        <div class="plus-icon">+</div>
+                        <span>Novo Orçamento</span>
+                    </button>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="/src/main/resources/static/script.js"></script>
+</body>
+</html>

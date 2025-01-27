@@ -2,7 +2,6 @@ package com.projecttattoo.BrenoLendaTattoo.interfaces;
 
 import java.util.List;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 
 import com.projecttattoo.BrenoLendaTattoo.dto.LoginDto;

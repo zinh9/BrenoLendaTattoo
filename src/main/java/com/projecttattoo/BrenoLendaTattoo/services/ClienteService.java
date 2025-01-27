@@ -2,14 +2,10 @@ package com.projecttattoo.BrenoLendaTattoo.services;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,7 +25,7 @@ import com.projecttattoo.BrenoLendaTattoo.repositories.ClienteRepository;
 import com.projecttattoo.BrenoLendaTattoo.repositories.LoginsRepository;
 import com.projecttattoo.BrenoLendaTattoo.repositories.RegisterRepository;
 
-import br.com.caelum.stella.validation.CPFValidator;
+//import br.com.caelum.stella.validation.CPFValidator;
 
 @Service
 public class ClienteService implements ClienteInterfaceService {

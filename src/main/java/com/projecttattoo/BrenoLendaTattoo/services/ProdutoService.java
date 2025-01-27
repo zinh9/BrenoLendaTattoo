@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.projecttattoo.BrenoLendaTattoo.dto.cliente.ClienteDto;
 import com.projecttattoo.BrenoLendaTattoo.dto.produto.RequestProdutoDto;
 import com.projecttattoo.BrenoLendaTattoo.dto.produto.ResponseProdutoDto;
 import com.projecttattoo.BrenoLendaTattoo.interfaces.ProdutoInterfaceService;
@@ -26,12 +25,12 @@ public class ProdutoService implements ProdutoInterfaceService {
 
 		newProduto.setNome(body.nome());
 		newProduto.setDescricao(body.descricao());
-		newProduto.setPreco(body.preco());
+		newProduto.setValor(body.valor());
 
 		produtoRepository.save(newProduto);
 
-		ResponseProdutoDto produtoDto = new ResponseProdutoDto(newProduto.getId(), newProduto.getNome(),
-				newProduto.getDescricao(), newProduto.getPreco());
+		ResponseProdutoDto produtoDto = new ResponseProdutoDto(newProduto.getId(), newProduto.getImagem(), newProduto.getNome(),
+				newProduto.getLargura(), newProduto.getAltura(), newProduto.getDescricao(), newProduto.getValor());
 
 		return ResponseEntity.ok(produtoDto);
 	}
@@ -41,8 +40,8 @@ public class ProdutoService implements ProdutoInterfaceService {
 		List<Produto> produtos = produtoRepository.findAll();
 
 		if(!produtos.isEmpty()) {
-			List<ResponseProdutoDto> produtosDtos = produtos.stream().map(produto -> new ResponseProdutoDto(produto.getId(),
-					produto.getNome(), produto.getDescricao(), produto.getPreco())).toList();
+			List<ResponseProdutoDto> produtosDtos = produtos.stream().map(produto -> new ResponseProdutoDto(produto.getId(), produto.getImagem(), 
+					produto.getNome(), produto.getLargura(), produto.getAltura(), produto.getDescricao(), produto.getValor())).toList();
 			
 			return ResponseEntity.ok(produtosDtos);
 		}
@@ -56,8 +55,8 @@ public class ProdutoService implements ProdutoInterfaceService {
 		
 		if(produtoOpt.isPresent()) {
 			Produto produto = produtoOpt.get();
-			ResponseProdutoDto produtoDto = new ResponseProdutoDto(produto.getId(), produto.getNome(),
-					produto.getDescricao(), produto.getPreco());
+			ResponseProdutoDto produtoDto = new ResponseProdutoDto(produto.getId(), produto.getImagem(), 
+					produto.getNome(), produto.getLargura(), produto.getAltura(), produto.getDescricao(), produto.getValor());
 
 			return ResponseEntity.ok(produtoDto);
 		}
@@ -74,9 +73,12 @@ public class ProdutoService implements ProdutoInterfaceService {
 			
 			produto.setNome(body.nome());
 			produto.setDescricao(body.descricao());
-			produto.setPreco(body.preco());
+			produto.setValor(body.valor());
 			
-			ResponseProdutoDto produtoDto = new ResponseProdutoDto(produto.getId(), produto.getNome(), produto.getDescricao(), produto.getPreco());
+			produtoRepository.save(produto);
+			
+			ResponseProdutoDto produtoDto = new ResponseProdutoDto(produto.getId(), produto.getImagem(), 
+					produto.getNome(), produto.getLargura(), produto.getAltura(), produto.getDescricao(), produto.getValor());
 			
 			return ResponseEntity.ok(produtoDto);
 		}

@@ -3,7 +3,6 @@ package com.projecttattoo.BrenoLendaTattoo.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,8 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import ch.qos.logback.core.filter.Filter;
 
 @Configuration
 @EnableWebSecurity
@@ -29,22 +26,8 @@ public class WebSegurityConfig {
 				.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(authorize -> authorize
-						.requestMatchers("/auth").permitAll()
-						.requestMatchers( "/cliente").permitAll()
-						.requestMatchers("/produto").permitAll()
-						.requestMatchers("/agendamento").permitAll()
-						.requestMatchers(HttpMethod.GET, "/cliente/**").permitAll()
-						.requestMatchers(HttpMethod.DELETE, "/cliente/**").permitAll()
-						.requestMatchers(HttpMethod.PUT, "/cliente/**").permitAll()
-						.requestMatchers(HttpMethod.POST, "/cliente/register").permitAll()
-						.requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-						.requestMatchers(HttpMethod.POST, "/produto/register").permitAll()
-						.requestMatchers(HttpMethod.GET, "/produto/**").permitAll()
-						.requestMatchers(HttpMethod.PUT, "/produto/**").permitAll()
-						.requestMatchers(HttpMethod.DELETE, "/produto/**").permitAll()
-						.requestMatchers(HttpMethod.POST, "/agendamento/agendar").permitAll()
 						.anyRequest()
-						.authenticated())
+						.permitAll())
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 				.build();
 	}

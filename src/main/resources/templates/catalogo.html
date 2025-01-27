@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catálogo de Estilos - Studio de Tatuagem</title>
+<link rel="stylesheet" href="/src/main/resources/static/style2.css">
+</head>
+<body>
+	<div class="page-layout">
+		<!-- Sidebar -->
+		<aside class="sidebar">
+			<div class="sidebar-header">
+				<img
+					src="C:/Users/enzos/Downloads/Ilustração_Sem_Título_page-0001.jpg"
+					alt="Logo" class="logo">
+			</div>
+			<nav class="sidebar-nav">
+				<a href="history.html">Meu Histórico</a> <a href="budget.html">Orçamentos</a>
+				<a href="catalog.html" class="active">Catálogo</a> <a href="#">Agendamentos</a>
+				<a href="#">Minha Conta</a> <a href="#">Onde Estamos</a> <a href="#">Sair</a>
+			</nav>
+			<button class="sidebar-close">×</button>
+		</aside>
+		<div class="sidebar-overlay"></div>
+
+		<!-- Main Content -->
+		<div class="main-with-sidebar">
+			<!-- Header -->
+			<header>
+				<div class="container header-content">
+					<div class="header-left">
+						<button class="menu-button" aria-label="Toggle Menu">☰</button>
+						<img
+							src="https://images.unsplash.com/photo-1557683311-eac922347aa1?w=128&h=128&fit=crop"
+							alt="Logo" class="header-logo">
+					</div>
+					<nav class="main-nav">
+						<a href="budget.html">Orçamentos</a> <a href="#">Agendamento</a> <a
+							href="#">Onde estamos</a> <a href="#">Conta</a>
+					</nav>
+				</div>
+			</header>
+
+			<!-- Main Content -->
+			<main class="container">
+				<div class="page-header">
+					<h1>Catálogo de Estilos</h1>
+					<button class="filter-button">Filtrar ▼</button>
+				</div>
+
+				<div class="history-container">
+					<!-- Filters -->
+					<div class="history-filters">
+						<div class="search-box">
+							<input type="text" placeholder="Buscar estilos..."
+								class="search-input">
+						</div>
+						<div class="filter-buttons">
+							<button class="filter-btn active">Todos os estilos</button>
+							<button class="filter-btn">Old School</button>
+							<button class="filter-btn">Realismo</button>
+							<button class="filter-btn">Minimalista</button>
+							<button class="filter-btn">Aquarela</button>
+							<button class="filter-btn">Blackwork</button>
+						</div>
+					</div>
+
+					<!-- History Items (repurposed for catalog) -->
+					<div class="history-items">
+						<!-- Itera sobre os orçamentos -->
+						<div th:each="produto : ${produtos}" class="history-item">
+							<div class="history-item-image">
+								<img th:src="${produto.imagem}">
+							</div>
+							<div class="history-item-content">
+								<div class="history-item-header">
+									<span class="status completed">Disponível</span>
+								</div>
+								<div class="history-item-details">
+									<p>
+										<strong>Preço:</strong> A partir de R$ <span
+											th:text="${produto.valor}"></span>
+									</p>
+									<p>
+										<strong>Altura:</strong> <span
+											th:text="${produto.altura} + ' cm'"></span>
+									</p>
+									<p>
+										<strong>Largura:</strong> <span
+											th:text="${produto.largura} + ' cm'"></span>
+									</p>
+								</div>
+								<p class="history-item-description">
+									<span th:text="${produto.descricao}"></span>
+								</p>
+								<div class="history-item-actions">
+									<button class="button-primary">Solicitar Orçamento</button>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+			</main>
+		</div>
+	</div>
+	<!--<script src="../static/script.js"></script>-->
+</body>
+</html>

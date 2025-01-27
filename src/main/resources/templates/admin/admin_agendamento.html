@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Agendamento - Studio de Tatuagem</title>
+    <link rel="stylesheet" href="/src/main/resources/static/css/style2.css">
+    <link rel="stylesheet" href="/src/main/resources/static/css/appointment.css">
+</head>
+<body>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="https://images.unsplash.com/photo-1557683311-eac922347aa1?w=128&h=128&fit=crop" alt="Logo" class="logo">
+            </div>
+            <nav class="sidebar-nav">
+                <a href="history.html">Meu Histórico</a>
+                <a href="budget.html">Orçamentos</a>
+                <a href="new-budget.html">Novo Orçamento</a>
+                <a href="#" class="active">Agendamentos</a>
+                <a href="#">Minha Conta</a>
+                <a href="#">Onde Estamos</a>
+                <a href="#">Sair</a>
+            </nav>
+            <button class="sidebar-close">×</button>
+        </aside>
+        <div class="sidebar-overlay"></div>
+
+        <!-- Main Content -->
+        <div class="main-with-sidebar">
+            <!-- Header -->
+            <header>
+                <div class="container header-content">
+                    <div class="header-left">
+                        <button class="menu-button" aria-label="Toggle Menu">☰</button>
+                        <img src="https://images.unsplash.com/photo-1557683311-eac922347aa1?w=128&h=128&fit=crop" alt="Logo" class="header-logo">
+                    </div>
+                    <nav class="main-nav">
+                        <a href="budget.html">Orçamentos</a>
+                        <a href="#" class="active">Agendamento</a>
+                        <a href="#">Onde estamos</a>
+                        <a href="#">Conta</a>
+                    </nav>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="container">
+                <div class="page-header">
+                    <h1>Novo Agendamento</h1>
+                </div>
+
+                <form class="quote-form">
+                    <!-- Budget Selection Section -->
+                    <div class="form-section">
+                        <h2>Selecione o Orçamento</h2>
+                        <div class="budget-selection">
+                            <div class="search-group">
+                                <input type="text" id="budget-search" placeholder="Buscar orçamento por cliente ou número" class="search-input">
+                            </div>
+                            <div class="budget-list">
+                                <!-- Budget items will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Selected Budget Details -->
+                    <div class="form-section" id="selected-budget-details" style="display: none;">
+                        <h2>Detalhes do Orçamento</h2>
+                        <div class="quote-details">
+                            <div class="quote-image">
+                                <img src="" alt="Referência da Tatuagem" id="tattoo-reference">
+                            </div>
+                            <div class="quote-info">
+                                <div class="info-group">
+                                    <label>Número do Orçamento:</label>
+                                    <span id="budget-number"></span>
+                                </div>
+                                <div class="info-group">
+                                    <label>Cliente:</label>
+                                    <span id="client-name"></span>
+                                </div>
+                                <div class="info-group">
+                                    <label>Tamanho:</label>
+                                    <span id="tattoo-size"></span>
+                                </div>
+                                <div class="info-group">
+                                    <label>Valor Aprovado:</label>
+                                    <span id="approved-value"></span>
+                                </div>
+                                <div class="info-group">
+                                    <label>Descrição:</label>
+                                    <p id="tattoo-description"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Calendar Section -->
+                    <div class="form-section">
+                        <h2>Selecione a Data</h2>
+                        <div class="calendar-container">
+                            <div class="calendar-header">
+                                <button type="button" id="prevMonth" class="calendar-nav">&lt;</button>
+                                <h3 id="currentMonth">Setembro 2023</h3>
+                                <button type="button" id="nextMonth" class="calendar-nav">&gt;</button>
+                            </div>
+                            <div class="calendar-weekdays">
+                                <span>Dom</span>
+                                <span>Seg</span>
+                                <span>Ter</span>
+                                <span>Qua</span>
+                                <span>Qui</span>
+                                <span>Sex</span>
+                                <span>Sáb</span>
+                            </div>
+                            <div class="calendar-days" id="calendarDays">
+                                <!-- Days will be inserted by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Time Selection Section -->
+                    <div class="form-section">
+                        <h2>Selecione o Horário</h2>
+                        <div class="time-slots" id="timeSlots">
+                            <button type="button" class="time-slot">09:00</button>
+                            <button type="button" class="time-slot">10:00</button>
+                            <button type="button" class="time-slot">11:00</button>
+                            <button type="button" class="time-slot">14:00</button>
+                            <button type="button" class="time-slot">15:00</button>
+                            <button type="button" class="time-slot">16:00</button>
+                            <button type="button" class="time-slot">17:00</button>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="button-secondary">Cancelar</button>
+                        <button type="submit" class="button-primary">Confirmar Agendamento</button>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </div>
+    <script src="/src/main/resources/static/js/script.js"></script>
+    <script src="/src/main/resources/static/js/appointment.js"></script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Orçamento - Studio de Tatuagem</title>
+    <link rel="stylesheet" href="../static/style2.css">
+</head>
+<body>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="historico.html">Meu Histórico</a>
+                <a href="meus_orcamentos.html" class="active">Orçamento</a>
+                <a href="#">Agendamentos</a>
+                <a href="#">Minha Conta</a>
+                <a href="#">Sair</a>
+            </nav>
+            <button class="sidebar-close">×</button>
+        </aside>
+        <div class="sidebar-overlay"></div>
+
+        <!-- Main Content -->
+        <div class="main-with-sidebar">
+            <!-- Header -->
+            <header>
+                <div class="container header-content">
+                    <div class="header-left">
+                        <button class="menu-button" aria-label="Toggle Menu">☰</button>
+                        <img src="..\static\Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="header-logo">
+                    </div>
+                    <nav class="main-nav">
+                        <a href="#">Minha Conta</a>
+                        <a href="#">Sair</a>
+                    </nav>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="container">
+                <div class="page-header">
+                    <h1>Novo Orçamento</h1>
+                </div>
+
+                <form class="quote-form" action="/orcamentos/novo-orcamento" method="post" enctype="multipart/form-data">
+                    <div class="form-section">
+                        <h2>Referência Visual</h2>
+                        <div class="image-upload">
+                            <input type="file" id="tattoo-image" accept="image/*" class="file-input" name="imagem" required>
+                            <label for="tattoo-image" class="file-label">
+                                <div class="upload-icon">+</div>
+                                <span>Adicionar foto de referência</span>
+                                <p class="upload-hint">Clique para selecionar</p>
+                            </label>
+                            <div class="image-preview" style="display: none;">
+                                <img src="" alt="Preview" id="image-preview">
+                                <button type="button" class="remove-image">×</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2>Detalhes da Tatuagem</h2>
+                        
+                        <div class="form-group">
+                            <label for="size">Tamanho aproximado (em cm)</label>
+                            <div class="size-inputs">
+                                <input type="number" id="width" name="largura" placeholder="Largura" min="1" max="100" required>
+                                <span>x</span>
+                                <input type="number" id="height" name="altura" placeholder="Altura" min="1" max="100" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="body-part">Parte do corpo</label>
+                            <select id="body-part" name="parteCorpo" required>
+                                <option value="">Selecione a parte do corpo</option>
+                                <option value="braco">Braço</option>
+                                <option value="antebraco">Antebraço</option>
+                                <option value="perna">Perna</option>
+                                <option value="costas">Costas</option>
+                                <option value="peito">Peito</option>
+                                <option value="costela">Costela</option>
+                                <option value="pescoco">Pescoço</option>
+                                <option value="pe">Pé</option>
+                                <option value="outro">Outro</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Descrição e detalhes adicionais</label>
+                            <textarea id="description" name="descricao" rows="4" placeholder="Descreva os detalhes da sua tatuagem, incluindo cores, estilo e qualquer informação relevante..." required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="button-secondary">Cancelar</button>
+                        <button type="submit" class="button-primary">Solicitar Orçamento</button>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </div>
+    <script src="/src/main/resources/static/script.js"></script>
+</body>
+</html>

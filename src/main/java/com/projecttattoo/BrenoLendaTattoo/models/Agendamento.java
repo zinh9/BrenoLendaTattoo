@@ -1,6 +1,7 @@
 package com.projecttattoo.BrenoLendaTattoo.models;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,4 +39,7 @@ public class Agendamento {
 
     @Column(name = "status")
     private String status = "Pendente";
+    
+    @Column(name = "horario", nullable = false)
+    private LocalTime horario;
 }

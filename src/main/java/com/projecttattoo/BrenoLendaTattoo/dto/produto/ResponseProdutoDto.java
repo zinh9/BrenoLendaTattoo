@@ -1,5 +1,5 @@
 package com.projecttattoo.BrenoLendaTattoo.dto.produto;
 
-public record ResponseProdutoDto(Integer id, String nome, String descricao, Double preco) {
+public record ResponseProdutoDto(Integer id, String imagem, String nome, Double largura, Double altura, String descricao, Double valor) {
 
 }

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Orçamento - Studio de Tatuagem</title>
+    <link rel="stylesheet" href="../static/style2.css">
+</head>
+<body>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="historico.html">Meu Histórico</a>
+                <a href="meus_orcamentos.html" class="active">Orçamento</a>
+                <a href="#">Agendamentos</a>
+                <a href="#">Minha Conta</a>
+                <a href="#">Sair</a>
+            </nav>
+            <button class="sidebar-close">×</button>
+        </aside>
+        <div class="sidebar-overlay"></div>
+
+        <!-- Main Content -->
+        <div class="main-with-sidebar">
+            <!-- Header -->
+            <header>
+                <div class="container header-content">
+                    <div class="header-left">
+                        <button class="menu-button" aria-label="Toggle Menu">☰</button>
+                        <img src="..\static\Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="header-logo">
+                    </div>
+                    <nav class="main-nav">
+                        <a href="#">Minha Conta</a>
+                        <a href="#">Sair</a>
+                    </nav>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="container">
+                <div class="page-header">
+                    <h1>Cadastro</h1>
+                </div>
+
+                <form class="quote-form" action="/orcamentos/novo-orcamento" method="post" enctype="multipart/form-data">
+                    <div class="form-section">    
+                        <h2>Informações para Cadastro</h2>                    
+                        <div class="form-group">
+                            <label for="size">Nome Completo: </label>
+                            <div class="size-inputs-data">
+                                <input type="text" id="registration-data" name="nome" placeholder="Nome Completo" required>
+                            </div>
+                            <br>
+                            <label for="size">Email: </label>
+                            <div class="size-inputs-data">
+                                <input type="text" id="registration-data" name="email" placeholder="Email" required>
+                            </div>
+                            <br>
+                            <label for="size">Telefone: </label>
+                            <div class="size-inputs-data">
+                                <input type="text" id="registration-data" name="telefone" placeholder="(DDD) 1111-11111" required>
+                            </div>
+                            <br>
+                            <label for="size">CPF: </label>
+                            <div class="size-inputs-data">
+                                <input type="text" id="registration-data" name="cpf" placeholder="CPF" required>
+                            </div>
+                            <br>
+                            <label for="size">Senha:</label>
+                            <div class="size-inputs-data">
+                                <input type="password" id="registration-data" name="senha" placeholder="Senha" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="button-secondary">Cancelar</button>
+                        <button type="submit" class="button-primary">Salvar</button>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </div>
+    <script src="/src/main/resources/static/script.js"></script>
+</body>
+</html>
