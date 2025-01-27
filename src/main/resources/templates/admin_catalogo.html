@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Catálogo - Studio de Tatuagem</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo-nav">
+                <img src="https://images.unsplash.com/photo-1557683311-eac922347aa1?w=128&h=128&fit=crop" alt="Logo" class="logo">
+                <nav class="main-nav">
+                    <a href="#" class="active">Catálogo</a>
+                    <a href="#">Orçamentos</a>
+                    <a href="#">Agenda</a>
+                    <a href="#">Configurações</a>
+                </nav>
+            </div>
+            <button class="menu-button">☰</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="page-header">
+            <h1>Gerenciar Catálogo</h1>
+            <div class="admin-actions">
+                <button class="filter-button">
+                    <span class="filter-icon">⚡</span>
+                    Filtrar
+                </button>
+                <button class="add-button">
+                    <span class="add-icon">+</span>
+                    Novo Estilo
+                </button>
+            </div>
+        </div>
+
+        <div class="style-filters">
+            <button class="filter-chip active">Todos os estilos</button>
+            <button class="filter-chip">Old School</button>
+            <button class="filter-chip">Realismo</button>
+            <button class="filter-chip">Minimalista</button>
+            <button class="filter-chip">Aquarela</button>
+            <button class="filter-chip">Blackwork</button>
+        </div>
+
+        <div class="style-grid admin">
+            <div class="style-card">
+                <div class="card-actions">
+                    <button class="action-button edit">✏️</button>
+                    <button class="action-button delete">🗑️</button>
+                </div>
+                <div class="status-badge active">Ativo</div>
+                <img src="https://images.unsplash.com/photo-1598371839696-5c5bb00bdc28?w=400&h=300&fit=crop" alt="Old School" class="style-image">
+                <div class="style-content">
+                    <h3>Old School</h3>
+                    <p class="style-description">Estilo clássico americano com linhas marcantes e cores vibrantes</p>
+                    <div class="style-details">
+                        <div class="artist-info">
+                            <span class="label">Artista</span>
+                            <span class="value">João Silva</span>
+                        </div>
+                        <div class="price-info">
+                            <span class="label">Preço base</span>
+                            <span class="value">R$ 350</span>
+                        </div>
+                    </div>
+                    <div class="admin-stats">
+                        <div class="stat">
+                            <span class="label">Orçamentos</span>
+                            <span class="value">32</span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Realizadas</span>
+                            <span class="value">18</span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Avaliação</span>
+                            <span class="value">4.8 ⭐</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="style-card">
+                <div class="card-actions">
+                    <button class="action-button edit">✏️</button>
+                    <button class="action-button delete">🗑️</button>
+                </div>
+                <div class="status-badge active">Ativo</div>
+                <img src="https://images.unsplash.com/photo-1590246814883-57c511e76523?w=400&h=300&fit=crop" alt="Realismo" class="style-image">
+                <div class="style-content">
+                    <h3>Realismo</h3>
+                    <p class="style-description">Tatuagens detalhadas que parecem fotografias</p>
+                    <div class="style-details">
+                        <div class="artist-info">
+                            <span class="label">Artista</span>
+                            <span class="value">Maria Santos</span>
+                        </div>
+                        <div class="price-info">
+                            <span class="label">Preço base</span>
+                            <span class="value">R$ 500</span>
+                        </div>
+                    </div>
+                    <div class="admin-stats">
+                        <div class="stat">
+                            <span class="label">Orçamentos</span>
+                            <span class="value">45</span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Realizadas</span>
+                            <span class="value">28</span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Avaliação</span>
+                            <span class="value">4.9 ⭐</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="style-card inactive">
+                <div class="card-actions">
+                    <button class="action-button edit">✏️</button>
+                    <button class="action-button delete">🗑️</button>
+                </div>
+                <div class="status-badge">Inativo</div>
+                <img src="https://images.unsplash.com/photo-1562962230-16e4623d36e6?w=400&h=300&fit=crop" alt="Minimalista" class="style-image">
+                <div class="style-content">
+                    <h3>Minimalista</h3>
+                    <p class="style-description">Designs simples e elegantes com linhas finas</p>
+                    <div class="style-details">
+                        <div class="artist-info">
+                            <span class="label">Artista</span>
+                            <span class="value">Pedro Costa</span>
+                        </div>
+                        <div class="price-info">
+                            <span class="label">Preço base</span>
+                            <span class="value">R$ 200</span>
+                        </div>
+                    </div>
+                    <div class="admin-stats">
+                        <div class="stat">
+                            <span class="label">Orçamentos</span>
+                            <span class="value">15</span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Realizadas</span>
+                            <span class="value">8</span>
+                        </div>
+                        <div class="stat">
+                            <span class="label">Avaliação</span>
+                            <span class="value">4.7 ⭐</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
