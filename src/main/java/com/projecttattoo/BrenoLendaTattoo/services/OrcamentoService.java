@@ -1,5 +1,9 @@
 package com.projecttattoo.BrenoLendaTattoo.services;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -8,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.projecttattoo.BrenoLendaTattoo.dto.orcamento.RequestOrcamentoDto;
 import com.projecttattoo.BrenoLendaTattoo.dto.orcamento.ResponseOrcamentoDto;
@@ -25,7 +30,9 @@ public class OrcamentoService implements OrcamentoInterfaceService {
 	public ResponseEntity<ResponseOrcamentoDto> register(RequestOrcamentoDto body) {
 		Orcamento newOrcamento = new Orcamento();
 
-		newOrcamento.setImagem(body.imagem());
+		String imagem = settarImagem(body.imagem());
+		
+		newOrcamento.setImagem(imagem);
 		newOrcamento.setAltura(body.altura());
 		newOrcamento.setLargura(body.largura());
 		newOrcamento.setDescricao(body.descricao());
@@ -42,8 +49,7 @@ public class OrcamentoService implements OrcamentoInterfaceService {
 		return ResponseEntity.ok(orcamentoDto);
 	}
 
-	@Override
-	public Double calculateValue(Orcamento orcamento) {
+	private Double calculateValue(Orcamento orcamento) {
 		final double valorPorCm = 10;
 		double altura = orcamento.getAltura(), largura = orcamento.getLargura();
 
@@ -54,6 +60,38 @@ public class OrcamentoService implements OrcamentoInterfaceService {
 		double valorFinal = altura * largura * valorPorCm * fatorLocalizacao;
 
 		return valorFinal;
+	}
+	
+	private String settarImagem(MultipartFile imagem) {
+	    try {
+	        if (imagem.isEmpty()) {
+	            throw new IOException("Arquivo vazio!");
+	        }
+
+	        // Define o diretório de upload
+	        Path uploadPath = Paths.get("src/main/resources/static/uploads/");
+
+	        // Cria o diretório se não existir
+	        if (!Files.exists(uploadPath)) {
+	            Files.createDirectories(uploadPath);
+	        }
+
+	        // Gera um nome único para o arquivo
+	        String nomeArquivo = System.currentTimeMillis() + "_" + imagem.getOriginalFilename();
+	        Path filePath = uploadPath.resolve(nomeArquivo);
+
+	        // Salva o arquivo no diretório
+	        Files.copy(imagem.getInputStream(), filePath);
+
+	        // Retorna o caminho relativo para o frontend
+	        return "/uploads/" + nomeArquivo;
+
+	    } catch (IOException e) {
+	        // Log do erro (opcional)
+	        e.printStackTrace();
+	        // Retorna uma mensagem de erro ou lança uma exceção
+	        throw new RuntimeException("Erro ao salvar a imagem: " + e.getMessage());
+	    }
 	}
 
 	@Override
@@ -96,7 +134,9 @@ public class OrcamentoService implements OrcamentoInterfaceService {
 		if(orcamentoOpt.isPresent()) {
 			Orcamento orcamento = orcamentoOpt.get();
 			
-			orcamento.setImagem(body.imagem());
+			String imagem = settarImagem(body.imagem());
+			
+			orcamento.setImagem(imagem);
 			orcamento.setAltura(body.altura());
 			orcamento.setLargura(body.largura());
 			orcamento.setDescricao(body.descricao());

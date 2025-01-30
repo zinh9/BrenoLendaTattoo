@@ -1,82 +1,76 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Novo Orçamento - Studio de Tatuagem</title>
     <link rel="stylesheet" href="../static/style2.css">
 </head>
+
 <body>
-    <div class="page-layout">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <nav class="sidebar-nav">
+    <div class="pagina-layout">
+        <aside class="barra-lateral">
+            <nav class="navegacao-barra-lateral">
                 <a href="historico.html">Meu Histórico</a>
-                <a href="meus_orcamentos.html" class="active">Orçamento</a>
+                <a href="meus_orcamentos.html">Orçamento</a>
                 <a href="#">Agendamentos</a>
                 <a href="#">Minha Conta</a>
                 <a href="#">Sair</a>
             </nav>
-            <button class="sidebar-close">×</button>
+            <button class="fechar-barra">×</button>
         </aside>
-        <div class="sidebar-overlay"></div>
+        <div class="sobrepor"></div>
 
-        <!-- Main Content -->
-        <div class="main-with-sidebar">
-            <!-- Header -->
+        <div class="barra-lateral-principal">
             <header>
-                <div class="container header-content">
-                    <div class="header-left">
-                        <button class="menu-button" aria-label="Toggle Menu">☰</button>
-                        <img src="..\static\Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="header-logo">
+                <div class="conteudo">
+                    <div class="cabecalho-esquerdo">
+                        <button class="botao-menu" aria-label="Toggle Menu">☰</button>
+                        <img src="..\static\Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
                     </div>
-                    <nav class="main-nav">
+                    <nav class="navegacao-principal">
                         <a href="#">Minha Conta</a>
                         <a href="#">Sair</a>
                     </nav>
                 </div>
             </header>
 
-            <!-- Main Content -->
             <main class="container">
-                <div class="page-header">
+                <div class="cabecalho-pagina">
                     <h1>Cadastro</h1>
                 </div>
 
-                <form class="quote-form" action="/orcamentos/novo-orcamento" method="post" enctype="multipart/form-data">
-                    <div class="form-section">    
-                        <h2>Informações para Cadastro</h2>                    
-                        <div class="form-group">
-                            <label for="size">Nome Completo: </label>
-                            <div class="size-inputs-data">
+                <form class="formulario" action="/orcamentos/novo-orcamento" method="post" enctype="multipart/form-data">
+                    <div class="secao-formulario">
+                        <h2>Informações para Cadastro</h2>
+                        <div class="formulario-dados">
+                            <label for="nome">Nome Completo:</label>
+                            <div>
                                 <input type="text" id="registration-data" name="nome" placeholder="Nome Completo" required>
                             </div>
-                            <br>
-                            <label for="size">Email: </label>
-                            <div class="size-inputs-data">
+                            <label for="email">Email:</label>
+                            <div>
                                 <input type="text" id="registration-data" name="email" placeholder="Email" required>
                             </div>
-                            <br>
-                            <label for="size">Telefone: </label>
-                            <div class="size-inputs-data">
+                            <label for="telefone">Telefone:</label>
+                            <div>
                                 <input type="text" id="registration-data" name="telefone" placeholder="(DDD) 1111-11111" required>
                             </div>
-                            <br>
-                            <label for="size">CPF: </label>
-                            <div class="size-inputs-data">
+                            <label for="cpf">CPF:</label>
+                            <div>
                                 <input type="text" id="registration-data" name="cpf" placeholder="CPF" required>
                             </div>
-                            <br>
-                            <label for="size">Senha:</label>
-                            <div class="size-inputs-data">
+                            <label for="senha">Senha:</label>
+                            <div>
                                 <input type="password" id="registration-data" name="senha" placeholder="Senha" required>
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-actions">
-                        <button type="button" class="button-secondary">Cancelar</button>
-                        <button type="submit" class="button-primary">Salvar</button>
+                    <div class="botoes-acao">
+                        <button type="button" class="botao-secundario">Cancelar</button>
+                        <button type="submit" class="botao-primario">Salvar</button>
                     </div>
                 </form>
             </main>
@@ -84,4 +78,5 @@
     </div>
     <script src="/src/main/resources/static/script.js"></script>
 </body>
+
 </html>

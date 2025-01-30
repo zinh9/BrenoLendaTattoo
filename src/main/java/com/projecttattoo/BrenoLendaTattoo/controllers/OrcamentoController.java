@@ -1,75 +1,91 @@
 package com.projecttattoo.BrenoLendaTattoo.controllers;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.projecttattoo.BrenoLendaTattoo.dto.orcamento.RequestOrcamentoDto;
 import com.projecttattoo.BrenoLendaTattoo.dto.orcamento.ResponseOrcamentoDto;
 import com.projecttattoo.BrenoLendaTattoo.models.Orcamento;
-import com.projecttattoo.BrenoLendaTattoo.repositories.OrcamentoRespository;
 import com.projecttattoo.BrenoLendaTattoo.services.OrcamentoService;
 
-@CrossOrigin(origins = "*")
 @Controller
 @RequestMapping("/orcamentos")
 public class OrcamentoController {
-	
-	@Autowired
-	private OrcamentoService orcamentoService;
-	
-	@PostMapping("/novo-orcamento")
-	public String register(@RequestBody RequestOrcamentoDto body, Model model) {
-		orcamentoService.register(body);
-		
-		model.addAttribute("message", "Orçamento salvo com sucesso!");
-		
-		return "meus_orcamentos";
-	}
-	
-	@GetMapping("/meus-orcamentos")
-	public String getAll(Model model) {
-		ResponseEntity<List<ResponseOrcamentoDto>> response = orcamentoService.getAll();		
-		List<ResponseOrcamentoDto> orcamentos = response.getBody();
-		model.addAttribute("orcamentos", orcamentos);
-		return "meus_orcamentos";
-	}
-	
-	@GetMapping("/{id}/editar")
-	public String getOrcamentoById(@PathVariable Integer id, Model model) {
-	    ResponseEntity<ResponseOrcamentoDto> response = orcamentoService.getById(id);
-	    if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-	        model.addAttribute("orcamento", response.getBody());
-	        return "novo_orcamento"; // Reutilizando o arquivo
-	    }
-	    return "redirect:/meus-orcamentos";
-	}
 
-	
-	@PostMapping("/admin/orcamento/{id}/status")
-	@PreAuthorize("hasRole('ADMIN')")
-	public String updateStatus(@PathVariable Integer id, @RequestParam String newStatus) {
-	    orcamentoService.updateStatus(id, newStatus);
-	    return "redirect:/admin/orcamentos";
-	}
-	
-	@PutMapping("/orcamentos/atualizar-orcamento/{id}")
-	public String updateOrcamento(@PathVariable Integer id, @RequestBody RequestOrcamentoDto body) {
-	    orcamentoService.update(id, body);
-	    return "meus_orcamentos";
-	}
+    @Autowired
+    private OrcamentoService orcamentoService;
 
+    @GetMapping("/novo")
+    public String exibirFormularioNovoOrcamento(Model model) {
+        model.addAttribute("orcamento", new RequestOrcamentoDto(null, null, null, null, null));
+        return "novo_orcamento";
+    }
+
+    @PostMapping("/novo")
+    public String criarOrcamento(
+        @RequestParam("imagem") MultipartFile imagem,
+        @RequestParam("largura") Double largura,
+        @RequestParam("altura") Double altura,
+        @RequestParam("parteCorpo") String parteCorpo,
+        @RequestParam("descricao") String descricao,
+        Model model
+    ) {
+        RequestOrcamentoDto requestOrcamentoDto = new RequestOrcamentoDto(imagem, largura, altura, parteCorpo, descricao);
+        ResponseEntity<ResponseOrcamentoDto> response = orcamentoService.register(requestOrcamentoDto);
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            model.addAttribute("message", "Orçamento salvo com sucesso!");
+        } else {
+            model.addAttribute("error", "Erro ao salvar o orçamento.");
+        }
+        return "redirect:/orcamentos/meus-orcamentos";
+    }
+
+    @GetMapping("/meus-orcamentos")
+    public String listarOrcamentos(Model model) {
+        ResponseEntity<List<ResponseOrcamentoDto>> response = orcamentoService.getAll();
+        if (response.getStatusCode().is2xxSuccessful()) {
+            model.addAttribute("orcamentos", response.getBody());
+        }
+        return "meus_orcamentos";
+    }
+
+    @GetMapping("/{id}/editar")
+    public String exibirFormularioEdicao(@PathVariable Integer id, Model model) {
+        ResponseEntity<ResponseOrcamentoDto> response = orcamentoService.getById(id);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            model.addAttribute("orcamento", response.getBody());
+            return "editar_orcamento";
+        }
+        return "redirect:/orcamentos/meus-orcamentos";
+    }
+
+    @PostMapping("/{id}/editar")
+    public String atualizarOrcamento(@PathVariable Integer id, @ModelAttribute RequestOrcamentoDto orcamento, Model model) {
+        ResponseEntity<ResponseOrcamentoDto> response = orcamentoService.update(id, orcamento);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            model.addAttribute("message", "Orçamento atualizado com sucesso!");
+        } else {
+            model.addAttribute("error", "Erro ao atualizar o orçamento.");
+        }
+        return "redirect:/orcamentos/meus-orcamentos";
+    }
+
+    @PostMapping("/{id}/status")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String atualizarStatus(@PathVariable Integer id, @RequestParam String newStatus, Model model) {
+        ResponseEntity<ResponseOrcamentoDto> response = orcamentoService.updateStatus(id, newStatus);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            model.addAttribute("message", "Status do orçamento atualizado com sucesso!");
+        } else {
+            model.addAttribute("error", "Erro ao atualizar o status do orçamento.");
+        }
+        return "redirect:/orcamentos/meus-orcamentos";
+    }
 }

@@ -1,5 +1,7 @@
 package com.projecttattoo.BrenoLendaTattoo.dto.orcamento;
 
-public record RequestOrcamentoDto(String imagem, Double largura, Double altura, String parteCorpo, String descricao) {
+import org.springframework.web.multipart.MultipartFile;
+
+public record RequestOrcamentoDto(MultipartFile imagem, Double largura, Double altura, String parteCorpo, String descricao) {
 	
 }

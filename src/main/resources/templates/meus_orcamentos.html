@@ -1,37 +1,34 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meus Orçamentos - Studio de Tatuagem</title>
-    <link rel="stylesheet" href="../static/style2.css">
+    <link rel="stylesheet" href="/style2.css">
 </head>
 <body>
-    <div class="page-layout">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <nav class="sidebar-nav">
+    <div class="pagina-layout">
+        <aside class="barra-lateral">
+            <nav class="navegacao-barra-lateral">
                 <a href="historico.html">Meu Histórico</a>
-                <a href="novo_orcamento.html" class="active">Orçamentos</a>
+                <a href="meus_orcamentos.html" class="ativo">Orçamento</a>
                 <a href="#">Agendamentos</a>
                 <a href="#">Minha Conta</a>
                 <a href="#">Sair</a>
             </nav>
-            <button class="sidebar-close">×</button>
+            <button class="fechar-barra">×</button>
         </aside>
-        <div class="sidebar-overlay"></div>
+        <div class="sobrepor"></div>
 
-        <!-- Main Content -->
-        <div class="main-with-sidebar">
-            <!-- Header -->
+        <div class="barra-lateral-principal">
             <header>
-                <div class="container header-content">
-                    <div class="header-left">
-                        <button class="menu-button" aria-label="Toggle Menu">☰</button>
-                        <img src="..\static\Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="header-logo">
+                <div class="conteudo">
+                    <div class="cabecalho-esquerdo">
+                        <button class="botao-menu" aria-label="Toggle Menu">☰</button>
+                        <img src="..\static\Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
                     </div>
-                    <nav class="main-nav">
-                        <a href="#">Conta</a>
+                    <nav class="navegacao-principal">
+                        <a href="#">Minha Conta</a>
                         <a href="#">Sair</a>
                     </nav>
                 </div>
@@ -39,29 +36,28 @@
 
             <!-- Main Content -->
             <main class="container">
-                <div class="page-header">
+                <div class="cabecalho-pagina">
                     <h1>Meus Orçamentos</h1>
                 </div>
 
-                <div class="budget-grid">
-                    <!-- Existing Budget Card -->
-                    <div th:each="orcamento : ${orcamentos}" class="budget-card">
+                <div class="orcamentos"> <!-- budget-grid -->
+                    <div th:each="orcamento : ${orcamentos}" class="orcamento"> <!-- budget-card -->
                         <img th:src="${orcamento.imagem}" alt="Orçamento">
-                        <div class="budget-details">
+                        <div class="orcamento-detalhes"> <!-- budget-details -->
                             <p><strong>Tamanho: </strong><span th:text="${orcamento.altura} + ' x ' + ${orcamento.largura}"></span></p>
                             <p><strong>Valor: </strong><span th:text="'R$' + ${orcamento.valor}"></span></p>
                             <p><strong>Descrição: </strong><span th:text="${orcamento.descricao}"></span>
                             <p><strong>Status: </strong><span th:text="${orcamento.statusOrcamento}"></span></p>
-                            <div class="history-item-actions">
-                                <button class="button-secondary">Cancelar</button>
-                                <button class="button-primary" onclick="location.href='atualizar-orcamento.html'">Atualizar</button>
+                            <div class="botoes-acao">
+                                <button class="botao-secundario">Cancelar</button>
+                                <button class="botao-primario" onclick="location.href='atualizar-orcamento.html'">Atualizar</button>
                             </div>
                         </div>
 
                     </div>
 
-                    <button class="add-budget-card" onclick="location.href='novo_orcamento.html'">
-                        <div class="plus-icon">+</div>
+                    <button class="novo-orcamento" onclick="location.href='novo_orcamento.html'"> <!-- add-budget-card -->
+                        <div class="icone-mais">+</div>
                         <span>Novo Orçamento</span>
                     </button>
                 </div>

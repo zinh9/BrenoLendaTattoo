@@ -10,7 +10,6 @@ import com.projecttattoo.BrenoLendaTattoo.models.Orcamento;
 
 public interface OrcamentoInterfaceService {
 	public ResponseEntity<ResponseOrcamentoDto> register(RequestOrcamentoDto body);
-	public Double calculateValue(Orcamento orcamento);
 	public ResponseEntity<ResponseOrcamentoDto> getById(Integer id);
 	public ResponseEntity<List<ResponseOrcamentoDto>> getAll();
 	public ResponseEntity<ResponseOrcamentoDto> update(Integer id, RequestOrcamentoDto body);

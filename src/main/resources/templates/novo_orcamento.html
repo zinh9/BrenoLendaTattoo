@@ -1,80 +1,76 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Novo Orçamento - Studio de Tatuagem</title>
-    <link rel="stylesheet" href="../static/style2.css">
+    <link rel="stylesheet" href="/style2.css">
 </head>
 <body>
-    <div class="page-layout">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <nav class="sidebar-nav">
+    <div class="pagina-layout">
+        <aside class="barra-lateral">
+            <nav class="navegacao-barra-lateral">
                 <a href="historico.html">Meu Histórico</a>
-                <a href="meus_orcamentos.html" class="active">Orçamento</a>
+                <a href="meus_orcamentos.html" class="ativo">Orçamento</a>
                 <a href="#">Agendamentos</a>
                 <a href="#">Minha Conta</a>
                 <a href="#">Sair</a>
             </nav>
-            <button class="sidebar-close">×</button>
+            <button class="fechar-barra">×</button>
         </aside>
-        <div class="sidebar-overlay"></div>
+        <div class="sobrepor"></div>
 
-        <!-- Main Content -->
-        <div class="main-with-sidebar">
-            <!-- Header -->
+        <div class="barra-lateral-principal">
             <header>
-                <div class="container header-content">
-                    <div class="header-left">
-                        <button class="menu-button" aria-label="Toggle Menu">☰</button>
-                        <img src="..\static\Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="header-logo">
+                <div class="conteudo">
+                    <div class="cabecalho-esquerdo">
+                        <button class="botao-menu" aria-label="Toggle Menu">☰</button>
+                        <img src="..\static\Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
                     </div>
-                    <nav class="main-nav">
+                    <nav class="navegacao-principal">
                         <a href="#">Minha Conta</a>
                         <a href="#">Sair</a>
                     </nav>
                 </div>
             </header>
 
-            <!-- Main Content -->
             <main class="container">
-                <div class="page-header">
+                <div class="cabecalho-pagina">
                     <h1>Novo Orçamento</h1>
                 </div>
 
-                <form class="quote-form" action="/orcamentos/novo-orcamento" method="post" enctype="multipart/form-data">
-                    <div class="form-section">
+                <form class="formulario" th:action="@{/orcamentos/novo}" method="post" enctype="multipart/form-data" th:object="${orcamento}">
+                    <div class="secao-formulario">
                         <h2>Referência Visual</h2>
-                        <div class="image-upload">
-                            <input type="file" id="tattoo-image" accept="image/*" class="file-input" name="imagem" required>
-                            <label for="tattoo-image" class="file-label">
-                                <div class="upload-icon">+</div>
+                        <div class="enviar-imagem">
+                            <input type="file" id="tattoo-image" accept="image/*" class="enviar-arquivo" th:field="*{imagem}" required>
+                            <label for="tattoo-image" class="nome-arquivo">
+                                <div class="icone-upload">+</div>
                                 <span>Adicionar foto de referência</span>
-                                <p class="upload-hint">Clique para selecionar</p>
+                                <p class="dica">Clique para selecionar</p>
                             </label>
-                            <div class="image-preview" style="display: none;">
+                            <div class="visualizacao" style="display: none;">
                                 <img src="" alt="Preview" id="image-preview">
-                                <button type="button" class="remove-image">×</button>
+                                <button type="button" class="botao-remover-imagem">×</button>
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-section">
+                    <div class="secao-formulario">
                         <h2>Detalhes da Tatuagem</h2>
                         
-                        <div class="form-group">
+                        <div class="formulario-dados">
                             <label for="size">Tamanho aproximado (em cm)</label>
-                            <div class="size-inputs">
-                                <input type="number" id="width" name="largura" placeholder="Largura" min="1" max="100" required>
+                            <div class="tamanhos">
+                                <input type="number" id="width" th:field="*{largura}" placeholder="Largura" min="1" max="100" required>
                                 <span>x</span>
-                                <input type="number" id="height" name="altura" placeholder="Altura" min="1" max="100" required>
+                                <input type="number" id="height" th:field="*{altura}" placeholder="Altura" min="1" max="100" required>
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="formulario-dados">
                             <label for="body-part">Parte do corpo</label>
-                            <select id="body-part" name="parteCorpo" required>
+                            <select id="body-part" th:field="*{parteCorpo}" required>
                                 <option value="">Selecione a parte do corpo</option>
                                 <option value="braco">Braço</option>
                                 <option value="antebraco">Antebraço</option>
@@ -88,15 +84,15 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
+                        <div class="formulario-dados">
                             <label for="description">Descrição e detalhes adicionais</label>
-                            <textarea id="description" name="descricao" rows="4" placeholder="Descreva os detalhes da sua tatuagem, incluindo cores, estilo e qualquer informação relevante..." required></textarea>
+                            <textarea id="description" th:field="*{descricao}" rows="4" placeholder="Descreva os detalhes da sua tatuagem, incluindo cores, estilo e qualquer informação relevante..." required></textarea>
                         </div>
                     </div>
 
-                    <div class="form-actions">
-                        <button type="button" class="button-secondary">Cancelar</button>
-                        <button type="submit" class="button-primary">Solicitar Orçamento</button>
+                    <div class="botoes-acao">
+                        <button type="button" class="botao-secundario">Cancelar</button>
+                        <button type="submit" class="botao-primario">Solicitar Orçamento</button>
                     </div>
                 </form>
             </main>

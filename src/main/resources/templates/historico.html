@@ -7,120 +7,58 @@
     <link rel="stylesheet" href="/src/main/resources/static/style2.css">
 </head>
 <body>
-    <div class="page-layout">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <nav class="sidebar-nav">
-                <a href="historico.html" class="active">Meu Histórico</a>
+    <div class="pagina-layout">
+        <aside class="barra-lateral">
+            <nav class="navegacao-barra-lateral">
+                <a href="historico.html" class="ativo">Meu Histórico</a>
                 <a href="meus_orcamentos.html">Orçamentos</a>
                 <a href="#">Agendamentos</a>
                 <a href="#">Minha Conta</a>
                 <a href="#">Sair</a>
             </nav>
-            <button class="sidebar-close">×</button>
+            <button class="fechar-barra">×</button>
         </aside>
-        <div class="sidebar-overlay"></div>
+        <div class="sobrepor"></div>
 
-        <!-- Main Content -->
-        <div class="main-with-sidebar">
-            <!-- Header -->
+        <div class="barra-lateral-principal">
             <header>
-                <div class="container header-content">
-                    <div class="header-left">
-                        <button class="menu-button" aria-label="Toggle Menu">☰</button>
-                        <img src="..\static\Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="header-logo">
+                <div class="conteudo">
+                    <div class="cabecalho-esquerdo">
+                        <button class="botao-menu" aria-label="Toggle Menu">☰</button>
+                        <img src="..\static\Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
                     </div>
-                    <nav class="main-nav">
+                    <nav class="navegacao-principal">
                         <a href="#">Conta</a>
                         <a href="#">Sair</a>
                     </nav>
                 </div>
             </header>
 
-            <!-- Main Content -->
             <main class="container">
-                <div class="page-header">
+                <div class="cabecalho-pagina">
                     <h1>Meu Histórico de Tatuagens</h1>
                 </div>
 
-                <div class="history-container">
-                    <!-- History Items -->
-                    <div class="history-items">
-                        <!-- Item 1 -->
-                        <div class="history-item">
-                            <div class="history-item-image">
+                <div class="historico-container"> 
+                    <div class="itens">
+                        <div class="item">
+                            <div class="item-imagem">
                                 <img src="https://images.unsplash.com/photo-1542856391-010fb87dcfed?w=300&h=300&fit=crop" alt="Tatuagem 1">
                             </div>
-                            <div class="history-item-content">
-                                <div class="history-item-header">
-                                    <h3>Tatuagem Tribal</h3>
-                                    <span class="status completed">Concluída</span>
+                            <div class="">
+                                <div class="item-informacoes"> 
+                                    <h3></h3>
+                                    <span class="status-completo"></span> 
                                 </div>
-                                <div class="history-item-details">
+                                <div class="item-detalhes">
                                     <p><strong>Data:</strong> 15/03/2024</p>
                                     <p><strong>Tamanho:</strong> 15x20 cm</p>
                                     <p><strong>Local:</strong> Braço direito</p>
                                     <p><strong>Valor:</strong> R$ 450,00</p>
                                 </div>
-                                <p class="history-item-description">
-                                    Tatuagem tribal em estilo maori, realizada em preto com sombreamento.
+                                <p class="item-descricao"> 
+                                    <span></span>
                                 </p>
-                                <div class="history-item-actions">
-                                    <button class="button-secondary">Ver Detalhes</button>
-                                    <button class="button-primary">Agendar Retoque</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Item 2 -->
-                        <div class="history-item">
-                            <div class="history-item-image">
-                                <img src="https://images.unsplash.com/photo-1562962230-16e4623d36e6?w=300&h=300&fit=crop" alt="Tatuagem 2">
-                            </div>
-                            <div class="history-item-content">
-                                <div class="history-item-header">
-                                    <h3>Floral Minimalista</h3>
-                                    <span class="status in-progress">Em andamento</span>
-                                </div>
-                                <div class="history-item-details">
-                                    <p><strong>Data:</strong> 10/03/2024</p>
-                                    <p><strong>Tamanho:</strong> 10x10 cm</p>
-                                    <p><strong>Local:</strong> Pulso</p>
-                                    <p><strong>Valor:</strong> R$ 280,00</p>
-                                </div>
-                                <p class="history-item-description">
-                                    Tatuagem floral em estilo minimalista, com traços finos e delicados.
-                                </p>
-                                <div class="history-item-actions">
-                                    <button class="button-secondary">Ver Detalhes</button>
-                                    <button class="button-primary">Confirmar Sessão</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Item 3 -->
-                        <div class="history-item">
-                            <div class="history-item-image">
-                                <img src="https://images.unsplash.com/photo-1611501275019-9b5cda994e8d?w=300&h=300&fit=crop" alt="Tatuagem 3">
-                            </div>
-                            <div class="history-item-content">
-                                <div class="history-item-header">
-                                    <h3>Mandala Geométrica</h3>
-                                    <span class="status quote">Orçamento</span>
-                                </div>
-                                <div class="history-item-details">
-                                    <p><strong>Data:</strong> 05/03/2024</p>
-                                    <p><strong>Tamanho:</strong> 20x20 cm</p>
-                                    <p><strong>Local:</strong> Costas</p>
-                                    <p><strong>Valor Estimado:</strong> R$ 600,00</p>
-                                </div>
-                                <p class="history-item-description">
-                                    Mandala com elementos geométricos em blackwork.
-                                </p>
-                                <div class="history-item-actions">
-                                    <button class="button-secondary">Editar Orçamento</button>
-                                    <button class="button-primary">Aprovar e Agendar</button>
-                                </div>
                             </div>
                         </div>
                     </div>
