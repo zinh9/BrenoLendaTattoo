@@ -6,4 +6,6 @@ import com.projecttattoo.BrenoLendaTattoo.models.Cliente;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
 	public Cliente findById(int id);
+	public Cliente findByEmail(String email);
+	public boolean existsByEmail(String email);
 }

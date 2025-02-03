@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breno Lendas - Studio de Tatuagem</title>
+    <link rel="stylesheet" href="/style2.css">
+</head>
+<body>
+    <div class="pagina-layout">
+        <aside class="barra-lateral">
+            <nav class="navegacao-barra-lateral">
+                <a href="catalogo.html">Catalogo</a>
+                <a href="historico.html">Meu Histórico</a>
+                <a href="meus_orcamentos.html" class="ativo">Orçamento</a>
+                <a href="#">Minha Conta</a>
+                <a href="#">Sair</a>
+            </nav>
+            <button class="fechar-barra">×</button>
+        </aside>
+        <div class="sobrepor"></div>
+
+        <div class="barra-lateral-principal">
+            <header>
+                <div class="conteudo">
+                    <div class="cabecalho-esquerdo">
+                        <button class="botao-menu" aria-label="Toggle Menu">☰</button>
+                        <img src="../static/Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
+                    </div>
+                    <nav class="navegacao-principal">
+                        <a href="#">Minha Conta</a>
+                        <a href="#">Sair</a>
+                    </nav>
+                </div>
+            </header>
+
+            <main class="container">
+                <div class="cabecalho-pagina">
+                    <h1>Meus Orçamentos</h1>
+                </div>
+
+                <div class="card-estilo"> 
+                    <div th:each="orcamento : ${orcamentos}" class="card">
+                        <img th:src="${orcamento.imagem}" alt="Orçamento">
+                        <div class="card-detalhes">
+                            <p><strong>Tamanho: </strong><span th:text="${orcamento.altura} + ' x ' + ${orcamento.largura}"></span></p>
+                            <p><strong>Valor: </strong><span th:text="'R$' + ${orcamento.valor}"></span></p>
+                            <p><strong>Descrição: </strong><span th:text="${orcamento.descricao}"></span>
+                            <p><strong>Status: </strong><span th:text="${orcamento.statusOrcamento}"></span></p>
+                            <div th:if="${orcamento.agendamento != null}">
+                                <p><strong>Data: </strong><span th:text="${orcamento.agendamento.dataAgendamento}"></span></p>
+                                <p><strong>Horário: </strong><span th:text="${orcamento.agendamento.horario}"></span></p>
+                            </div>
+                            <div class="botoes-acao">
+                                <form th:action="@{/orcamentos/{id}/deletar(id=${orcamento.id})}" method="post" style="display: inline;">
+                                    <button type="submit" class="botao-secundario">Cancelar</button>
+                                </form>
+                                <form th:action="@{/orcamentos/{id}/concluir(id=${orcamento.id})}" method="post" style="display: inline;">
+                                    <button type="submit" class="botao-primario">Concluir</button>
+                                </form>
+                                <form th:action="@{/agendamento/{id}/novo-agendamento(id=${orcamento.id})}" method="get" style="display: inline;">
+                                    <button type="submit" class="botao-primario">Agendar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a th:href="@{/orcamentos/novo_orcamento}" class="novo-orcamento">
+                        <div class="icone-mais">+</div>
+                        <span>Novo Orçamento</span>
+                    </a>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="/src/main/resources/static/script.js"></script>
+</body>
+</html>

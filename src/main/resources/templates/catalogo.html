@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Catálogo - Studio de Tatuagem</title>
+    <link rel="stylesheet" href="/style2.css">
+</head>
+<body>
+    <div class="pagina-layout">
+        <aside class="barra-lateral">
+            <nav class="navegacao-barra-lateral">
+                <a href="catalogo.html" class="ativo">Catalogo</a>
+                <a href="historico.html">Meu Histórico</a>
+                <a href="meus_orcamentos.html">Orçamento</a>
+                <a href="#">Agendamentos</a>
+                <a href="#">Minha Conta</a>
+                <a href="#">Sair</a>
+            </nav>
+            <button class="fechar-barra">×</button>
+        </aside>
+        <div class="sobrepor"></div>
+    
+        <div class="barra-lateral-principal">
+            <header>
+                <div class="conteudo">
+                    <div class="cabecalho-esquerdo">
+                        <button class="botao-menu" aria-label="Toggle Menu">☰</button>
+                        <img src="..\static\Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
+                    </div>
+                    <nav class="navegacao-principal">
+                        <a href="#">Minha Conta</a>
+                        <a href="#">Sair</a>
+                    </nav>
+                </div>
+            </header>
+
+            <main class="container">
+                <div class="cabecalho-pagina">
+                    <h1>Catálogo de Tattoo</h1>
+                </div>
+        
+                <div class="card-estilo">
+                    <div class="card" th:each="produto : ${produtos}">
+                        <img th:src="${produto.imagem}" alt="Imagem produto">
+                        <div class="card-detalhes">
+                            <h3 ><span th:text="${produto.nome}">Teste</span></h3>
+                            <br>
+                            <p class="style-description"><span th:text="${produto.descricao}"></span></p>
+                            <p><span th:text="${produto.altura} + ' x ' + ${produto.largura}"></span></p>
+                            <p>R$ <span th:text="${produto.valor}"></span></p>
+                            <div class="botoes-acao">
+                                <button class="botao-primario">Pedir Orçamento</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="/src/main/resources/static/js/script.js"></script>
+</body>
+</html>

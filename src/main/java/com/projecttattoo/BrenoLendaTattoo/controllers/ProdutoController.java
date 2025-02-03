@@ -32,11 +32,21 @@ public class ProdutoController {
 		return produtoService.register(body);
 	}
 	
-	@GetMapping
-	public String getAll(Model model){
+	@GetMapping("/admin-catalogo")
+	public String listarProdutosAdmin(Model model) {
 		ResponseEntity<List<ResponseProdutoDto>> response = produtoService.getAll();
-		List<ResponseProdutoDto> produtos = response.getBody();
-		model.addAttribute("produtos", produtos);
+		if(response.getStatusCode().is2xxSuccessful()) {
+			model.addAttribute("produtos", response.getBody());			
+		}
+		return "admin_catalogo";
+	}
+	
+	@GetMapping("/catalogo")
+	public String listarProdutos(Model model){
+		ResponseEntity<List<ResponseProdutoDto>> response = produtoService.getAll();
+		if(response.getStatusCode().is2xxSuccessful()) {
+			model.addAttribute("produtos", response.getBody());			
+		}
 		return "catalogo";
 	}
 	

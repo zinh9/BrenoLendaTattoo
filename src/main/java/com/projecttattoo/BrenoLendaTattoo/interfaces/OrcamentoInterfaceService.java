@@ -14,5 +14,5 @@ public interface OrcamentoInterfaceService {
 	public ResponseEntity<List<ResponseOrcamentoDto>> getAll();
 	public ResponseEntity<ResponseOrcamentoDto> update(Integer id, RequestOrcamentoDto body);
 	public ResponseEntity<ResponseOrcamentoDto> updateStatus(Integer id, String newStatus);
-	public ResponseEntity<String> update(Integer id);
+	public ResponseEntity<String> delete(Integer id);
 }

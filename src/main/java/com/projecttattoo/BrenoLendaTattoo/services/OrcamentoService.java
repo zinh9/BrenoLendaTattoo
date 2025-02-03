@@ -1,5 +1,16 @@
 package com.projecttattoo.BrenoLendaTattoo.services;
 
+import com.projecttattoo.BrenoLendaTattoo.dto.orcamento.RequestOrcamentoDto;
+import com.projecttattoo.BrenoLendaTattoo.dto.orcamento.ResponseOrcamentoDto;
+import com.projecttattoo.BrenoLendaTattoo.interfaces.OrcamentoInterfaceService;
+import com.projecttattoo.BrenoLendaTattoo.models.Orcamento;
+import com.projecttattoo.BrenoLendaTattoo.repositories.OrcamentoRespository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,182 +19,174 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.projecttattoo.BrenoLendaTattoo.dto.orcamento.RequestOrcamentoDto;
-import com.projecttattoo.BrenoLendaTattoo.dto.orcamento.ResponseOrcamentoDto;
-import com.projecttattoo.BrenoLendaTattoo.interfaces.OrcamentoInterfaceService;
-import com.projecttattoo.BrenoLendaTattoo.models.Orcamento;
-import com.projecttattoo.BrenoLendaTattoo.repositories.OrcamentoRespository;
-
 @Service
 public class OrcamentoService implements OrcamentoInterfaceService {
 
-	@Autowired
-	private OrcamentoRespository orcamentoRespository;
+    @Autowired
+    private OrcamentoRespository orcamentoRespository;
 
-	@Override
-	public ResponseEntity<ResponseOrcamentoDto> register(RequestOrcamentoDto body) {
-		Orcamento newOrcamento = new Orcamento();
+    @Override
+    public ResponseEntity<ResponseOrcamentoDto> register(RequestOrcamentoDto body) {
+        try {
+            Orcamento newOrcamento = new Orcamento();
 
-		String imagem = settarImagem(body.imagem());
-		
-		newOrcamento.setImagem(imagem);
-		newOrcamento.setAltura(body.altura());
-		newOrcamento.setLargura(body.largura());
-		newOrcamento.setDescricao(body.descricao());
-		newOrcamento.setParteCorpo(body.parteCorpo());
-		newOrcamento.setValor(calculateValue(newOrcamento));
-		newOrcamento.setStatusOrcamento("Em análise");
+            String imagem = settarImagem(body.imagem());
+            newOrcamento.setImagem(imagem);
+            newOrcamento.setAltura(body.altura());
+            newOrcamento.setLargura(body.largura());
+            newOrcamento.setDescricao(body.descricao());
+            newOrcamento.setParteCorpo(body.parteCorpo());
+            newOrcamento.setValor(calculateValue(newOrcamento));
+            newOrcamento.setStatusOrcamento("Em análise!");
+            newOrcamento.setAgendamento(null);
+            
+            orcamentoRespository.save(newOrcamento);
 
-		orcamentoRespository.save(newOrcamento);
+            ResponseOrcamentoDto orcamentoDto = new ResponseOrcamentoDto(
+                    newOrcamento.getId(), newOrcamento.getImagem(),
+                    newOrcamento.getAltura(), newOrcamento.getLargura(), newOrcamento.getDescricao(),
+                    newOrcamento.getParteCorpo(), newOrcamento.getValor(), newOrcamento.getStatusOrcamento(), newOrcamento.getAgendamento()
+            );
 
-		ResponseOrcamentoDto orcamentoDto = new ResponseOrcamentoDto(newOrcamento.getId(), newOrcamento.getImagem(),
-				newOrcamento.getAltura(), newOrcamento.getLargura(), newOrcamento.getDescricao(),
-				newOrcamento.getParteCorpo(), newOrcamento.getValor(), newOrcamento.getStatusOrcamento());
+            return ResponseEntity.status(HttpStatus.CREATED).body(orcamentoDto);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 
-		return ResponseEntity.ok(orcamentoDto);
-	}
+    private Double calculateValue(Orcamento orcamento) {
+        final double valorPorCm = 2;
+        double altura = orcamento.getAltura(), largura = orcamento.getLargura();
 
-	private Double calculateValue(Orcamento orcamento) {
-		final double valorPorCm = 10;
-		double altura = orcamento.getAltura(), largura = orcamento.getLargura();
+        Map<String, Double> fatorPorParteCorpo = Map.of(
+                "braco", 0.3, "costela", 0.25, "antebraco", 0.4, "perna", 0.55,
+                "costas", 0.5, "peito", 0.9, "pescoco", 0.1, "pe", 0.4, "outro", 0.5
+        );
 
-		Map<String, Double> fatorPorParteCorpo = Map.of("braco", 0.1, "costela", 0.15, "antebraco", 0.13, "perna", 0.15,
-				"costas", 0.2, "peito", 0.12, "pescoco", 0.22, "pe", 0.13, "outro", 0.14);
+        double fatorLocalizacao = fatorPorParteCorpo.getOrDefault(orcamento.getParteCorpo(), 1.0);
+        return altura * largura * valorPorCm * fatorLocalizacao;
+    }
 
-		double fatorLocalizacao = fatorPorParteCorpo.getOrDefault(orcamento.getParteCorpo(), 1.0);
-		double valorFinal = altura * largura * valorPorCm * fatorLocalizacao;
+    private String settarImagem(MultipartFile imagem) throws IOException {
+        if (imagem.isEmpty()) {
+            throw new IOException("Arquivo vazio!");
+        }
 
-		return valorFinal;
-	}
-	
-	private String settarImagem(MultipartFile imagem) {
-	    try {
-	        if (imagem.isEmpty()) {
-	            throw new IOException("Arquivo vazio!");
-	        }
+        Path uploadPath = Paths.get("src/main/resources/static/uploads/");
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
 
-	        // Define o diretório de upload
-	        Path uploadPath = Paths.get("src/main/resources/static/uploads/");
+        String nomeArquivo = System.currentTimeMillis() + "_" + imagem.getOriginalFilename();
+        Path filePath = uploadPath.resolve(nomeArquivo);
+        Files.copy(imagem.getInputStream(), filePath);
 
-	        // Cria o diretório se não existir
-	        if (!Files.exists(uploadPath)) {
-	            Files.createDirectories(uploadPath);
-	        }
+        return "/uploads/" + nomeArquivo;
+    }
 
-	        // Gera um nome único para o arquivo
-	        String nomeArquivo = System.currentTimeMillis() + "_" + imagem.getOriginalFilename();
-	        Path filePath = uploadPath.resolve(nomeArquivo);
+    @Override
+    public ResponseEntity<ResponseOrcamentoDto> getById(Integer id) {
+        Optional<Orcamento> orcamentoOpt = orcamentoRespository.findById(id);
 
-	        // Salva o arquivo no diretório
-	        Files.copy(imagem.getInputStream(), filePath);
+        if (orcamentoOpt.isPresent()) {
+            Orcamento orcamento = orcamentoOpt.get();
+            ResponseOrcamentoDto orcamentoDto = new ResponseOrcamentoDto(
+                    orcamento.getId(), orcamento.getImagem(),
+                    orcamento.getAltura(), orcamento.getLargura(), orcamento.getDescricao(),
+                    orcamento.getParteCorpo(), orcamento.getValor(), orcamento.getStatusOrcamento(), orcamento.getAgendamento()
+            );
 
-	        // Retorna o caminho relativo para o frontend
-	        return "/uploads/" + nomeArquivo;
+            return ResponseEntity.ok(orcamentoDto);
+        }
 
-	    } catch (IOException e) {
-	        // Log do erro (opcional)
-	        e.printStackTrace();
-	        // Retorna uma mensagem de erro ou lança uma exceção
-	        throw new RuntimeException("Erro ao salvar a imagem: " + e.getMessage());
-	    }
-	}
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
 
-	@Override
-	public ResponseEntity<ResponseOrcamentoDto> getById(Integer id) {
-		Optional<Orcamento> orcamentoOpt = orcamentoRespository.findById(id);
+    @Override
+    public ResponseEntity<List<ResponseOrcamentoDto>> getAll() {
+        List<Orcamento> orcamentos = orcamentoRespository.findAll();
 
-		if (orcamentoOpt.isPresent()) {
-			Orcamento orcamento = orcamentoOpt.get();
-			ResponseOrcamentoDto orcamentoDto = new ResponseOrcamentoDto(orcamento.getId(), orcamento.getImagem(),
-					orcamento.getAltura(), orcamento.getLargura(), orcamento.getDescricao(), orcamento.getParteCorpo(),
-					orcamento.getValor(), orcamento.getStatusOrcamento());
+        if (!orcamentos.isEmpty()) {
+            List<ResponseOrcamentoDto> orcamentosDto = orcamentos.stream()
+                    .map(orcamento -> new ResponseOrcamentoDto(
+                            orcamento.getId(), orcamento.getImagem(),
+                            orcamento.getAltura(), orcamento.getLargura(), orcamento.getDescricao(),
+                            orcamento.getParteCorpo(), orcamento.getValor(), orcamento.getStatusOrcamento(), orcamento.getAgendamento()
+                    ))
+                    .toList();
 
-			return ResponseEntity.ok(orcamentoDto);
-		}
+            return ResponseEntity.ok(orcamentosDto);
+        }
 
-		return ResponseEntity.badRequest().build();
-	}
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
 
-	@Override
-	public ResponseEntity<List<ResponseOrcamentoDto>> getAll() {
-		List<Orcamento> orcamentos = orcamentoRespository.findAll();
+    @Override
+    public ResponseEntity<ResponseOrcamentoDto> update(Integer id, RequestOrcamentoDto body) {
+        Optional<Orcamento> orcamentoOpt = orcamentoRespository.findById(id);
 
-		if (!orcamentos.isEmpty()) {
-			List<ResponseOrcamentoDto> orcamentosDto = orcamentos.stream()
-					.map(orcamento -> new ResponseOrcamentoDto(orcamento.getId(), orcamento.getImagem(),
-							orcamento.getAltura(), orcamento.getLargura(), orcamento.getDescricao(),
-							orcamento.getParteCorpo(), orcamento.getValor(), orcamento.getStatusOrcamento()))
-					.toList();
-			
-			return ResponseEntity.ok(orcamentosDto);
-		}
-		
-		return ResponseEntity.badRequest().build();
-	}
+        if (orcamentoOpt.isPresent()) {
+            Orcamento orcamento = orcamentoOpt.get();
 
-	@Override
-	public ResponseEntity<ResponseOrcamentoDto> update(Integer id, RequestOrcamentoDto body) {
-		Optional<Orcamento> orcamentoOpt = orcamentoRespository.findById(id);
-		
-		if(orcamentoOpt.isPresent()) {
-			Orcamento orcamento = orcamentoOpt.get();
-			
-			String imagem = settarImagem(body.imagem());
-			
-			orcamento.setImagem(imagem);
-			orcamento.setAltura(body.altura());
-			orcamento.setLargura(body.largura());
-			orcamento.setDescricao(body.descricao());
-			orcamento.setParteCorpo(body.parteCorpo());
-			orcamento.setValor(calculateValue(orcamento));
-			orcamento.setStatusOrcamento("Em análise");
-			
-			orcamentoRespository.save(orcamento);
-			
-			ResponseOrcamentoDto orcamentoDto = new ResponseOrcamentoDto(orcamento.getId(), orcamento.getImagem(),
-					orcamento.getAltura(), orcamento.getLargura(), orcamento.getDescricao(), orcamento.getParteCorpo(),
-					orcamento.getValor(), orcamento.getStatusOrcamento());
-			
-			return ResponseEntity.ok(orcamentoDto);
-		}
-		
-		return ResponseEntity.badRequest().build();
-	}
+            if (body.imagem() != null && !body.imagem().isEmpty()) {
+                try {
+                    String imagemPath = settarImagem(body.imagem());
+                    orcamento.setImagem(imagemPath);
+                } catch (IOException e) {
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+                }
+            }
 
-	@Override
-	public ResponseEntity<String> update(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+            orcamento.setAltura(body.altura());
+            orcamento.setLargura(body.largura());
+            orcamento.setDescricao(body.descricao());
+            orcamento.setParteCorpo(body.parteCorpo());
+            orcamento.setValor(calculateValue(orcamento));
+            orcamento.setStatusOrcamento("Em análise");
 
-	@Override
-	public ResponseEntity<ResponseOrcamentoDto> updateStatus(Integer id, String newStatus) {
-		Optional<Orcamento> orcamentoOpt = orcamentoRespository.findById(id);
-		
-		if(orcamentoOpt.isPresent()) {
-			Orcamento orcamento = orcamentoOpt.get();
-			
-			if(!List.of("Concluído", "Cancelado").contains(newStatus)) {
-				return ResponseEntity.badRequest().build();
-			}
-			
-			orcamento.setStatusOrcamento(newStatus);
-			orcamentoRespository.save(orcamento);
-			
-			ResponseOrcamentoDto orcamentoDto = new ResponseOrcamentoDto(orcamento.getId(), orcamento.getImagem(),
-	                orcamento.getAltura(), orcamento.getLargura(), orcamento.getDescricao(), orcamento.getParteCorpo(),
-	                orcamento.getValor(), orcamento.getStatusOrcamento());
-			
-			return ResponseEntity.ok(orcamentoDto);
-		}
-		
-		return ResponseEntity.notFound().build();
-	}
+            orcamentoRespository.save(orcamento);
 
+            ResponseOrcamentoDto orcamentoDto = new ResponseOrcamentoDto(
+                    orcamento.getId(), orcamento.getImagem(), orcamento.getAltura(),
+                    orcamento.getLargura(), orcamento.getDescricao(), orcamento.getParteCorpo(),
+                    orcamento.getValor(), orcamento.getStatusOrcamento(), orcamento.getAgendamento()
+            );
+
+            return ResponseEntity.ok(orcamentoDto);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
+
+    @Override
+    public ResponseEntity<String> delete(Integer id) {
+        if (orcamentoRespository.existsById(id)) {
+            orcamentoRespository.deleteById(id);
+            return ResponseEntity.ok("Orçamento deletado com sucesso!");
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Orçamento não encontrado.");
+    }
+
+    @Override
+    public ResponseEntity<ResponseOrcamentoDto> updateStatus(Integer id, String newStatus) {
+        Optional<Orcamento> orcamentoOpt = orcamentoRespository.findById(id);
+
+        if (orcamentoOpt.isPresent()) {
+            Orcamento orcamento = orcamentoOpt.get();
+
+            orcamento.setStatusOrcamento(newStatus);
+            orcamentoRespository.save(orcamento);
+
+            ResponseOrcamentoDto orcamentoDto = new ResponseOrcamentoDto(
+                    orcamento.getId(), orcamento.getImagem(),
+                    orcamento.getAltura(), orcamento.getLargura(), orcamento.getDescricao(),
+                    orcamento.getParteCorpo(), orcamento.getValor(), orcamento.getStatusOrcamento(), orcamento.getAgendamento()
+            );
+
+            return ResponseEntity.ok(orcamentoDto);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    }
 }

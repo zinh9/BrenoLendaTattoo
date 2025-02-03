@@ -14,6 +14,7 @@ import com.projecttattoo.BrenoLendaTattoo.dto.orcamento.ResponseOrcamentoDto;
 import com.projecttattoo.BrenoLendaTattoo.models.Orcamento;
 import com.projecttattoo.BrenoLendaTattoo.services.OrcamentoService;
 
+
 @Controller
 @RequestMapping("/orcamentos")
 public class OrcamentoController {
@@ -21,7 +22,7 @@ public class OrcamentoController {
     @Autowired
     private OrcamentoService orcamentoService;
 
-    @GetMapping("/novo")
+    @GetMapping("/novo_orcamento")
     public String exibirFormularioNovoOrcamento(Model model) {
         model.addAttribute("orcamento", new RequestOrcamentoDto(null, null, null, null, null));
         return "novo_orcamento";
@@ -55,20 +56,37 @@ public class OrcamentoController {
         }
         return "meus_orcamentos";
     }
+    
+    @GetMapping("/admin-orcamentos")
+    public String listarOrcamentosAdmin(Model model) {
+        ResponseEntity<List<ResponseOrcamentoDto>> response = orcamentoService.getAll();
+        if (response.getStatusCode().is2xxSuccessful()) {
+            model.addAttribute("orcamentos", response.getBody());
+        }
+        return "admin_orcamentos";
+    }
 
     @GetMapping("/{id}/editar")
     public String exibirFormularioEdicao(@PathVariable Integer id, Model model) {
         ResponseEntity<ResponseOrcamentoDto> response = orcamentoService.getById(id);
         if (response.getStatusCode().is2xxSuccessful()) {
             model.addAttribute("orcamento", response.getBody());
-            return "editar_orcamento";
+            return "atualizar_orcamento"; // Retorna o template de edição
         }
         return "redirect:/orcamentos/meus-orcamentos";
     }
 
-    @PostMapping("/{id}/editar")
-    public String atualizarOrcamento(@PathVariable Integer id, @ModelAttribute RequestOrcamentoDto orcamento, Model model) {
-        ResponseEntity<ResponseOrcamentoDto> response = orcamentoService.update(id, orcamento);
+    @PostMapping("/{id}/editar-orcamento")
+    public String atualizarOrcamento(
+        @PathVariable Integer id,
+        @ModelAttribute RequestOrcamentoDto requestOrcamentoDto, // Substitui @RequestParam por @ModelAttribute
+        Model model
+    ) {
+    	System.out.println(requestOrcamentoDto.altura());
+    	System.out.println(requestOrcamentoDto.largura());
+    	System.out.println(requestOrcamentoDto.imagem());
+        ResponseEntity<ResponseOrcamentoDto> response = orcamentoService.update(id, requestOrcamentoDto);
+
         if (response.getStatusCode().is2xxSuccessful()) {
             model.addAttribute("message", "Orçamento atualizado com sucesso!");
         } else {
@@ -76,16 +94,38 @@ public class OrcamentoController {
         }
         return "redirect:/orcamentos/meus-orcamentos";
     }
-
-    @PostMapping("/{id}/status")
-    @PreAuthorize("hasRole('ADMIN')")
-    public String atualizarStatus(@PathVariable Integer id, @RequestParam String newStatus, Model model) {
-        ResponseEntity<ResponseOrcamentoDto> response = orcamentoService.updateStatus(id, newStatus);
+    
+    // @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/{id}/concluir")
+    public String concluirOrcamento(@PathVariable Integer id, Model model) {
+        ResponseEntity<ResponseOrcamentoDto> response = orcamentoService.updateStatus(id, "Concluído");
         if (response.getStatusCode().is2xxSuccessful()) {
-            model.addAttribute("message", "Status do orçamento atualizado com sucesso!");
+            model.addAttribute("message", "Orçamento concluído com sucesso!");
         } else {
-            model.addAttribute("error", "Erro ao atualizar o status do orçamento.");
+            model.addAttribute("error", "Erro ao concluir o orçamento.");
         }
         return "redirect:/orcamentos/meus-orcamentos";
     }
+    
+    @PostMapping("/{id}/deletar")
+    public String deletarOrcamento(@PathVariable Integer id, Model model) {
+        ResponseEntity<String> response = orcamentoService.delete(id);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            model.addAttribute("message", "Orçamento cancelado com sucesso!");
+        } else {
+            model.addAttribute("error", "Erro ao cancelar o orçamento.");
+        }
+        return "redirect:/orcamentos/meus-orcamentos";
+    }
+    
+    @GetMapping("/historico")
+    public String historicoTattoo(Model model) {
+    	ResponseEntity<List<ResponseOrcamentoDto>> response = orcamentoService.getAll();
+    	if(response.getStatusCode().is2xxSuccessful()) {
+    		model.addAttribute("orcamentos", response.getBody());
+    	}
+    	return "historico";
+    }
+    
+    // Precisa mudar algumas coisas como: quando o admin agenda um orçamento, ele tem que ser redirecionado para a tela de "admin_orcamentos"
 }

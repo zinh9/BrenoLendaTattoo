@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atualizar Orçamento - Studio de Tatuagem</title>
-    <link rel="stylesheet" href="../static/style2.css">
+    <title>Breno Lendas - Studio de Tatuagem</title>
+    <link rel="stylesheet" href="/style2.css">
 </head>
+
 <body>
     <div class="pagina-layout">
         <aside class="barra-lateral">
             <nav class="navegacao-barra-lateral">
+                <a href="catalogo.html">Catalogo</a>
                 <a href="historico.html">Meu Histórico</a>
                 <a href="meus_orcamentos.html" class="ativo">Orçamento</a>
                 <a href="#">Agendamentos</a>
@@ -39,10 +42,8 @@
                     <h1>Atualizar Orçamento</h1>
                 </div>
 
-                <form class="formulario" action="/orcamentos/atualizar-orcamento/{id}" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="_method" value="put">
-                    <input type="hidden" name="id" th:value="${orcamento.id}">
-                    
+                <form class="formulario" th:action="@{/orcamentos/{id}/editar-orcamento(id=${orcamento.id})}" method="post"
+                    enctype="multipart/form-data" th:object="${orcamento}">
                     <div class="secao-formulario">
                         <h2>Referência Visual</h2>
                         <div class="enviar-imagem">
@@ -52,7 +53,7 @@
                                 <span>Adicionar foto de referência</span>
                                 <p class="dica">Clique para selecionar</p>
                             </label>
-                            <div class="visualizacao" style="display: none;">
+                            <div class="visualizacao" th:if="${orcamento.imagem}">
                                 <img th:src="${orcamento.imagem}" alt="Preview" id="image-preview">
                                 <button type="button" class="botao-remover-imagem">×</button>
                             </div>
@@ -61,20 +62,22 @@
 
                     <div class="secao-formulario">
                         <h2>Detalhes da Tatuagem</h2>
-                        
+
                         <div class="formulario-dados">
                             <label for="size">Tamanho aproximado (em cm)</label>
                             <div class="tamanhos">
-                                <input type="number" id="width" name="largura" placeholder="Largura" min="1" max="100" th:value="${orcamento.largura}" required>
+                                <input type="number" id="width" th:field="*{largura}" placeholder="Largura" min="1" max="100" required
+                                       th:value="${orcamento.largura}">
                                 <span>x</span>
-                                <input type="number" id="height" name="altura" placeholder="Altura" min="1" max="100" th:value="${orcamento.altura}" required>
+                                <input type="number" id="height" th:field="*{altura}" placeholder="Altura" min="1" max="100" required
+                                       th:value="${orcamento.altura}">
                             </div>
                         </div>
 
                         <div class="formulario-dados">
                             <label for="body-part">Parte do corpo</label>
                             <select id="body-part" name="parteCorpo" required>
-                                <option value="" th:selected="${orcamento.parteCorpo == null}">Selecione a parte do corpo</option>
+                                <option value="">Selecione a parte do corpo</option>
                                 <option value="braco" th:selected="${orcamento.parteCorpo == 'braco'}">Braço</option>
                                 <option value="antebraco" th:selected="${orcamento.parteCorpo == 'antebraco'}">Antebraço</option>
                                 <option value="perna" th:selected="${orcamento.parteCorpo == 'perna'}">Perna</option>
@@ -89,12 +92,13 @@
 
                         <div class="formulario-dados">
                             <label for="description">Descrição e detalhes adicionais</label>
-                            <textarea id="description" name="descricao" rows="4" placeholder="Descreva os detalhes da sua tatuagem..." th:text="${orcamento.descricao}" required></textarea>
+                            <textarea id="description" name="descricao" rows="4" placeholder="Descreva os detalhes da sua tatuagem..."
+                                      th:text="${orcamento.descricao}" required></textarea>
                         </div>
                     </div>
 
                     <div class="botoes-acao">
-                        <button type="button" class="botao-secundario">Cancelar</button>
+                        <button type="button" class="botao-secundario"><a th:href="@{/orcamentos/meus-orcamentos}">Cancelar</a></button>
                         <button type="submit" class="botao-primario">Atualizar Orçamento</button>
                     </div>
                 </form>
@@ -103,4 +107,5 @@
     </div>
     <script src="/src/main/resources/static/script.js"></script>
 </body>
+
 </html>

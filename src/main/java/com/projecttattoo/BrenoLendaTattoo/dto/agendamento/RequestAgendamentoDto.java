@@ -6,8 +6,9 @@ import java.time.LocalTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.projecttattoo.BrenoLendaTattoo.models.Cliente;
+import com.projecttattoo.BrenoLendaTattoo.models.Orcamento;
 import com.projecttattoo.BrenoLendaTattoo.models.Produto;
 
-public record RequestAgendamentoDto(Cliente cliente, Produto produto, @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataAgendamento, String status, LocalTime horario) {
+public record RequestAgendamentoDto(@DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate dataAgendamento, LocalTime horario, Integer id_orcamento) {
 
 }

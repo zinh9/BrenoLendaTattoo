@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.projecttattoo.BrenoLendaTattoo.dto.ResponseDto;
 import com.projecttattoo.BrenoLendaTattoo.dto.cliente.ClienteDto;
 import com.projecttattoo.BrenoLendaTattoo.dto.cliente.RequestRegisterDto;
-import com.projecttattoo.BrenoLendaTattoo.dto.cliente.UpdateClienteDto;
 import com.projecttattoo.BrenoLendaTattoo.services.ClienteService;
 
 @CrossOrigin(origins = "*")
@@ -44,7 +43,7 @@ public class ClienteController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<UpdateClienteDto> update(@PathVariable("id") Integer id, @RequestBody UpdateClienteDto body){
+	public ResponseEntity<RequestRegisterDto> update(@PathVariable("id") Integer id, @RequestBody RequestRegisterDto body){
 		return clienteService.update(id, body);
 	}
 	

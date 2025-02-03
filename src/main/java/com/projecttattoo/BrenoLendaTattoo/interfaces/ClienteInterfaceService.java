@@ -9,14 +9,13 @@ import com.projecttattoo.BrenoLendaTattoo.dto.ResponseConfirmedDto;
 import com.projecttattoo.BrenoLendaTattoo.dto.ResponseDto;
 import com.projecttattoo.BrenoLendaTattoo.dto.cliente.ClienteDto;
 import com.projecttattoo.BrenoLendaTattoo.dto.cliente.RequestRegisterDto;
-import com.projecttattoo.BrenoLendaTattoo.dto.cliente.UpdateClienteDto;
 import com.projecttattoo.BrenoLendaTattoo.models.Logins;
 
 public interface ClienteInterfaceService {
 	public ResponseEntity<ResponseDto> register(RequestRegisterDto body);
 	public ResponseEntity<String> login(LoginDto body);
 	public ResponseEntity<Integer> delete(Integer id);
-	public ResponseEntity<UpdateClienteDto> update(int id, UpdateClienteDto body);
+	public ResponseEntity<RequestRegisterDto> update(int id, RequestRegisterDto body);
 	public ResponseEntity<List<ClienteDto>> getAll();
 	public ResponseEntity<ClienteDto> getById(Integer id);
 	//public boolean validateCpf(String cpf);

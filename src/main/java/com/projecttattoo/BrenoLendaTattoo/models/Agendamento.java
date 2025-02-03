@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,20 +26,13 @@ public class Agendamento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @ManyToOne
-    @JoinColumn(name = "cliente_id", nullable = false)
-    private Cliente cliente;
-
-    @ManyToOne
-    @JoinColumn(name = "produto_id", nullable = false)
-    private Produto produto;
+    
+    @OneToOne
+    @JoinColumn(name = "id_orcamento")
+    private Orcamento orcamento;
 
     @Column(name = "data_agendamento", nullable = false)
     private LocalDate dataAgendamento;
-
-    @Column(name = "status")
-    private String status = "Pendente";
     
     @Column(name = "horario", nullable = false)
     private LocalTime horario;

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breno Lendas - Studio de Tatuagem</title>
+    <link rel="stylesheet" href="/style2.css">
+</head>
+<body>
+    <div class="pagina-layout">
+        <aside class="barra-lateral">
+            <nav class="navegacao-barra-lateral">
+                <a href="catalogo.html">Catalogo</a>
+                <a href="historico.html">Meu Histórico</a>
+                <a href="meus_orcamentos.html" class="ativo">Orçamento</a>
+                <a href="#">Minha Conta</a>
+                <a href="#">Sair</a>
+            </nav>
+            <button class="fechar-barra">×</button>
+        </aside>
+        <div class="sobrepor"></div>
+
+        <div class="barra-lateral-principal">
+            <header>
+                <div class="conteudo">
+                    <div class="cabecalho-esquerdo">
+                        <button class="botao-menu" aria-label="Toggle Menu">☰</button>
+                        <img src="..\static\Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
+                    </div>
+                    <nav class="navegacao-principal">
+                        <a href="#">Minha Conta</a>
+                        <a href="#">Sair</a>
+                    </nav>
+                </div>
+            </header>
+
+            <main class="container">
+                <div class="cabecalho-pagina">
+                    <h1>Novo Agendamento</h1>
+                </div>
+
+                <form class="formulario" th:action="@{/agendamento/{id}/novo(id=${orcamento.id})}" method="post" enctype="multipart/form-data" th:object="${agendamento}">
+                    <div class="secao-formulario">
+                        <h2>Marque uma Data e Horário</h2>
+                        <div class="formulario-dados">
+                            <label for="data-agendamento">Marcar Agendamento:</label>
+                            <div class="agendamento">
+                                <input type="date" id="data-agendamento" th:field="*{dataAgendamento}" placeholder="Agendamento" required>
+                            </div>
+                        </div>
+
+                        <div class="formulario-dados">
+                            <label for="horario">Horário:</label>
+                            <div class="agendamento">
+                                <input type="time" id="horario" placeholder="Horario" th:field="*{horario}" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="botoes-acao">
+                        <button type="button" class="botao-secundario"><a th:href="@{/orcamentos/admin-orcamentos}"></a></button>
+                        <button type="submit" class="botao-primario">Marcar</button>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </div>
+    <script src="/src/main/resources/static/script.js"></script>
+</body>
+</html>

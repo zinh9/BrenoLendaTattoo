@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Novo Orçamento - Studio de Tatuagem</title>
+    <title>Breno Lendas - Studio de Tatuagem</title>
     <link rel="stylesheet" href="/style2.css">
 </head>
 <body>
     <div class="pagina-layout">
         <aside class="barra-lateral">
             <nav class="navegacao-barra-lateral">
+                <a href="catalogo.html">Catalogo</a>
                 <a href="historico.html">Meu Histórico</a>
                 <a href="meus_orcamentos.html" class="ativo">Orçamento</a>
-                <a href="#">Agendamentos</a>
                 <a href="#">Minha Conta</a>
                 <a href="#">Sair</a>
             </nav>
@@ -72,15 +72,15 @@
                             <label for="body-part">Parte do corpo</label>
                             <select id="body-part" th:field="*{parteCorpo}" required>
                                 <option value="">Selecione a parte do corpo</option>
-                                <option value="braco">Braço</option>
-                                <option value="antebraco">Antebraço</option>
-                                <option value="perna">Perna</option>
-                                <option value="costas">Costas</option>
-                                <option value="peito">Peito</option>
-                                <option value="costela">Costela</option>
-                                <option value="pescoco">Pescoço</option>
-                                <option value="pe">Pé</option>
-                                <option value="outro">Outro</option>
+                                <option value="Braço">Braço</option>
+                                <option value="Antebraço">Antebraço</option>
+                                <option value="Perna">Perna</option>
+                                <option value="Costas">Costas</option>
+                                <option value="Peito">Peito</option>
+                                <option value="Costela">Costela</option>
+                                <option value="Pescoço">Pescoço</option>
+                                <option value="Pé">Pé</option>
+                                <option value="Outro">Outro</option>
                             </select>
                         </div>
 
@@ -91,7 +91,7 @@
                     </div>
 
                     <div class="botoes-acao">
-                        <button type="button" class="botao-secundario">Cancelar</button>
+                        <button type="button" class="botao-secundario"><a th:href="@{/orcamentos/meus-orcamentos}">Cancelar</a></button>
                         <button type="submit" class="botao-primario">Solicitar Orçamento</button>
                     </div>
                 </form>

@@ -1,12 +1,17 @@
 package com.projecttattoo.BrenoLendaTattoo.models;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,11 +28,8 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "nome", length = 30, nullable = false)
-    private String nome;
-
-    @Column(name = "sobrenome", length = 80, nullable = false)
-    private String sobrenome;
+    @Column(name = "nome_completo", nullable = false)
+    private String nomeCompleto;
 
     @Column(name = "email", length = 255, nullable = false, unique = true)
     private String email;
@@ -41,6 +43,6 @@ public class Cliente {
     @Column(name = "CPF", length = 20, nullable = false, unique = true)
     private String cpf;
     
-    @Column(name = "data_nascimento", nullable = false)
-    private LocalDate dataNascimento;
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Orcamento> orcamentos = new ArrayList<>();
 }

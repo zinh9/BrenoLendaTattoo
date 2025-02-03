@@ -1,10 +1,13 @@
 package com.projecttattoo.BrenoLendaTattoo.controllers;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +16,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.projecttattoo.BrenoLendaTattoo.dto.agendamento.RequestAgendamentoDto;
-import com.projecttattoo.BrenoLendaTattoo.dto.agendamento.RequestUpdateAgendamentoDto;
 import com.projecttattoo.BrenoLendaTattoo.dto.agendamento.ResponseAgendamentoDto;
+import com.projecttattoo.BrenoLendaTattoo.models.Orcamento;
+import com.projecttattoo.BrenoLendaTattoo.repositories.OrcamentoRespository;
 import com.projecttattoo.BrenoLendaTattoo.services.AgendamentoService;
 
 @CrossOrigin(origins = "*")
@@ -27,30 +32,34 @@ public class AgendamentoController {
 	@Autowired
 	private AgendamentoService agendamentoService;
 	
-	@GetMapping
-	public ResponseEntity<List<ResponseAgendamentoDto>> getAll(){
-		return agendamentoService.getAll();
+	@Autowired
+	private OrcamentoRespository orcamentoRespository;
+	
+	@GetMapping("/{id}/novo-agendamento")
+	public String agendarOcamento(@PathVariable Integer id, Model model) {
+		Orcamento orcamento = orcamentoRespository.getById(id);
+		
+		model.addAttribute("orcamento", orcamento);
+		model.addAttribute("agendamento", new ResponseAgendamentoDto(null, null, null, null));
+		return "admin_agendamento";
 	}
 	
-	@GetMapping("/{id}")
-	public ResponseEntity<ResponseAgendamentoDto> getById(@PathVariable("id") Integer id){
-		return agendamentoService.getById(id);
-	}
-	
-	@PostMapping("/agendar")
-	public ResponseEntity<ResponseAgendamentoDto> register(@RequestBody RequestAgendamentoDto body){
-		body.dataAgendamento();
-		body.horario();
-		return agendamentoService.register(body);
-	}
-	
-	@PutMapping("/{id}")
-	public ResponseEntity<ResponseAgendamentoDto> update(@PathVariable("id") Integer id, @RequestBody RequestUpdateAgendamentoDto body){
-		return agendamentoService.update(id, body);
-	}
-	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<String> delete(@PathVariable("id") Integer id){
-		return agendamentoService.delete(id);
+	@PostMapping("/{id}/novo")
+	public String register(
+			@RequestParam LocalDate dataAgendamento,
+			@RequestParam LocalTime horario,
+			@PathVariable Integer id,
+			Model model
+			){
+		RequestAgendamentoDto request = new RequestAgendamentoDto(dataAgendamento, horario, id);
+		ResponseEntity<ResponseAgendamentoDto> response = agendamentoService.register(request);
+		
+		if (response.getStatusCode().is2xxSuccessful()) {
+            model.addAttribute("message", "Agendamento salvo com sucesso!");
+        } else {
+            model.addAttribute("error", "Erro ao salvar o agendamento.");
+        }
+		
+        return "redirect:/orcamentos/admin-orcamentos";
 	}
 }
