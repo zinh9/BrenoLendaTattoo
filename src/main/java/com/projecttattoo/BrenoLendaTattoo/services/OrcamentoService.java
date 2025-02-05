@@ -4,7 +4,10 @@ import com.projecttattoo.BrenoLendaTattoo.dto.orcamento.RequestOrcamentoDto;
 import com.projecttattoo.BrenoLendaTattoo.dto.orcamento.ResponseOrcamentoDto;
 import com.projecttattoo.BrenoLendaTattoo.interfaces.OrcamentoInterfaceService;
 import com.projecttattoo.BrenoLendaTattoo.models.Orcamento;
+import com.projecttattoo.BrenoLendaTattoo.models.Produto;
 import com.projecttattoo.BrenoLendaTattoo.repositories.OrcamentoRespository;
+import com.projecttattoo.BrenoLendaTattoo.repositories.ProdutoRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,9 @@ import java.util.Optional;
 @Service
 public class OrcamentoService implements OrcamentoInterfaceService {
 
+	@Autowired
+	private ProdutoRepository produtoRepository;
+	
     @Autowired
     private OrcamentoRespository orcamentoRespository;
 
@@ -189,4 +195,42 @@ public class OrcamentoService implements OrcamentoInterfaceService {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
+
+	@Override
+	public ResponseEntity<ResponseOrcamentoDto> regiterByProduto(RequestOrcamentoDto body, Integer produtoId) {
+		try {
+	        // Busca o produto pelo ID
+	        Optional<Produto> produtoOpt = produtoRepository.findById(produtoId);
+	        if (produtoOpt.isEmpty()) {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	        }
+
+	        Produto produto = produtoOpt.get();
+	        Orcamento newOrcamento = new Orcamento();
+
+	        // Define os valores do orçamento com base no produto
+	        newOrcamento.setImagem(produto.getImagem());
+	        newOrcamento.setAltura(produto.getAltura());
+	        newOrcamento.setLargura(produto.getLargura());
+	        newOrcamento.setDescricao(produto.getDescricao());
+	        newOrcamento.setValor(produto.getValor());
+
+	        // Define os valores específicos do orçamento
+	        newOrcamento.setParteCorpo(body.parteCorpo());
+	        newOrcamento.setStatusOrcamento("Em análise!");
+	        newOrcamento.setAgendamento(null);
+
+	        orcamentoRespository.save(newOrcamento);
+
+	        ResponseOrcamentoDto orcamentoDto = new ResponseOrcamentoDto(
+	                newOrcamento.getId(), newOrcamento.getImagem(),
+	                newOrcamento.getAltura(), newOrcamento.getLargura(), newOrcamento.getDescricao(),
+	                newOrcamento.getParteCorpo(), newOrcamento.getValor(), newOrcamento.getStatusOrcamento(), newOrcamento.getAgendamento()
+	        );
+
+	        return ResponseEntity.status(HttpStatus.CREATED).body(orcamentoDto);
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+	    }
+	}
 }

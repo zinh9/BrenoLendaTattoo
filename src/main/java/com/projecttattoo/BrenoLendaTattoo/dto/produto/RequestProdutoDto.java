@@ -1,5 +1,7 @@
 package com.projecttattoo.BrenoLendaTattoo.dto.produto;
 
-public record RequestProdutoDto(String imagem, String nome, Double largura, Double altura, String descricao, Double valor) {
+import org.springframework.web.multipart.MultipartFile;
+
+public record RequestProdutoDto(MultipartFile imagem, String nome, Double largura, Double altura, String descricao, Double valor) {
 
 }

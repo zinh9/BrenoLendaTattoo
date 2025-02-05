@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.projecttattoo.BrenoLendaTattoo.dto.produto.RequestProdutoDto;
 import com.projecttattoo.BrenoLendaTattoo.dto.produto.ResponseProdutoDto;
@@ -27,9 +29,32 @@ public class ProdutoController {
 	@Autowired
 	private ProdutoService produtoService;
 	
+	@GetMapping("/admin-novo-produto")
+	public String addNovoProduto(Model model) {
+		model.addAttribute("produto", new ResponseProdutoDto(null, null, null, null, null, null, null));
+		return "admin_novo_produto";
+	}
+	
 	@PostMapping("/register")
-	public ResponseEntity<ResponseProdutoDto> register(@RequestBody RequestProdutoDto body){
-		return produtoService.register(body);
+	public String register(
+			@RequestParam("imagem") MultipartFile imagem,
+			@RequestParam("nome") String nome,
+	        @RequestParam("largura") Double largura,
+	        @RequestParam("altura") Double altura,
+	        @RequestParam("descricao") String descricao,
+	        @RequestParam("valor") Double valor,
+	        Model model
+			){
+		System.out.println(largura);
+		RequestProdutoDto requestProdutoDto = new RequestProdutoDto(imagem, nome, largura, altura, descricao, valor);
+		ResponseEntity<ResponseProdutoDto> response = produtoService.register(requestProdutoDto);
+		
+		if (response.getStatusCode().is2xxSuccessful()) {
+            model.addAttribute("message", "Produto salvo com sucesso!");
+        } else {
+            model.addAttribute("error", "Erro ao salvar o produto.");
+        }
+        return "redirect:/produto/admin-catalogo";
 	}
 	
 	@GetMapping("/admin-catalogo")
@@ -60,8 +85,13 @@ public class ProdutoController {
 		return produtoService.update(id, body);
 	}
 	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<String> delete(@PathVariable("id") Integer id){
-		return produtoService.delete(id);
+	@PostMapping("/{id}/deletar")
+	public String delete(@PathVariable("id") Integer id, Model model){
+		ResponseEntity<String> response = produtoService.delete(id);
+		if(response.getStatusCode().is2xxSuccessful()) {
+			model.addAttribute("produto", "Produto excluido com sucesso!");
+		} 
+		
+		return "redirect:/produto/admin-catalogo";
 	}
 }

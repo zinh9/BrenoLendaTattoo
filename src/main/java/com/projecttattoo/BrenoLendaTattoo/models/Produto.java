@@ -27,7 +27,7 @@ public class Produto {
 	@Column(nullable = false, name = "nome")
 	private String nome;
 	
-	@Column(nullable = false, name = "lagura")
+	@Column(nullable = false, name = "largura")
 	private Double largura;
 	
 	@Column(nullable = false, name = "altura")

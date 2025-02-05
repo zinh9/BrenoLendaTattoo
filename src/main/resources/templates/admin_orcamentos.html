@@ -10,8 +10,9 @@
     <div class="pagina-layout">
         <aside class="barra-lateral">
             <nav class="navegacao-barra-lateral">
-                <a href="catalogo.html">Catalogo</a>
-                <a href="historico.html">Meu Histórico</a>
+                <form th:action="@{/produto/admin-catalogo}" method="get">
+                    <a th:href="@{/produto/admin-catalogo}">Catalogo</a>
+                </form>
                 <a href="meus_orcamentos.html" class="ativo">Orçamento</a>
                 <a href="#">Minha Conta</a>
                 <a href="#">Sair</a>
@@ -25,7 +26,7 @@
                 <div class="conteudo">
                     <div class="cabecalho-esquerdo">
                         <button class="botao-menu" aria-label="Toggle Menu">☰</button>
-                        <img src="../static/Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
+                        <img src="/Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
                     </div>
                     <nav class="navegacao-principal">
                         <a href="#">Minha Conta</a>
@@ -36,7 +37,7 @@
 
             <main class="container">
                 <div class="cabecalho-pagina">
-                    <h1>Meus Orçamentos</h1>
+                    <h1>Orçamentos</h1>
                 </div>
 
                 <div class="card-estilo"> 

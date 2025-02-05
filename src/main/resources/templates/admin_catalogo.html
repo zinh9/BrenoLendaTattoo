@@ -11,9 +11,9 @@
         <aside class="barra-lateral">
             <nav class="navegacao-barra-lateral">
                 <a href="catalogo.html" class="ativo">Catalogo</a>
-                <a href="historico.html">Meu Histórico</a>
-                <a href="meus_orcamentos.html">Orçamento</a>
-                <a href="#">Agendamentos</a>
+                <form th:action="@{/orcamentos/admin-orcamentos}" method="get" style="display: inline;">
+                    <a th:href="@{/orcamentos/admin-orcamentos}">Orçamento</a>
+                </form>
                 <a href="#">Minha Conta</a>
                 <a href="#">Sair</a>
             </nav>
@@ -26,7 +26,7 @@
                 <div class="conteudo">
                     <div class="cabecalho-esquerdo">
                         <button class="botao-menu" aria-label="Toggle Menu">☰</button>
-                        <img src="..\static\Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
+                        <img src="/Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
                     </div>
                     <nav class="navegacao-principal">
                         <a href="#">Minha Conta</a>
@@ -44,19 +44,21 @@
                     <div class="card" th:each="produto : ${produtos}">
                         <img th:src="${produto.imagem}" alt="Imagem produto">
                         <div class="card-detalhes">
-                            <h3 ><span th:text="${produto.nome}">Teste</span></h3>
+                            <h3 ><span th:text="${produto.nome}"></span></h3>
                             <br>
                             <p class="style-description"><span th:text="${produto.descricao}"></span></p>
                             <p><span th:text="${produto.altura} + ' x ' + ${produto.largura}"></span></p>
                             <p>R$ <span th:text="${produto.valor}"></span></p>
                             <div class="botoes-acao">
-                                <button class="botao-secundario">Excluir</button>
+                                <form th:action="@{/produto/{id}/deletar(id=${produto.id})}" method="post" style="display: inline;">
+                                    <button class="botao-secundario">Excluir</button>
+                                </form>
                                 <button class="botao-primario">Atualizar</button>
                             </div>
                         </div>
                     </div>
 
-                    <a th:href="@{/orcamentos/novo_orcamento}" class="novo-orcamento">
+                    <a th:href="@{/produto/admin-novo-produto}" class="novo-orcamento">
                         <div class="icone-mais">+</div>
                         <span>Novo Orçamento</span>
                     </a>

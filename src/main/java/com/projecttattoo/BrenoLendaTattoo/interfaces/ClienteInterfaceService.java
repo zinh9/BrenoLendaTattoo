@@ -1,6 +1,7 @@
 package com.projecttattoo.BrenoLendaTattoo.interfaces;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 
@@ -13,7 +14,7 @@ import com.projecttattoo.BrenoLendaTattoo.models.Logins;
 
 public interface ClienteInterfaceService {
 	public ResponseEntity<ResponseDto> register(RequestRegisterDto body);
-	public ResponseEntity<String> login(LoginDto body);
+	public ResponseEntity<Map<String, String>> login(LoginDto body);
 	public ResponseEntity<Integer> delete(Integer id);
 	public ResponseEntity<RequestRegisterDto> update(int id, RequestRegisterDto body);
 	public ResponseEntity<List<ClienteDto>> getAll();

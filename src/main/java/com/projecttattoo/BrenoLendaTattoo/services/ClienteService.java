@@ -20,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -72,28 +73,32 @@ public class ClienteService implements ClienteInterfaceService {
     }
 
     @Override
-    public ResponseEntity<String> login(LoginDto body) {
-        // Verifica se o cliente existe
-        Logins cliente = loginsRepository.findByEmail(body.email());
+    public ResponseEntity<Map<String, String>> login(LoginDto loginDto) {
+        Logins cliente = loginsRepository.findByEmail(loginDto.email());
+        
         if (cliente == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cliente não encontrado");
+        	System.out.println("cliente não encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Usuário não encontrado"));
         }
 
-        // Verifica se a conta está verificada
+        if (!encoder.matches(loginDto.senha(), cliente.getSenha())) {
+        	System.out.println("senha incorreta");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Senha incorreta"));
+        }
+
         if (!cliente.isVerifiedAccount()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Conta não verificada");
+        	System.out.println("cliente não verificado");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Conta não verificada"));
         }
 
-        // Autentica o cliente
-        var clienteAuthenticationToken = new UsernamePasswordAuthenticationToken(body.email(), body.senha());
-        authenticationManager.authenticate(clienteAuthenticationToken);
+        // Gera o token JWT
+        String token = authenticatedService.setToken(cliente);
 
-        // Gera o token
-        String token = authenticatedService.getToken(body);
-        cliente.setToken(token);
-        loginsRepository.save(cliente);
-
-        return ResponseEntity.ok(token);
+        // Retorna o token e a role
+        return ResponseEntity.ok(Map.of(
+            "token", token,
+            "role", cliente.getUserRole().toString()
+        ));
     }
 
     @Override

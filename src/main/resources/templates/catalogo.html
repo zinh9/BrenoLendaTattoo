@@ -26,7 +26,7 @@
                 <div class="conteudo">
                     <div class="cabecalho-esquerdo">
                         <button class="botao-menu" aria-label="Toggle Menu">☰</button>
-                        <img src="..\static\Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
+                        <img src="/Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
                     </div>
                     <nav class="navegacao-principal">
                         <a href="#">Minha Conta</a>
@@ -50,7 +50,9 @@
                             <p><span th:text="${produto.altura} + ' x ' + ${produto.largura}"></span></p>
                             <p>R$ <span th:text="${produto.valor}"></span></p>
                             <div class="botoes-acao">
-                                <button class="botao-primario">Pedir Orçamento</button>
+                                <form th:action="@{/orcamentos/novo-orcamento}" method="get">
+                                    <button class="botao-primario">Pedir Orçamento</button>
+                                </form>
                             </div>
                         </div>
                     </div>

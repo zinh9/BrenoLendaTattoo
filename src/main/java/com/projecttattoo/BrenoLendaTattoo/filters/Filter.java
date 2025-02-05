@@ -44,10 +44,9 @@ public class Filter extends OncePerRequestFilter{
 	public String extraiTokenHeader(HttpServletRequest request) {
 		var header = request.getHeader("Authorization");
 		
-		if(header == null) {
-			return null;
-		}
-		
-		return header.replace("Bearer", "").trim();
+		if (header != null && header.startsWith("Bearer ")) {
+            return header.replace("Bearer ", "");
+        }
+        return null;
 	}
 }

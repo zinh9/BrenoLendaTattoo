@@ -25,7 +25,7 @@
                 <div class="conteudo">
                     <div class="cabecalho-esquerdo">
                         <button class="botao-menu" aria-label="Toggle Menu">☰</button>
-                        <img src="..\static\Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
+                        <img src="/Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
                     </div>
                     <nav class="navegacao-principal">
                         <a href="#">Minha Conta</a>
@@ -40,6 +40,9 @@
                 </div>
 
                 <form class="formulario" th:action="@{/orcamentos/novo}" method="post" enctype="multipart/form-data" th:object="${orcamento}">
+                    <!-- Campo oculto para o ID do produto (se houver) -->
+                    <input type="hidden" th:if="${produto != null}" th:field="*{produtoId}" th:value="${produto.id}" />
+                
                     <div class="secao-formulario">
                         <h2>Referência Visual</h2>
                         <div class="enviar-imagem">
@@ -55,19 +58,21 @@
                             </div>
                         </div>
                     </div>
-
+                
                     <div class="secao-formulario">
                         <h2>Detalhes da Tatuagem</h2>
                         
                         <div class="formulario-dados">
                             <label for="size">Tamanho aproximado (em cm)</label>
                             <div class="tamanhos">
-                                <input type="number" id="width" th:field="*{largura}" placeholder="Largura" min="1" max="100" required>
+                                <input type="number" id="width" th:field="*{largura}" placeholder="Largura" min="1" max="100" required
+                                       th:value="${produto != null} ? ${produto.largura} : ''">
                                 <span>x</span>
-                                <input type="number" id="height" th:field="*{altura}" placeholder="Altura" min="1" max="100" required>
+                                <input type="number" id="height" th:field="*{altura}" placeholder="Altura" min="1" max="100" required
+                                       th:value="${produto != null} ? ${produto.altura} : ''">
                             </div>
                         </div>
-
+                
                         <div class="formulario-dados">
                             <label for="body-part">Parte do corpo</label>
                             <select id="body-part" th:field="*{parteCorpo}" required>
@@ -83,13 +88,14 @@
                                 <option value="Outro">Outro</option>
                             </select>
                         </div>
-
+                
                         <div class="formulario-dados">
                             <label for="description">Descrição e detalhes adicionais</label>
-                            <textarea id="description" th:field="*{descricao}" rows="4" placeholder="Descreva os detalhes da sua tatuagem, incluindo cores, estilo e qualquer informação relevante..." required></textarea>
+                            <textarea id="description" th:field="*{descricao}" rows="4" placeholder="Descreva os detalhes da sua tatuagem, incluindo cores, estilo e qualquer informação relevante..." required
+                                      th:text="${produto != null} ? ${produto.descricao} : ''"></textarea>
                         </div>
                     </div>
-
+                
                     <div class="botoes-acao">
                         <button type="button" class="botao-secundario"><a th:href="@{/orcamentos/meus-orcamentos}">Cancelar</a></button>
                         <button type="submit" class="botao-primario">Solicitar Orçamento</button>

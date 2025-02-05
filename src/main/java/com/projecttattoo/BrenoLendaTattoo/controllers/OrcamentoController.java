@@ -1,6 +1,8 @@
 package com.projecttattoo.BrenoLendaTattoo.controllers;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,22 +14,50 @@ import org.springframework.web.multipart.MultipartFile;
 import com.projecttattoo.BrenoLendaTattoo.dto.orcamento.RequestOrcamentoDto;
 import com.projecttattoo.BrenoLendaTattoo.dto.orcamento.ResponseOrcamentoDto;
 import com.projecttattoo.BrenoLendaTattoo.models.Orcamento;
+import com.projecttattoo.BrenoLendaTattoo.models.Produto;
+import com.projecttattoo.BrenoLendaTattoo.repositories.ProdutoRepository;
 import com.projecttattoo.BrenoLendaTattoo.services.OrcamentoService;
 
 
+@CrossOrigin(origins = "*")
 @Controller
 @RequestMapping("/orcamentos")
 public class OrcamentoController {
 
     @Autowired
+    private ProdutoRepository produtoRepository;
+
+    @Autowired
     private OrcamentoService orcamentoService;
 
-    @GetMapping("/novo_orcamento")
-    public String exibirFormularioNovoOrcamento(Model model) {
-        model.addAttribute("orcamento", new RequestOrcamentoDto(null, null, null, null, null));
-        return "novo_orcamento";
+    // Endpoint para exibir o formulário de orçamento (com ou sem produto associado)
+    @GetMapping("/novo-orcamento")
+    public String exibirFormularioNovoOrcamento(
+        @RequestParam(value = "produtoId", required = false) Integer produtoId,
+        Model model
+    ) {
+        Orcamento orcamento = new Orcamento();
+
+        if (produtoId != null) {
+            // Busca o produto pelo ID
+            Optional<Produto> produtoOpt = produtoRepository.findById(produtoId);
+            if (produtoOpt.isPresent()) {
+                Produto produto = produtoOpt.get();
+                // Pré-preenche os dados do orçamento com base no produto
+                orcamento.setImagem(produto.getImagem());
+                orcamento.setAltura(produto.getAltura());
+                orcamento.setLargura(produto.getLargura());
+                orcamento.setDescricao(produto.getDescricao());
+                orcamento.setValor(produto.getValor());
+                model.addAttribute("orcamento", orcamento); // Passa o produto para o template
+            }
+        }
+
+        model.addAttribute("orcamento", orcamento);
+        return "novo_orcamento"; // Nome do template do formulário de orçamento
     }
 
+    // Endpoint para criar um novo orçamento
     @PostMapping("/novo")
     public String criarOrcamento(
         @RequestParam("imagem") MultipartFile imagem,
@@ -35,19 +65,30 @@ public class OrcamentoController {
         @RequestParam("altura") Double altura,
         @RequestParam("parteCorpo") String parteCorpo,
         @RequestParam("descricao") String descricao,
+        @RequestParam(value = "produtoId", required = false) Integer produtoId,
         Model model
     ) {
-        RequestOrcamentoDto requestOrcamentoDto = new RequestOrcamentoDto(imagem, largura, altura, parteCorpo, descricao);
-        ResponseEntity<ResponseOrcamentoDto> response = orcamentoService.register(requestOrcamentoDto);
+        RequestOrcamentoDto requestOrcamentoDto = new RequestOrcamentoDto(imagem, largura, altura, parteCorpo, descricao, produtoId);
+        ResponseEntity<ResponseOrcamentoDto> response;
+
+        if (produtoId != null) {
+            // Cria o orçamento com base no produto
+            response = orcamentoService.regiterByProduto(requestOrcamentoDto, produtoId);
+        } else {
+            // Cria o orçamento sem produto associado
+            response = orcamentoService.register(requestOrcamentoDto);
+        }
 
         if (response.getStatusCode().is2xxSuccessful()) {
             model.addAttribute("message", "Orçamento salvo com sucesso!");
         } else {
             model.addAttribute("error", "Erro ao salvar o orçamento.");
         }
+
         return "redirect:/orcamentos/meus-orcamentos";
     }
 
+    // Endpoint para listar os orçamentos do usuário
     @GetMapping("/meus-orcamentos")
     public String listarOrcamentos(Model model) {
         ResponseEntity<List<ResponseOrcamentoDto>> response = orcamentoService.getAll();
@@ -56,7 +97,8 @@ public class OrcamentoController {
         }
         return "meus_orcamentos";
     }
-    
+
+    // Endpoint para listar os orçamentos (admin)
     @GetMapping("/admin-orcamentos")
     public String listarOrcamentosAdmin(Model model) {
         ResponseEntity<List<ResponseOrcamentoDto>> response = orcamentoService.getAll();
@@ -66,6 +108,7 @@ public class OrcamentoController {
         return "admin_orcamentos";
     }
 
+    // Endpoint para exibir o formulário de edição de orçamento
     @GetMapping("/{id}/editar")
     public String exibirFormularioEdicao(@PathVariable Integer id, Model model) {
         ResponseEntity<ResponseOrcamentoDto> response = orcamentoService.getById(id);
@@ -76,15 +119,13 @@ public class OrcamentoController {
         return "redirect:/orcamentos/meus-orcamentos";
     }
 
+    // Endpoint para atualizar um orçamento
     @PostMapping("/{id}/editar-orcamento")
     public String atualizarOrcamento(
         @PathVariable Integer id,
-        @ModelAttribute RequestOrcamentoDto requestOrcamentoDto, // Substitui @RequestParam por @ModelAttribute
+        @ModelAttribute RequestOrcamentoDto requestOrcamentoDto,
         Model model
     ) {
-    	System.out.println(requestOrcamentoDto.altura());
-    	System.out.println(requestOrcamentoDto.largura());
-    	System.out.println(requestOrcamentoDto.imagem());
         ResponseEntity<ResponseOrcamentoDto> response = orcamentoService.update(id, requestOrcamentoDto);
 
         if (response.getStatusCode().is2xxSuccessful()) {
@@ -94,8 +135,8 @@ public class OrcamentoController {
         }
         return "redirect:/orcamentos/meus-orcamentos";
     }
-    
-    // @PreAuthorize("hasRole('ADMIN')")
+
+    // Endpoint para concluir um orçamento
     @PostMapping("/{id}/concluir")
     public String concluirOrcamento(@PathVariable Integer id, Model model) {
         ResponseEntity<ResponseOrcamentoDto> response = orcamentoService.updateStatus(id, "Concluído");
@@ -106,7 +147,8 @@ public class OrcamentoController {
         }
         return "redirect:/orcamentos/meus-orcamentos";
     }
-    
+
+    // Endpoint para deletar um orçamento
     @PostMapping("/{id}/deletar")
     public String deletarOrcamento(@PathVariable Integer id, Model model) {
         ResponseEntity<String> response = orcamentoService.delete(id);
@@ -117,15 +159,14 @@ public class OrcamentoController {
         }
         return "redirect:/orcamentos/meus-orcamentos";
     }
-    
+
+    // Endpoint para exibir o histórico de tatuagens
     @GetMapping("/historico")
     public String historicoTattoo(Model model) {
-    	ResponseEntity<List<ResponseOrcamentoDto>> response = orcamentoService.getAll();
-    	if(response.getStatusCode().is2xxSuccessful()) {
-    		model.addAttribute("orcamentos", response.getBody());
-    	}
-    	return "historico";
+        ResponseEntity<List<ResponseOrcamentoDto>> response = orcamentoService.getAll();
+        if (response.getStatusCode().is2xxSuccessful()) {
+            model.addAttribute("orcamentos", response.getBody());
+        }
+        return "historico";
     }
-    
-    // Precisa mudar algumas coisas como: quando o admin agenda um orçamento, ele tem que ser redirecionado para a tela de "admin_orcamentos"
 }

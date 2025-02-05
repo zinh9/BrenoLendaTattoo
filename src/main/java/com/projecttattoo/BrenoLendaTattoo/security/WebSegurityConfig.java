@@ -26,8 +26,12 @@ public class WebSegurityConfig {
 				.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(authorize -> authorize
-						.anyRequest()
-						.permitAll())
+						.requestMatchers("/auth/login", "/auth/logar", "/cliente/cadastro", "/cliente/register").permitAll() // Rotas públicas
+                        .requestMatchers("/produto/catalogo").hasRole("USER") // Apenas clientes
+                        .requestMatchers("/catalogo/admin-catalogo").hasRole("ADMIN")// Apenas admins
+                        .requestMatchers("/static/**", "/css/**", "/js/**", "/images/**", "/uploads/**").permitAll()
+                        .anyRequest().authenticated() // Demais rotas exigem autenticação
+                )
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 				.build();
 	}
