@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,12 +30,14 @@ public class ProdutoController {
 	@Autowired
 	private ProdutoService produtoService;
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/admin-novo-produto")
 	public String addNovoProduto(Model model) {
 		model.addAttribute("produto", new ResponseProdutoDto(null, null, null, null, null, null, null));
 		return "admin_novo_produto";
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/register")
 	public String register(
 			@RequestParam("imagem") MultipartFile imagem,
@@ -57,6 +60,7 @@ public class ProdutoController {
         return "redirect:/produto/admin-catalogo";
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/admin-catalogo")
 	public String listarProdutosAdmin(Model model) {
 		ResponseEntity<List<ResponseProdutoDto>> response = produtoService.getAll();
@@ -66,6 +70,7 @@ public class ProdutoController {
 		return "admin_catalogo";
 	}
 	
+	@PreAuthorize("hasRole('USER')")
 	@GetMapping("/catalogo")
 	public String listarProdutos(Model model){
 		ResponseEntity<List<ResponseProdutoDto>> response = produtoService.getAll();
@@ -85,6 +90,7 @@ public class ProdutoController {
 		return produtoService.update(id, body);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/{id}/deletar")
 	public String delete(@PathVariable("id") Integer id, Model model){
 		ResponseEntity<String> response = produtoService.delete(id);

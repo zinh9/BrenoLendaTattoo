@@ -54,7 +54,7 @@ public class LoginController {
 	        System.out.println("Login bem-sucedido. Role: " + role); // Log para depuração
 
 	        if ("ADMIN".equals(role)) {
-	            return "redirect:/catalogo/admin-catalogo";
+	            return "redirect:/produto/admin-catalogo";
 	        } else {
 	            return "redirect:/produto/catalogo"; 
 	        }

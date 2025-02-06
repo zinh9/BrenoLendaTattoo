@@ -40,18 +40,12 @@ public class Logins implements UserDetails{
 	@Column(name = "senha", nullable = false)
 	private String senha;
 
-	@Column(name = "verified_account", nullable = false)
-	private boolean verifiedAccount;
-
 	@Column(name = "token", length = 255)
 	private String token;
 
 	@OneToOne
 	@JoinColumn(name = "id_Cliente")
 	private Cliente cliente;
-
-	@Column(name = "verificationCode", length = 10)
-	private String verificationCode;
 
 	@Column(name = "userRole")
 	private Roles userRole;

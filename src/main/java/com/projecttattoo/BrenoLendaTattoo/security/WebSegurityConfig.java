@@ -21,19 +21,25 @@ public class WebSegurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		return http
-				.csrf(csrf -> csrf.disable())
+		return http.csrf(csrf -> csrf.disable())
 				.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(authorize -> authorize
-						.requestMatchers("/auth/login", "/auth/logar", "/cliente/cadastro", "/cliente/register").permitAll() // Rotas públicas
-                        .requestMatchers("/produto/catalogo").hasRole("USER") // Apenas clientes
-                        .requestMatchers("/catalogo/admin-catalogo").hasRole("ADMIN")// Apenas admins
-                        .requestMatchers("/static/**", "/css/**", "/js/**", "/images/**", "/uploads/**").permitAll()
-                        .anyRequest().authenticated() // Demais rotas exigem autenticação
-                )
-				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-				.build();
+						.requestMatchers("/auth/login", "/auth/logar", "/cliente/cadastro", "/cliente/register",
+								"/produto/catalogo", "/static/**", "/css/**", "/js/**", "/images/**", "/uploads/**").permitAll() // Rotas públicas
+						.requestMatchers("/orcamentos/meus-orcamentos").hasRole("USER")
+						.requestMatchers("/orcamentos/historico").hasRole("USER")
+						.requestMatchers("/orcamentos/novo").hasRole("USER")
+						.requestMatchers("/orcamentos/{id}/editar").hasRole("USER")
+						.requestMatchers("/orcamentos/{id}/editar-orcamento").hasRole("USER")
+						.requestMatchers("/orcamentos/{id}/deletar").hasRole("USER")
+						.requestMatchers("/produto/admin-catalogo").hasRole("ADMIN")
+						.requestMatchers("/produto/admin-novo-produto").hasRole("ADMIN")
+						.requestMatchers("/produto/register").hasRole("ADMIN").requestMatchers("/produto/{id}/deletar")
+						.hasRole("ADMIN").requestMatchers("/orcamentos/admin-orcamentos").hasAnyRole("ADMIN")
+						.requestMatchers("/produto/{id}/concluir").hasAnyRole("ADMIN")
+						.anyRequest().authenticated() // Demais rotas exigem autenticação
+				).addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class).build();
 	}
 
 	@Bean

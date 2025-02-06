@@ -132,6 +132,8 @@ public class OrcamentoService implements OrcamentoInterfaceService {
         Optional<Orcamento> orcamentoOpt = orcamentoRespository.findById(id);
 
         if (orcamentoOpt.isPresent()) {
+        	System.out.println("Achei a merda da tatuagem que você quer atualizar");
+        	System.out.println("Esse orcamento é do: " + orcamentoOpt.get().getCliente().getNomeCompleto());
             Orcamento orcamento = orcamentoOpt.get();
 
             if (body.imagem() != null && !body.imagem().isEmpty()) {
@@ -151,12 +153,16 @@ public class OrcamentoService implements OrcamentoInterfaceService {
             orcamento.setStatusOrcamento("Em análise");
 
             orcamentoRespository.save(orcamento);
+            
+            System.out.println("Salvo no BD");
 
             ResponseOrcamentoDto orcamentoDto = new ResponseOrcamentoDto(
                     orcamento.getId(), orcamento.getImagem(), orcamento.getAltura(),
                     orcamento.getLargura(), orcamento.getDescricao(), orcamento.getParteCorpo(),
                     orcamento.getValor(), orcamento.getStatusOrcamento(), orcamento.getAgendamento()
             );
+            
+            System.out.println("Retornando o card com os dados atuaizados");
 
             return ResponseEntity.ok(orcamentoDto);
         }

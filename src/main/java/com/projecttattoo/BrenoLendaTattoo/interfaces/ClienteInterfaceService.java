@@ -24,6 +24,6 @@ public interface ClienteInterfaceService {
 	public ResponseEntity<ResponseConfirmedDto> redifinedPassword(String body);
 	public ResponseEntity<String> resetPassword(String email, LoginDto senha);
 	public ResponseEntity<String> getClientes(String email);
-	public ResponseEntity<String> verifyCode(String code);
-	public boolean getVerificationAccount(Logins email);
+	//public ResponseEntity<String> verifyCode(String code);
+	//public boolean getVerificationAccount(Logins email);
 }

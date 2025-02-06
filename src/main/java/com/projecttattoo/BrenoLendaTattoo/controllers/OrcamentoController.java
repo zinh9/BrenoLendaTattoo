@@ -30,7 +30,7 @@ public class OrcamentoController {
     @Autowired
     private OrcamentoService orcamentoService;
 
-    // Endpoint para exibir o formulário de orçamento (com ou sem produto associado)
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/novo-orcamento")
     public String exibirFormularioNovoOrcamento(
         @RequestParam(value = "produtoId", required = false) Integer produtoId,
@@ -57,7 +57,7 @@ public class OrcamentoController {
         return "novo_orcamento"; // Nome do template do formulário de orçamento
     }
 
-    // Endpoint para criar um novo orçamento
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/novo")
     public String criarOrcamento(
         @RequestParam("imagem") MultipartFile imagem,
@@ -88,7 +88,7 @@ public class OrcamentoController {
         return "redirect:/orcamentos/meus-orcamentos";
     }
 
-    // Endpoint para listar os orçamentos do usuário
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/meus-orcamentos")
     public String listarOrcamentos(Model model) {
         ResponseEntity<List<ResponseOrcamentoDto>> response = orcamentoService.getAll();
@@ -98,7 +98,7 @@ public class OrcamentoController {
         return "meus_orcamentos";
     }
 
-    // Endpoint para listar os orçamentos (admin)
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin-orcamentos")
     public String listarOrcamentosAdmin(Model model) {
         ResponseEntity<List<ResponseOrcamentoDto>> response = orcamentoService.getAll();
@@ -108,10 +108,11 @@ public class OrcamentoController {
         return "admin_orcamentos";
     }
 
-    // Endpoint para exibir o formulário de edição de orçamento
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/{id}/editar")
     public String exibirFormularioEdicao(@PathVariable Integer id, Model model) {
         ResponseEntity<ResponseOrcamentoDto> response = orcamentoService.getById(id);
+        System.out.println("Achei o orcamento");
         if (response.getStatusCode().is2xxSuccessful()) {
             model.addAttribute("orcamento", response.getBody());
             return "atualizar_orcamento"; // Retorna o template de edição
@@ -119,7 +120,7 @@ public class OrcamentoController {
         return "redirect:/orcamentos/meus-orcamentos";
     }
 
-    // Endpoint para atualizar um orçamento
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/{id}/editar-orcamento")
     public String atualizarOrcamento(
         @PathVariable Integer id,
@@ -129,14 +130,16 @@ public class OrcamentoController {
         ResponseEntity<ResponseOrcamentoDto> response = orcamentoService.update(id, requestOrcamentoDto);
 
         if (response.getStatusCode().is2xxSuccessful()) {
+        	System.out.println("Consegui atualizar");
             model.addAttribute("message", "Orçamento atualizado com sucesso!");
         } else {
+        	System.out.println("Não consegui atualizar");
             model.addAttribute("error", "Erro ao atualizar o orçamento.");
         }
         return "redirect:/orcamentos/meus-orcamentos";
     }
 
-    // Endpoint para concluir um orçamento
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{id}/concluir")
     public String concluirOrcamento(@PathVariable Integer id, Model model) {
         ResponseEntity<ResponseOrcamentoDto> response = orcamentoService.updateStatus(id, "Concluído");
@@ -145,10 +148,10 @@ public class OrcamentoController {
         } else {
             model.addAttribute("error", "Erro ao concluir o orçamento.");
         }
-        return "redirect:/orcamentos/meus-orcamentos";
+        return "redirect:/orcamentos/admin-orcamentos";
     }
 
-    // Endpoint para deletar um orçamento
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/{id}/deletar")
     public String deletarOrcamento(@PathVariable Integer id, Model model) {
         ResponseEntity<String> response = orcamentoService.delete(id);
@@ -160,7 +163,7 @@ public class OrcamentoController {
         return "redirect:/orcamentos/meus-orcamentos";
     }
 
-    // Endpoint para exibir o histórico de tatuagens
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/historico")
     public String historicoTattoo(Model model) {
         ResponseEntity<List<ResponseOrcamentoDto>> response = orcamentoService.getAll();

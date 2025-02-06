@@ -62,7 +62,6 @@ public class ClienteService implements ClienteInterfaceService {
         logins.setNome(newCliente.getNomeCompleto());
         logins.setSenha(newCliente.getSenha());
         logins.setUserRole(Roles.USER);
-        logins.setVerifiedAccount(false);
 
         // Salva no banco
         clienteRepository.save(newCliente);
@@ -86,11 +85,6 @@ public class ClienteService implements ClienteInterfaceService {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Senha incorreta"));
         }
 
-        if (!cliente.isVerifiedAccount()) {
-        	System.out.println("cliente não verificado");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Conta não verificada"));
-        }
-
         // Gera o token JWT
         String token = authenticatedService.setToken(cliente);
 
@@ -99,20 +93,6 @@ public class ClienteService implements ClienteInterfaceService {
             "token", token,
             "role", cliente.getUserRole().toString()
         ));
-    }
-
-    @Override
-    public ResponseEntity<ResponseConfirmedDto> confirmEmail(String code) {
-        Logins clienteCode = loginsRepository.findByVerificationCode(code);
-        if (clienteCode == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ResponseConfirmedDto("Código de verificação inválido"));
-        }
-
-        clienteCode.setVerifiedAccount(true);
-        loginsRepository.save(clienteCode);
-
-        return ResponseEntity.ok(new ResponseConfirmedDto("Conta verificada com sucesso"));
     }
 
     @Override
@@ -136,22 +116,6 @@ public class ClienteService implements ClienteInterfaceService {
         }
 
         return ResponseEntity.ok(cliente.getNome());
-    }
-
-    @Override
-    public ResponseEntity<String> verifyCode(String code) {
-        Logins clienteLogin = loginsRepository.findByVerificationCode(code);
-        if (clienteLogin == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Código inválido");
-        }
-
-        return ResponseEntity.ok("Código válido");
-    }
-
-    @Override
-    public boolean getVerificationAccount(Logins email) {
-        Logins cliente = loginsRepository.findByEmail(email.getEmail());
-        return cliente != null && cliente.isVerifiedAccount();
     }
 
     @Override
@@ -225,4 +189,10 @@ public class ClienteService implements ClienteInterfaceService {
 
         return ResponseEntity.ok(clienteDto);
     }
+
+	@Override
+	public ResponseEntity<ResponseConfirmedDto> confirmEmail(String code) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

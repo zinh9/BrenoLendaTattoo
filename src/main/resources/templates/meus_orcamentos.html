@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Breno Lendas - Studio de Tatuagem</title>
-    <link rel="stylesheet" href="/style2.css">
+    <link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
@@ -13,10 +13,8 @@
         <aside class="barra-lateral">
             <nav class="navegacao-barra-lateral">
                 <a th:href="@{/produto/catalogo}">Catalogo</a>
-                <form th:action="@{/orcamentos/historico}" method="get">
-                    <a th:href="@{/orcamentos/historico}">Meu Histórico</a>
-                </form>
-                <a href="meus_orcamentos.html" class="ativo">Orçamentos</a>
+                <a th:href="@{/orcamentos/historico}">Meu Histórico</a>
+                <a th:href="@{/orcamentos/meus-orcamentos}" class="ativo">Orçamentos</a>
                 <a href="#">Minha Conta</a>
                 <a href="#">Sair</a>
             </nav>
@@ -69,7 +67,7 @@
                         </div>
                     </div>
                 
-                    <a th:href="@{/orcamentos/novo_orcamento}" class="novo-orcamento">
+                    <a th:href="@{/orcamentos/novo-orcamento}" class="novo-orcamento">
                         <div class="icone-mais">+</div>
                         <span>Novo Orçamento</span>
                     </a>
