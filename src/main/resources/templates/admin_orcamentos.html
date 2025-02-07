@@ -10,12 +10,10 @@
     <div class="pagina-layout">
         <aside class="barra-lateral">
             <nav class="navegacao-barra-lateral">
-                <form th:action="@{/produto/admin-catalogo}" method="get">
-                    <a th:href="@{/produto/admin-catalogo}">Catalogo</a>
-                </form>
-                <a href="meus_orcamentos.html" class="ativo">Orçamentos</a>
+                <a th:href="@{/produto/admin-catalogo}">Catalogo</a>
+                <a th:href="@{/orcamentos/admin-orcamentos}" class="ativo">Orçamentos</a>
                 <a href="#">Minha Conta</a>
-                <a href="#">Sair</a>
+                <a th:href="@{/auth/login}">Sair</a>
             </nav>
             <button class="fechar-barra">×</button>
         </aside>

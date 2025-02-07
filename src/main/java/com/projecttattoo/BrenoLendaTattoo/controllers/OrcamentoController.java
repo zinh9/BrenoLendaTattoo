@@ -1,5 +1,6 @@
 package com.projecttattoo.BrenoLendaTattoo.controllers;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,8 +14,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.projecttattoo.BrenoLendaTattoo.dto.orcamento.RequestOrcamentoDto;
 import com.projecttattoo.BrenoLendaTattoo.dto.orcamento.ResponseOrcamentoDto;
+import com.projecttattoo.BrenoLendaTattoo.enums.Roles;
+import com.projecttattoo.BrenoLendaTattoo.models.Cliente;
+import com.projecttattoo.BrenoLendaTattoo.models.Logins;
 import com.projecttattoo.BrenoLendaTattoo.models.Orcamento;
 import com.projecttattoo.BrenoLendaTattoo.models.Produto;
+import com.projecttattoo.BrenoLendaTattoo.repositories.ClienteRepository;
+import com.projecttattoo.BrenoLendaTattoo.repositories.LoginsRepository;
 import com.projecttattoo.BrenoLendaTattoo.repositories.ProdutoRepository;
 import com.projecttattoo.BrenoLendaTattoo.services.OrcamentoService;
 
@@ -29,6 +35,12 @@ public class OrcamentoController {
 
     @Autowired
     private OrcamentoService orcamentoService;
+    
+    @Autowired
+    private ClienteRepository clienteRepository;
+    
+    @Autowired
+    private LoginsRepository loginsRepository;
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/novo-orcamento")
@@ -37,13 +49,13 @@ public class OrcamentoController {
         Model model
     ) {
         Orcamento orcamento = new Orcamento();
-
+        
         if (produtoId != null) {
-            // Busca o produto pelo ID
             Optional<Produto> produtoOpt = produtoRepository.findById(produtoId);
+            
             if (produtoOpt.isPresent()) {
                 Produto produto = produtoOpt.get();
-                // Pré-preenche os dados do orçamento com base no produto
+                
                 orcamento.setImagem(produto.getImagem());
                 orcamento.setAltura(produto.getAltura());
                 orcamento.setLargura(produto.getLargura());
@@ -66,17 +78,19 @@ public class OrcamentoController {
         @RequestParam("parteCorpo") String parteCorpo,
         @RequestParam("descricao") String descricao,
         @RequestParam(value = "produtoId", required = false) Integer produtoId,
-        Model model
+        Model model, Principal principal
     ) {
+    	String email = principal.getName();
+    	Cliente cliente = clienteRepository.findByEmail(email);
         RequestOrcamentoDto requestOrcamentoDto = new RequestOrcamentoDto(imagem, largura, altura, parteCorpo, descricao, produtoId);
         ResponseEntity<ResponseOrcamentoDto> response;
 
         if (produtoId != null) {
             // Cria o orçamento com base no produto
-            response = orcamentoService.regiterByProduto(requestOrcamentoDto, produtoId);
+            response = orcamentoService.regiterByProduto(requestOrcamentoDto, produtoId, cliente);
         } else {
             // Cria o orçamento sem produto associado
-            response = orcamentoService.register(requestOrcamentoDto);
+            response = orcamentoService.register(requestOrcamentoDto, cliente);
         }
 
         if (response.getStatusCode().is2xxSuccessful()) {
@@ -87,7 +101,7 @@ public class OrcamentoController {
 
         return "redirect:/orcamentos/meus-orcamentos";
     }
-
+     /*
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/meus-orcamentos")
     public String listarOrcamentos(Model model) {
@@ -95,6 +109,31 @@ public class OrcamentoController {
         if (response.getStatusCode().is2xxSuccessful()) {
             model.addAttribute("orcamentos", response.getBody());
         }
+        return "meus_orcamentos";
+    }
+    */
+    
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/meus-orcamentos")
+    public String listarOrcamentos(Model model, Principal principal) {
+        String email = principal.getName();
+        System.out.println(email);
+
+        Cliente cliente = clienteRepository.findByEmail(email);
+        if (cliente == null) {
+            model.addAttribute("error", "Cliente não encontrado.");
+            return "meus_orcamentos";
+        }
+
+        ResponseEntity<List<ResponseOrcamentoDto>> response = orcamentoService.getOrcamentoByClienteId(cliente.getId());
+        if (response.getStatusCode().is2xxSuccessful()) {
+            model.addAttribute("orcamentos", response.getBody());
+            System.out.println("Consegui recuperar com o cliente");
+        } else {
+            model.addAttribute("error", "Erro ao carregar orçamentos.");
+            System.out.println("Não consegui recuperar com o cliente");
+        }
+
         return "meus_orcamentos";
     }
 
@@ -115,7 +154,7 @@ public class OrcamentoController {
         System.out.println("Achei o orcamento");
         if (response.getStatusCode().is2xxSuccessful()) {
             model.addAttribute("orcamento", response.getBody());
-            return "atualizar_orcamento"; // Retorna o template de edição
+            return "atualizar_orcamento";
         }
         return "redirect:/orcamentos/meus-orcamentos";
     }
@@ -150,23 +189,28 @@ public class OrcamentoController {
         }
         return "redirect:/orcamentos/admin-orcamentos";
     }
-
-    @PreAuthorize("hasRole('USER')")
+    
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping("/{id}/deletar")
-    public String deletarOrcamento(@PathVariable Integer id, Model model) {
+    public String deletarOrcamento(@PathVariable Integer id, Model model, Principal principal) {
         ResponseEntity<String> response = orcamentoService.delete(id);
-        if (response.getStatusCode().is2xxSuccessful()) {
-            model.addAttribute("message", "Orçamento cancelado com sucesso!");
-        } else {
-            model.addAttribute("error", "Erro ao cancelar o orçamento.");
+        String email = principal.getName();
+        Logins logins = loginsRepository.findByEmail(email);
+        
+        if(logins.getUserRole() == Roles.ADMIN) {
+        	return "redirect:/orcamentos/admin-orcamentos";
         }
+        
         return "redirect:/orcamentos/meus-orcamentos";
     }
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/historico")
-    public String historicoTattoo(Model model) {
-        ResponseEntity<List<ResponseOrcamentoDto>> response = orcamentoService.getAll();
+    public String historicoTattoo(Model model, Principal principal) {
+    	String email = principal.getName();
+    	Cliente cliente = clienteRepository.findByEmail(email);
+    	
+        ResponseEntity<List<ResponseOrcamentoDto>> response = orcamentoService.getOrcamentoByClienteId(cliente.getId());
         if (response.getStatusCode().is2xxSuccessful()) {
             model.addAttribute("orcamentos", response.getBody());
         }

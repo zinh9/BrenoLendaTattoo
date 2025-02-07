@@ -12,11 +12,9 @@
             <nav class="navegacao-barra-lateral">
                 <a th:href="@{/produto/catalogo}">Catalogo</a>
                 <a th:href="@{/orcamentos/historico}" class="ativo">Meu Histórico</a>
-                <form action="@{/orcamentos/meus-orcamentos}" method="get">
-                    <a th:href="@{/orcamentos/meus-orcamentos}">Orçamentos</a>
-                </form>
+                <a th:href="@{/orcamentos/meus-orcamentos}">Orçamentos</a>
                 <a href="#">Minha Conta</a>
-                <a href="#">Sair</a>
+                <a th:href="@{/auth/login}">Sair</a>
             </nav>
             <button class="fechar-barra">×</button>
         </aside>
@@ -27,7 +25,7 @@
                 <div class="conteudo">
                     <div class="cabecalho-esquerdo">
                         <button class="botao-menu" aria-label="Toggle Menu">☰</button>
-                        <img src="..\static\Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
+                        <img src="/Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
                     </div>
                     <nav class="navegacao-principal">
                         <a href="#">Conta</a>

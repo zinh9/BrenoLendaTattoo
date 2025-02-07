@@ -12,11 +12,10 @@
     <div class="pagina-layout">
         <aside class="barra-lateral">
             <nav class="navegacao-barra-lateral">
-                <a href="catalogo.html" class="ativo">Catalogo</a>
-                <a href="historico.html">Meu Histórico</a>
-                <a href="meus_orcamentos.html">Orçamento</a>
+                <a th:href="@{/produto/admin-catalogo}" class="ativo">Catalogo</a>
+                <a th:href="@{/orcamentos/admin-orcamentos}">Orçamentos</a>
                 <a href="#">Minha Conta</a>
-                <a href="#">Sair</a>
+                <a th:href="@{/auth/login}">Sair</a>
             </nav>
             <button class="fechar-barra">×</button>
         </aside>

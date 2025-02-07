@@ -26,19 +26,19 @@ public class WebSegurityConfig {
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers("/auth/login", "/auth/logar", "/cliente/cadastro", "/cliente/register",
-								"/produto/catalogo", "/static/**", "/css/**", "/js/**", "/images/**", "/uploads/**").permitAll() // Rotas públicas
+								"/produto/catalogo", "/static/**", "/css/**", "/js/**",
+								"/images/**", "/uploads/**")
+						.permitAll()
+						.requestMatchers("/orcamentos/{id}/deletar").hasAnyRole("USER", "ADMIN")
 						.requestMatchers("/orcamentos/meus-orcamentos").hasRole("USER")
-						.requestMatchers("/orcamentos/historico").hasRole("USER")
-						.requestMatchers("/orcamentos/novo").hasRole("USER")
-						.requestMatchers("/orcamentos/{id}/editar").hasRole("USER")
+						.requestMatchers("/orcamentos/historico").hasRole("USER").requestMatchers("/orcamentos/novo")
+						.hasRole("USER").requestMatchers("/orcamentos/{id}/editar").hasRole("USER")
 						.requestMatchers("/orcamentos/{id}/editar-orcamento").hasRole("USER")
-						.requestMatchers("/orcamentos/{id}/deletar").hasRole("USER")
 						.requestMatchers("/produto/admin-catalogo").hasRole("ADMIN")
 						.requestMatchers("/produto/admin-novo-produto").hasRole("ADMIN")
 						.requestMatchers("/produto/register").hasRole("ADMIN").requestMatchers("/produto/{id}/deletar")
 						.hasRole("ADMIN").requestMatchers("/orcamentos/admin-orcamentos").hasAnyRole("ADMIN")
-						.requestMatchers("/produto/{id}/concluir").hasAnyRole("ADMIN")
-						.anyRequest().authenticated() // Demais rotas exigem autenticação
+						.requestMatchers("/produto/{id}/concluir").hasAnyRole("ADMIN").anyRequest().authenticated() 
 				).addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class).build();
 	}
 
