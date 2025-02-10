@@ -101,17 +101,6 @@ public class OrcamentoController {
 
         return "redirect:/orcamentos/meus-orcamentos";
     }
-     /*
-    @PreAuthorize("hasRole('USER')")
-    @GetMapping("/meus-orcamentos")
-    public String listarOrcamentos(Model model) {
-        ResponseEntity<List<ResponseOrcamentoDto>> response = orcamentoService.getAll();
-        if (response.getStatusCode().is2xxSuccessful()) {
-            model.addAttribute("orcamentos", response.getBody());
-        }
-        return "meus_orcamentos";
-    }
-    */
     
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/meus-orcamentos")

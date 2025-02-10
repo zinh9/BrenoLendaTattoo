@@ -15,8 +15,6 @@
                 <a th:href="@{/produto/catalogo}">Catalogo</a>
                 <a th:href="@{/orcamentos/historico}">Meu Histórico</a>
                 <a th:href="@{/orcamentos/meus-orcamentos}" class="ativo">Orçamentos</a>
-                <a th:href="#">Minha Conta</a>
-                <a th:href="@{/auth/login}">Sair</a>
             </nav>
             <button class="fechar-barra">×</button>
         </aside>
@@ -27,11 +25,11 @@
                 <div class="conteudo">
                     <div class="cabecalho-esquerdo">
                         <button class="botao-menu" aria-label="Toggle Menu">☰</button>
-                        <img src="..\static\Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
+                        <img src="/Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
                     </div>
                     <nav class="navegacao-principal">
-                        <a href="#">Minha Conta</a>
-                        <a href="#">Sair</a>
+                        <a th:href="@{/cliente/minha-conta}">Minha Conta</a>
+                        <a th:href="@{/auth/login}">Sair</a>
                     </nav>
                 </div>
             </header>
@@ -46,14 +44,15 @@
                     <div class="secao-formulario">
                         <h2>Referência Visual</h2>
                         <div class="enviar-imagem">
-                            <input type="file" id="tattoo-image" accept="image/*" class="enviar-arquivo" name="imagem">
+                            <input type="file" id="tattoo-image" accept="uploads/*" class="enviar-arquivo"
+                                th:field="*{imagem}">
                             <label for="tattoo-image" class="nome-arquivo">
                                 <div class="icone-upload">+</div>
                                 <span>Adicionar foto de referência</span>
                                 <p class="dica">Clique para selecionar</p>
                             </label>
-                            <div class="visualizacao" th:if="${orcamento.imagem}">
-                                <img th:src="${orcamento.imagem}" alt="Preview" id="image-preview">
+                            <div class="visualizacao" style="display: none;">
+                                <img th:src="${imagem}" alt="Preview" id="image-preview">
                                 <button type="button" class="botao-remover-imagem">×</button>
                             </div>
                         </div>
@@ -65,34 +64,34 @@
                         <div class="formulario-dados">
                             <label for="size">Tamanho aproximado (em cm)</label>
                             <div class="tamanhos">
-                                <input type="number" id="width" th:field="*{largura}" placeholder="Largura" min="1" max="100" required
+                                <input type="number" id="width" th:field="*{largura}" placeholder="Largura" min="1" max="100"
                                        th:value="${orcamento.largura}">
                                 <span>x</span>
-                                <input type="number" id="height" th:field="*{altura}" placeholder="Altura" min="1" max="100" required
+                                <input type="number" id="height" th:field="*{altura}" placeholder="Altura" min="1" max="100"
                                        th:value="${orcamento.altura}">
                             </div>
                         </div>
 
                         <div class="formulario-dados">
                             <label for="body-part">Parte do corpo</label>
-                            <select id="body-part" name="parteCorpo" required>
+                            <select id="body-part" name="parteCorpo" >
                                 <option value="">Selecione a parte do corpo</option>
-                                <option value="braco" th:selected="${orcamento.parteCorpo == 'Braço'}">Braço</option>
-                                <option value="antebraco" th:selected="${orcamento.parteCorpo == 'Atebraço'}">Antebraço</option>
-                                <option value="perna" th:selected="${orcamento.parteCorpo == 'Perna'}">Perna</option>
-                                <option value="costas" th:selected="${orcamento.parteCorpo == 'Costas'}">Costas</option>
-                                <option value="peito" th:selected="${orcamento.parteCorpo == 'Peito'}">Peito</option>
-                                <option value="costela" th:selected="${orcamento.parteCorpo == 'Costela'}">Costela</option>
-                                <option value="pescoco" th:selected="${orcamento.parteCorpo == 'Pescoço'}">Pescoço</option>
-                                <option value="pe" th:selected="${orcamento.parteCorpo == 'Pé'}">Pé</option>
-                                <option value="outro" th:selected="${orcamento.parteCorpo == 'Outro'}">Outro</option>
+                                <option value="Braço" th:selected="${orcamento.parteCorpo == 'Braço'}">Braço</option>
+                                <option value="Atebraço" th:selected="${orcamento.parteCorpo == 'Atebraço'}">Antebraço</option>
+                                <option value="Perna" th:selected="${orcamento.parteCorpo == 'Perna'}">Perna</option>
+                                <option value="Costas" th:selected="${orcamento.parteCorpo == 'Costas'}">Costas</option>
+                                <option value="Peito" th:selected="${orcamento.parteCorpo == 'Peito'}">Peito</option>
+                                <option value="Costela" th:selected="${orcamento.parteCorpo == 'Costela'}">Costela</option>
+                                <option value="Pescoço" th:selected="${orcamento.parteCorpo == 'Pescoço'}">Pescoço</option>
+                                <option value="Pé" th:selected="${orcamento.parteCorpo == 'Pé'}">Pé</option>
+                                <option value="Outro" th:selected="${orcamento.parteCorpo == 'Outro'}">Outro</option>
                             </select>
                         </div>
 
                         <div class="formulario-dados">
                             <label for="description">Descrição e detalhes adicionais</label>
                             <textarea id="description" name="descricao" rows="4" placeholder="Descreva os detalhes da sua tatuagem..."
-                                      th:text="${orcamento.descricao}" required></textarea>
+                                      th:text="${orcamento.descricao}" ></textarea>
                         </div>
                     </div>
 
@@ -104,7 +103,34 @@
             </main>
         </div>
     </div>
-    <script src="/src/main/resources/static/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const inputFile = document.getElementById('tattoo-image');
+            const imagePreview = document.getElementById('image-preview');
+            const visualizacao = document.querySelector('.visualizacao');
+            const botaoRemover = document.querySelector('.botao-remover-imagem');
+
+            // Quando um arquivo é selecionado
+            inputFile.addEventListener('change', function () {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        imagePreview.src = e.target.result;
+                        visualizacao.style.display = 'flex'; // Exibe a área de visualização
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Remove a imagem selecionada
+            botaoRemover.addEventListener('click', function () {
+                inputFile.value = ''; // Limpa o input de arquivo
+                imagePreview.src = ''; // Limpa a pré-visualização
+                visualizacao.style.display = 'none'; // Oculta a área de visualização
+            });
+        });
+    </script>
 </body>
 
 </html>

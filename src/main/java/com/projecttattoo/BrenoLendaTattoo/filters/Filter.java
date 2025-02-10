@@ -32,22 +32,34 @@ public class Filter extends OncePerRequestFilter {
         FilterChain filterChain
     ) throws ServletException, IOException {
         
-        String token = getTokenFromCookie(request); // Método para extrair o token do cookie
+        String token = getTokenFromCookie(request);
 
         if (token != null) {
-            String email = authenticatedService.validateToken(token);
-            if (email != null) {
-                // Carrega o usuário e suas roles
-                UserDetails userDetails = authenticatedService.loadUserByUsername(email);
-                UsernamePasswordAuthenticationToken authentication = 
-                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+            try {
+                String email = authenticatedService.validateToken(token);
+                if (email != null) {
+                    UserDetails userDetails = authenticatedService.loadUserByUsername(email);
+                    UsernamePasswordAuthenticationToken authentication = 
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            } catch (Exception e) {
+                removeAuthCookies(response);
+                response.sendRedirect("/auth/login");
+                return;
             }
         }
 
         filterChain.doFilter(request, response);
     }
 
+    private void removeAuthCookies(HttpServletResponse response) {
+        Cookie tokenCookie = new Cookie("token", null);
+        tokenCookie.setMaxAge(0); 
+        tokenCookie.setPath("/"); 
+        response.addCookie(tokenCookie);
+
+    }
     private String getTokenFromCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport">
+    <title>Breno Lendas - Studio de Tatuagem</title>
+    <link rel="stylesheet" href="/style_leadpage.css">
+</head>
+
+<body>
+    <div class="hero">
+        <nav>
+            <h1>Breno Lendas</h1>
+            <div class="nav-links">
+                <a th:href="@{/cliente/cadastro}" class="nav-link">Cadastro</a>
+                <a th:href="@{/auth/login}" class="nav-link">Entrar</a>
+            </div>
+        </nav>
+
+        <div class="hero-content">
+            <h2>Your Story,<br>Our Art</h2>
+            <p>Transform your ideas into timeless pieces of art. Join our community of passionate artists and
+                collectors.</p>
+        </div>
+    </div>
+</body>

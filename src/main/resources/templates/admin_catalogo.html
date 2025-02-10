@@ -12,8 +12,6 @@
             <nav class="navegacao-barra-lateral">
                 <a th:href="@{/produto/admin-catalogo}" class="ativo">Catalogo</a>
                 <a th:href="@{/orcamentos/admin-orcamentos}">Orçamentos</a>
-                <a href="#">Minha Conta</a>
-                <a th:href="@{/auth/login}">Sair</a>
             </nav>
             <button class="fechar-barra">×</button>
         </aside>
@@ -27,8 +25,8 @@
                         <img src="/Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
                     </div>
                     <nav class="navegacao-principal">
-                        <a href="#">Minha Conta</a>
-                        <a href="#">Sair</a>
+                        <a th:href="@{/cliente/minha-conta}">Minha Conta</a>
+                        <a th:href="@{/auth/login}">Sair</a>
                     </nav>
                 </div>
             </header>

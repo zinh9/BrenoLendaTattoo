@@ -1,9 +1,11 @@
 package com.projecttattoo.BrenoLendaTattoo.controllers;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,12 +22,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.projecttattoo.BrenoLendaTattoo.dto.ResponseDto;
 import com.projecttattoo.BrenoLendaTattoo.dto.cliente.ClienteDto;
 import com.projecttattoo.BrenoLendaTattoo.dto.cliente.RequestRegisterDto;
+import com.projecttattoo.BrenoLendaTattoo.models.Cliente;
+import com.projecttattoo.BrenoLendaTattoo.repositories.ClienteRepository;
 import com.projecttattoo.BrenoLendaTattoo.services.ClienteService;
 
 @CrossOrigin(origins = "*")
 @Controller
 @RequestMapping("/cliente")
 public class ClienteController {
+	
+	@Autowired
+	private ClienteRepository clienteRepository;
 	
 	@Autowired
 	private ClienteService clienteService;
@@ -49,23 +56,46 @@ public class ClienteController {
 	    return "redirect:/auth/login";
 	}
 	
-	@GetMapping
-	public ResponseEntity<List<ClienteDto>> getAll(){
-		return clienteService.getAll();
+	@PreAuthorize("hasRole'USER'")
+	@GetMapping("/minha-conta")
+	public String getById(Model model, Principal principal){
+		String email = principal.getName();
+		Cliente cliente = clienteRepository.findByEmail(email);
+		
+		model.addAttribute("cliente", cliente);
+		
+		return "minha_conta";
 	}
 	
-	@GetMapping("/{id}")
-	public ResponseEntity<ClienteDto> getById(@PathVariable("id") Integer id){
-		return clienteService.getById(id);
+	@PreAuthorize("hasRole'USER'")
+	@PostMapping("/{id}/atualizar-conta")
+	public String update(@PathVariable("id") Integer id, @ModelAttribute RequestRegisterDto body, Model model){
+		ResponseEntity<RequestRegisterDto> response = clienteService.update(id, body);
+		
+		System.out.println("Cheguei aqui no controller");
+		
+		if (response.getStatusCode().is2xxSuccessful()) {
+			System.out.println("Consegui atualizar!");
+			model.addAttribute("Consegui", "Atualizou!");
+		} else {
+			model.addAttribute("Erro", "Não consegui atualizar");
+		}
+		
+		return "redirect:/cliente/minha-conta";
 	}
 	
-	@PutMapping("/{id}")
-	public ResponseEntity<RequestRegisterDto> update(@PathVariable("id") Integer id, @RequestBody RequestRegisterDto body){
-		return clienteService.update(id, body);
-	}
-	
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Integer> delete(@PathVariable("id") Integer id){
-		return clienteService.delete(id);
+	@PreAuthorize("hasRole'USER'")
+	@PostMapping("/{id}/deletar")
+	public String delete(@PathVariable("id") Integer id, Model model){
+		ResponseEntity<Integer> response = clienteService.delete(id);
+		
+		if (response.getStatusCode().is2xxSuccessful()) {
+			System.out.println("Consegui atualizar!");
+			model.addAttribute("Consegui", "Deletei!");
+		} else {
+			model.addAttribute("Erro", "Não consegui Deletar");
+		}
+		
+		return "redirect:/home";
 	}
 }

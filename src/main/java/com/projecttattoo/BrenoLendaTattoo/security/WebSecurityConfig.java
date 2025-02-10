@@ -13,11 +13,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.projecttattoo.BrenoLendaTattoo.filters.Filter;
+
 @Configuration
 @EnableWebSecurity
-public class WebSegurityConfig {
+public class WebSecurityConfig {
 	@Autowired
-	private com.projecttattoo.BrenoLendaTattoo.filters.Filter jwtFilter;
+	private Filter jwtFilter;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -26,20 +28,20 @@ public class WebSegurityConfig {
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers("/auth/login", "/auth/logar", "/cliente/cadastro", "/cliente/register",
-								"/produto/catalogo", "/static/**", "/css/**", "/js/**",
-								"/images/**", "/uploads/**")
-						.permitAll()
-						.requestMatchers("/orcamentos/{id}/deletar").hasAnyRole("USER", "ADMIN")
+								"/produto/catalogo", "/home", "/static/**", "/css/**", "/js/**", "/images/**", "/uploads/**")
+						.permitAll().requestMatchers("/orcamentos/{id}/deletar").hasAnyRole("USER", "ADMIN")
 						.requestMatchers("/orcamentos/meus-orcamentos").hasRole("USER")
-						.requestMatchers("/orcamentos/historico").hasRole("USER").requestMatchers("/orcamentos/novo")
-						.hasRole("USER").requestMatchers("/orcamentos/{id}/editar").hasRole("USER")
+						.requestMatchers("/orcamentos/historico").hasRole("USER").requestMatchers("/orcamentos/novo").hasRole("USER")
+						.requestMatchers("/orcamentos/{id}/editar").hasRole("USER")
 						.requestMatchers("/orcamentos/{id}/editar-orcamento").hasRole("USER")
+						.requestMatchers("/cliente/minha-conta").hasRole("USER")
+						.requestMatchers("/cliente/{id}/atualizar-conta").hasAnyRole("USER")
 						.requestMatchers("/produto/admin-catalogo").hasRole("ADMIN")
 						.requestMatchers("/produto/admin-novo-produto").hasRole("ADMIN")
 						.requestMatchers("/produto/register").hasRole("ADMIN").requestMatchers("/produto/{id}/deletar")
 						.hasRole("ADMIN").requestMatchers("/orcamentos/admin-orcamentos").hasAnyRole("ADMIN")
-						.requestMatchers("/produto/{id}/concluir").hasAnyRole("ADMIN").anyRequest().authenticated() 
-				).addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class).build();
+						.requestMatchers("/produto/{id}/concluir").hasAnyRole("ADMIN").anyRequest().authenticated())
+				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class).build();
 	}
 
 	@Bean

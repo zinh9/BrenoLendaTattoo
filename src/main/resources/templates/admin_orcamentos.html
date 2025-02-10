@@ -12,8 +12,6 @@
             <nav class="navegacao-barra-lateral">
                 <a th:href="@{/produto/admin-catalogo}">Catalogo</a>
                 <a th:href="@{/orcamentos/admin-orcamentos}" class="ativo">Orçamentos</a>
-                <a href="#">Minha Conta</a>
-                <a th:href="@{/auth/login}">Sair</a>
             </nav>
             <button class="fechar-barra">×</button>
         </aside>
@@ -27,8 +25,8 @@
                         <img src="/Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
                     </div>
                     <nav class="navegacao-principal">
-                        <a href="#">Minha Conta</a>
-                        <a href="#">Sair</a>
+                        <a th:href="@{/cliente/minha-conta}">Minha Conta</a>
+                        <a th:href="@{/auth/login}">Sair</a>
                     </nav>
                 </div>
             </header>
@@ -42,6 +40,9 @@
                     <div th:each="orcamento : ${orcamentos}" class="card">
                         <img th:src="${orcamento.imagem}" alt="Orçamento">
                         <div class="card-detalhes">
+                            <p><strong>Cliente:</strong><span th:text="${orcamento.cliente.nomeCompleto}"></span></p>
+                            <p><strong>Telefone:</strong><span th:text="${orcamento.cliente.telefone}"></span></p>
+                            <p><strong>Email:</strong><span th:text="${orcamento.cliente.email}"></span></p>
                             <p><strong>Tamanho: </strong><span th:text="${orcamento.altura} + ' x ' + ${orcamento.largura}"></span></p>
                             <p><strong>Valor: </strong><span th:text="'R$' + ${orcamento.valor}"></span></p>
                             <p><strong>Descrição: </strong><span th:text="${orcamento.descricao}"></span>

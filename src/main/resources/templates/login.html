@@ -5,63 +5,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Breno Lendas - Studio de Tatuagem</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/style_leadpage.css">
 </head>
 
 <body>
-    <div class="pagina-layout">
-        <aside class="barra-lateral">
-            <nav class="navegacao-barra-lateral">
-                <a href="catalogo.html">Catálogo</a>
-                <a href="historico.html">Meu Histórico</a>
-                <a href="meus_orcamentos.html">Orçamento</a>
-                <a href="#" class="ativo">Minha Conta</a>
-                <a href="#">Sair</a>
-            </nav>
-            <button class="fechar-barra">×</button>
-        </aside>
-        <div class="sobrepor"></div>
-
-        <div class="barra-lateral-principal">
-            <header>
-                <div class="conteudo">
-                    <div class="cabecalho-esquerdo">
-                        <button class="botao-menu" aria-label="Toggle Menu">☰</button>
-                        <img src="/Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
-                    </div>
-                    <nav class="navegacao-principal">
-                        <a href="#" class="ativo">Minha Conta</a>
-                        <a href="#">Sair</a>
-                    </nav>
-                </div>
-            </header>
-
-            <main class="container">
-                <div class="cabecalho-pagina">
-                    <h1>Login</h1>
+    <div class="hero">
+        <main class="container login-container">
+            <div class="login-wrapper">
+                <div class="login-header">
+                    <h1>Entrar</h1>
                 </div>
 
-                <form class="formulario" th:action="@{/auth/logar}" method="post" th:object="${login}">
+                <form class="formulario login-form" th:action="@{/auth/logar}" method="post" th:object="${login}">
                     <div class="secao-formulario">
-                
                         <div class="formulario-dados">
-                            <label for="email">E-mail</label>
-                            <input type="email" id="email" th:field="*{email}" class="input-padrao" required />
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" th:field="*{email}" class="input-padrao login-input" required />
                         </div>
-                
+
                         <div class="formulario-dados">
-                            <label for="senha">Senha</label>
-                            <input type="password" id="senha" th:field="*{senha}" class="input-padrao" required />
+                            <label for="senha">Senha:</label>
+                            <input type="password" id="senha" th:field="*{senha}" class="input-padrao login-input" required />
                         </div>
                     </div>
-                
-                    <div class="botoes-acao">
-                        <button type="button" class="botao-secundario">Cancelar</button>
-                        <button type="submit" class="botao-primario">Entrar</button>
+
+                    <div class="botoes-acao login-actions">
+                        <a th:href="@{/home}" class="botao-secundario login-input">Voltar</a>
+                        <button type="submit" class="botao-primario login-button">Entrar</button>
                     </div>
                 </form>
-            </main>
-        </div>
+            </div>
+        </main>
     </div>
 </body>
 

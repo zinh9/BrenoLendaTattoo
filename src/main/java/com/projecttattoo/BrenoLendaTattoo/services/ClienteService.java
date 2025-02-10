@@ -140,11 +140,16 @@ public class ClienteService implements ClienteInterfaceService {
     }
 
     @Override
-    public ResponseEntity<RequestRegisterDto> update(int id, RequestRegisterDto body) {
-        Cliente cliente = clienteRepository.findById(id);
-        if (cliente == null) {
+    public ResponseEntity<RequestRegisterDto> update(Integer id, RequestRegisterDto body) {
+    	Optional<Cliente> clienteOpt = clienteRepository.findById(id);
+    	
+    	System.out.println("Cheguei aqui no service");
+    	
+        if (clienteOpt == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+        
+        Cliente cliente = clienteOpt.get();
 
         cliente.setNomeCompleto(body.nomeCompleto());
         cliente.setEmail(body.email());

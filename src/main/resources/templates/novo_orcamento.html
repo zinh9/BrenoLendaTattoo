@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Breno Lendas - Studio de Tatuagem</title>
     <link rel="stylesheet" href="/style.css">
 </head>
+
 <body>
     <div class="pagina-layout">
         <aside class="barra-lateral">
@@ -13,8 +15,6 @@
                 <a th:href="@{/produto/catalogo}">Catalogo</a>
                 <a th:href="@{/orcamentos/historico}">Meu Histórico</a>
                 <a th:href="@{/orcamentos/meus-orcamentos}" class="ativo">Orçamentos</a>
-                <a href="#">Minha Conta</a>
-                <a th:href="@{/auth/login}">Sair</a>
             </nav>
             <button class="fechar-barra">×</button>
         </aside>
@@ -28,8 +28,8 @@
                         <img src="/Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
                     </div>
                     <nav class="navegacao-principal">
-                        <a href="#">Minha Conta</a>
-                        <a href="#">Sair</a>
+                        <a th:href="@{/cliente/minha-conta}">Minha Conta</a>
+                        <a th:href="@{/auth/login}">Sair</a>
                     </nav>
                 </div>
             </header>
@@ -39,40 +39,41 @@
                     <h1>Novo Orçamento</h1>
                 </div>
 
-                <form class="formulario" th:action="@{/orcamentos/novo}" method="post" enctype="multipart/form-data" th:object="${orcamento}">
-                    <!-- Campo oculto para o ID do produto (se houver) -->
+                <form class="formulario" th:action="@{/orcamentos/novo}" method="post" enctype="multipart/form-data"
+                    th:object="${orcamento}">
                     <input type="hidden" th:if="${produto != null}" th:field="*{produtoId}" th:value="${produto.id}" />
-                
+
                     <div class="secao-formulario">
                         <h2>Referência Visual</h2>
                         <div class="enviar-imagem">
-                            <input type="file" id="tattoo-image" accept="image/*" class="enviar-arquivo" th:field="*{imagem}" required>
+                            <input type="file" id="tattoo-image" accept="uploads/*" class="enviar-arquivo"
+                                th:field="*{imagem}" required>
                             <label for="tattoo-image" class="nome-arquivo">
                                 <div class="icone-upload">+</div>
                                 <span>Adicionar foto de referência</span>
                                 <p class="dica">Clique para selecionar</p>
                             </label>
                             <div class="visualizacao" style="display: none;">
-                                <img src="" alt="Preview" id="image-preview">
+                                <img th:src="${imagem}" alt="Preview" id="image-preview">
                                 <button type="button" class="botao-remover-imagem">×</button>
                             </div>
                         </div>
                     </div>
-                
+
                     <div class="secao-formulario">
                         <h2>Detalhes da Tatuagem</h2>
-                        
+
                         <div class="formulario-dados">
                             <label for="size">Tamanho aproximado (em cm)</label>
                             <div class="tamanhos">
-                                <input type="number" id="width" th:field="*{largura}" placeholder="Largura" min="1" max="100" required
-                                       th:value="${produto != null} ? ${produto.largura} : ''">
+                                <input type="number" id="width" th:field="*{largura}" placeholder="Largura" min="1"
+                                    max="100" required th:value="${produto != null} ? ${produto.largura} : ''">
                                 <span>x</span>
-                                <input type="number" id="height" th:field="*{altura}" placeholder="Altura" min="1" max="100" required
-                                       th:value="${produto != null} ? ${produto.altura} : ''">
+                                <input type="number" id="height" th:field="*{altura}" placeholder="Altura" min="1"
+                                    max="100" required th:value="${produto != null} ? ${produto.altura} : ''">
                             </div>
                         </div>
-                
+
                         <div class="formulario-dados">
                             <label for="body-part">Parte do corpo</label>
                             <select id="body-part" th:field="*{parteCorpo}" required>
@@ -88,22 +89,52 @@
                                 <option value="Outro">Outro</option>
                             </select>
                         </div>
-                
+
                         <div class="formulario-dados">
                             <label for="description">Descrição e detalhes adicionais</label>
-                            <textarea id="description" th:field="*{descricao}" rows="4" placeholder="Descreva os detalhes da sua tatuagem, incluindo cores, estilo e qualquer informação relevante..." required
-                                      th:text="${produto != null} ? ${produto.descricao} : ''"></textarea>
+                            <textarea id="description" th:field="*{descricao}" rows="4"
+                                placeholder="Descreva os detalhes da sua tatuagem, incluindo cores, estilo e qualquer informação relevante..."
+                                required th:text="${produto != null} ? ${produto.descricao} : ''"></textarea>
                         </div>
                     </div>
-                
+
                     <div class="botoes-acao">
-                        <button type="button" class="botao-secundario"><a th:href="@{/orcamentos/meus-orcamentos}">Cancelar</a></button>
+                        <button type="button" class="botao-secundario"><a
+                                th:href="@{/orcamentos/meus-orcamentos}">Cancelar</a></button>
                         <button type="submit" class="botao-primario">Solicitar Orçamento</button>
                     </div>
                 </form>
             </main>
         </div>
     </div>
-    <script src="/src/main/resources/static/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const inputFile = document.getElementById('tattoo-image');
+            const imagePreview = document.getElementById('image-preview');
+            const visualizacao = document.querySelector('.visualizacao');
+            const botaoRemover = document.querySelector('.botao-remover-imagem');
+
+            // Quando um arquivo é selecionado
+            inputFile.addEventListener('change', function () {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        imagePreview.src = e.target.result;
+                        visualizacao.style.display = 'flex'; // Exibe a área de visualização
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Remove a imagem selecionada
+            botaoRemover.addEventListener('click', function () {
+                inputFile.value = ''; // Limpa o input de arquivo
+                imagePreview.src = ''; // Limpa a pré-visualização
+                visualizacao.style.display = 'none'; // Oculta a área de visualização
+            });
+        });
+    </script>
 </body>
+
 </html>
