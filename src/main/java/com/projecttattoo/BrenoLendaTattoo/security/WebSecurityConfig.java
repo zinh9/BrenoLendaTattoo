@@ -37,6 +37,8 @@ public class WebSecurityConfig {
 						.requestMatchers("/orcamentos/meus-orcamentos").hasRole("USER")
 						.requestMatchers("/orcamentos/historico").hasRole("USER")
 						.requestMatchers("/orcamentos/novo").hasRole("USER")
+						.requestMatchers("/orcamentos/{id}/novo-orcamento").hasRole("USER")
+						.requestMatchers("/orcamentos/novo-orcamento").hasRole("USER")
 						.requestMatchers("/orcamentos/{id}/editar").hasRole("USER")
 						.requestMatchers("/orcamentos/{id}/editar-orcamento").hasRole("USER")
 						.requestMatchers("/produto/admin-catalogo").hasRole("ADMIN")

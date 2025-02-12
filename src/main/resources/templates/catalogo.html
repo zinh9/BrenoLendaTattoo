@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Breno Lendas - Studio de Tatuagem</title>
-    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
@@ -40,7 +40,7 @@
                         <p><span th:text="${produto.altura} + ' x ' + ${produto.largura}"></span></p>
                         <p>R$ <span th:text="${produto.valor}"></span></p>
                         <div class="botoes-acao">
-                            <form th:action="@{/orcamentos/novo-orcamento}" method="get">
+                            <form th:action="@{/orcamentos/{id}/novo-orcamento(id=${produto.id})}" method="get">
                                 <button class="botao-primario">Pedir Orçamento</button>
                             </form>
                         </div>

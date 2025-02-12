@@ -36,19 +36,6 @@ body.sidebar-open {
     transform: translateX(-100%);
 }
 
-.barra-lateral {
-    width: 250px;
-    background-color: white;
-    border-right: 1px solid #e5e5e5;
-    padding: 2rem 1rem;
-    position: fixed;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    z-index: 50;
-    transition: transform 0.3s ease-in-out;
-}
-
 .navegacao-barra-lateral {
     display: flex;
     flex-direction: column;
@@ -58,40 +45,6 @@ body.sidebar-open {
 .logo {
     height: 64px;
     width: auto;
-}
-
-.navegacao-barra-lateral {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.navegacao-barra-lateral a {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1rem;
-    color: #4a4a4a;
-    text-decoration: none;
-    border-radius: 0.375rem;
-    transition: all 0.3s;
-}
-
-.navegacao-barra-lateral a:hover {
-    background-color: #f3f4f6;
-    color: #000000;
-}
-
-.navegacao-barra-lateral a.ativo {
-    background-color: #000000;
-    color: white;
-}
-
-.barra-lateral-principal {
-    margin-left: 250px;
-    width: calc(100% - 250px);
-    min-height: 100vh;
-    transition: all 0.3s ease-in-out;
 }
 
 header {
@@ -142,56 +95,8 @@ header {
     font-weight: bold;
 }
 
-.botao-menu {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s ease;
-}
-
-.botao-menu:hover {
-    transform: scale(1.1);
-}
-
-.fechar-barra {
-    display: none;
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: none;
-    border: none;
-    color: #666;
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0.5rem;
-    transition: transform 0.3s ease;
-}
-
 .fechar-barra:hover {
     transform: scale(1.1);
-}
-
-.sobrepor {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 45;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-}
-
-.sobrepor.ativo {
-    opacity: 1;
 }
 
 .cabecalho-pagina {

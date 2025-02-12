@@ -16,7 +16,10 @@
                     <img src="/Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
                 </div>
                 <nav class="navegacao-principal">
-                    <a th:href="@{/cliente/minha-conta}">Minha Conta</a>
+                    <a th:href="@{/produto/catalogo}">Catalogo</a>
+                    <a th:href="@{/orcamentos/historico}">Meu Histórico</a>
+                    <a th:href="@{/orcamentos/meus-orcamentos}">Orçamentos</a>
+                    <a th:href="@{/cliente/minha-conta}" class="ativo">Minha Conta</a>
                     <a th:href="@{/auth/login}">Sair</a>
                 </nav>
             </div>
@@ -58,7 +61,7 @@
                     </div>
                 </form>
                 <div class="botoes-acao">
-                    <button type="button" class="botao-secundario"><a th:href="@{/produto/catalogo}">Voltar</a></button>
+                    <button type="submit" class="botao-secundario"><a th:href="@{/produto/catalogo}">Voltar</a></button>
                     <form th:action="@{/cliente/{id}/deletar(id=${cliente.id})}" method="post">
                         <button type="submit" class="botao-secundario">Deletar</button>
                     </form>

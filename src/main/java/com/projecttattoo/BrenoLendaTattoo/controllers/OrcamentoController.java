@@ -61,12 +61,39 @@ public class OrcamentoController {
                 orcamento.setLargura(produto.getLargura());
                 orcamento.setDescricao(produto.getDescricao());
                 orcamento.setValor(produto.getValor());
-                model.addAttribute("orcamento", orcamento); // Passa o produto para o template
+                model.addAttribute("orcamento", orcamento);
             }
         }
 
         model.addAttribute("orcamento", orcamento);
-        return "novo_orcamento"; // Nome do template do formulário de orçamento
+        return "novo_orcamento";
+    }
+    
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/{id}/novo-orcamento")
+    public String exibirFormularioNovoOrcamentoPorProduto(
+        @PathVariable Integer id,
+        Model model
+    ) {
+    	Optional<Produto> produtoOpt = produtoRepository.findById(id);
+        Orcamento orcamento = new Orcamento();
+        
+        if (produtoOpt != null) {
+            
+            if (produtoOpt.isPresent()) {
+                Produto produto = produtoOpt.get();
+                
+                orcamento.setImagem(produto.getImagem());
+                orcamento.setAltura(produto.getAltura());
+                orcamento.setLargura(produto.getLargura());
+                orcamento.setDescricao(produto.getDescricao());
+                orcamento.setValor(produto.getValor());
+                model.addAttribute("orcamento", orcamento);
+            }
+        }
+
+        model.addAttribute("orcamento", orcamento);
+        return "novo_orcamento";
     }
 
     @PreAuthorize("hasRole('USER')")
@@ -86,10 +113,8 @@ public class OrcamentoController {
         ResponseEntity<ResponseOrcamentoDto> response;
 
         if (produtoId != null) {
-            // Cria o orçamento com base no produto
             response = orcamentoService.regiterByProduto(requestOrcamentoDto, produtoId, cliente);
         } else {
-            // Cria o orçamento sem produto associado
             response = orcamentoService.register(requestOrcamentoDto, cliente);
         }
 

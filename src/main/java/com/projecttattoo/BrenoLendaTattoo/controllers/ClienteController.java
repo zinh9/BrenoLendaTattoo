@@ -45,8 +45,12 @@ public class ClienteController {
 	
 	@PostMapping("/register")
 	public String register(@ModelAttribute("cliente") RequestRegisterDto request, Model model) {
+		System.out.println("Cheguei aqui");
+		
 	    ResponseEntity<ResponseDto> response = clienteService.register(request);
-
+	    
+	    
+	    
 	    if (response.getStatusCode().is2xxSuccessful()) {
 	        model.addAttribute("message", "Cliente salvo com sucesso!");
 	    } else {

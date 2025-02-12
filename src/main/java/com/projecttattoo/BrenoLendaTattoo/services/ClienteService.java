@@ -48,7 +48,6 @@ public class ClienteService implements ClienteInterfaceService {
                     .build();
         }
 
-        // Cria o novo cliente
         Cliente newCliente = new Cliente();
         newCliente.setNomeCompleto(body.nomeCompleto());
         newCliente.setEmail(body.email());
@@ -56,16 +55,16 @@ public class ClienteService implements ClienteInterfaceService {
         newCliente.setCpf(body.cpf());
         newCliente.setSenha(encoder.encode(body.senha()));
 
-        // Cria o login associado
         Logins logins = new Logins();
         logins.setEmail(newCliente.getEmail());
         logins.setNome(newCliente.getNomeCompleto());
         logins.setSenha(newCliente.getSenha());
-        logins.setUserRole(Roles.ADMIN);
+        logins.setUserRole(Roles.USER);
 
-        // Salva no banco
         clienteRepository.save(newCliente);
+        System.out.println("Adicionei na tabela cliente");
         loginsRepository.save(logins);
+        System.out.println("Adicionei na tabela logins");
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ResponseDto(newCliente.getId(), "Cliente registrado com sucesso", newCliente.getEmail()));

@@ -66,8 +66,8 @@ public class OrcamentoService implements OrcamentoInterfaceService {
 		final double valorPorCm = 2;
 		double altura = orcamento.getAltura(), largura = orcamento.getLargura();
 
-		Map<String, Double> fatorPorParteCorpo = Map.of("braco", 0.3, "costela", 0.25, "antebraco", 0.4, "perna", 0.55,
-				"costas", 0.5, "peito", 0.9, "pescoco", 0.1, "pe", 0.4, "outro", 0.5);
+		Map<String, Double> fatorPorParteCorpo = Map.of("Braço", 0.3, "Costela", 0.25, "Antebraco", 0.4, "Perna", 0.55,
+				"Costas", 0.5, "Peito", 0.9, "Pescoço", 0.1, "Pé", 0.4, "Outro", 0.5);
 
 		double fatorLocalizacao = fatorPorParteCorpo.getOrDefault(orcamento.getParteCorpo(), 1.0);
 		return altura * largura * valorPorCm * fatorLocalizacao;
@@ -128,7 +128,6 @@ public class OrcamentoService implements OrcamentoInterfaceService {
 		Optional<Orcamento> orcamentoOpt = orcamentoRespository.findById(id);
 
 		if (orcamentoOpt.isPresent()) {
-			System.out.println("Achei a merda da tatuagem que você quer atualizar");
 			System.out.println("Esse orcamento é do: " + orcamentoOpt.get().getCliente().getNomeCompleto());
 			Orcamento orcamento = orcamentoOpt.get();
 
