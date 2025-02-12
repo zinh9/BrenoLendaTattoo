@@ -1,66 +1,59 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Breno Lendas - Studio de Tatuagem</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
     <div class="pagina-layout">
-        <aside class="barra-lateral">
-            <nav class="navegacao-barra-lateral">
-                <a th:href="@{/produto/admin-catalogo}" class="ativo">Catalogo</a>
-                <a th:href="@{/orcamentos/admin-orcamentos}">Orçamentos</a>
-            </nav>
-            <button class="fechar-barra">×</button>
-        </aside>
-        <div class="sobrepor"></div>
-    
-        <div class="barra-lateral-principal">
-            <header>
-                <div class="conteudo">
-                    <div class="cabecalho-esquerdo">
-                        <button class="botao-menu" aria-label="Toggle Menu">☰</button>
-                        <img src="/Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
-                    </div>
-                    <nav class="navegacao-principal">
-                        <a th:href="@{/cliente/minha-conta}">Minha Conta</a>
-                        <a th:href="@{/auth/login}">Sair</a>
-                    </nav>
+        <header>
+            <div class="conteudo">
+                <div class="cabecalho-esquerdo">
+                    <img src="/Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
                 </div>
-            </header>
+                <nav class="navegacao-principal">
+                    <a th:href="@{/produto/admin-catalogo}">Catalogo</a>
+                    <a th:href="@{/orcamentos/admin-orcamentos}" class="ativo">Orçamentos</a>
+                    <a th:href="@{/cliente/minha-conta}">Minha Conta</a>
+                    <a th:href="@{/auth/login}">Sair</a>
+                </nav>
+            </div>
+        </header>
 
-            <main class="container">
-                <div class="cabecalho-pagina">
-                    <h1>Catálogo de Tattoo</h1>
-                </div>
-        
-                <div class="card-estilo">
-                    <div class="card" th:each="produto : ${produtos}">
-                        <img th:src="${produto.imagem}" alt="Imagem produto">
-                        <div class="card-detalhes">
-                            <h3 ><span th:text="${produto.nome}"></span></h3>
-                            <br>
-                            <p class="style-description"><span th:text="${produto.descricao}"></span></p>
-                            <p><span th:text="${produto.altura} + ' x ' + ${produto.largura}"></span></p>
-                            <p>R$ <span th:text="${produto.valor}"></span></p>
-                            <div class="botoes-acao">
-                                <form th:action="@{/produto/{id}/deletar(id=${produto.id})}" method="post" style="display: inline;">
-                                    <button class="botao-secundario">Excluir</button>
-                                </form>
-                                <button class="botao-primario">Atualizar</button>
-                            </div>
+        <main class="container">
+            <div class="cabecalho-pagina">
+                <h1>Catálogo de Tattoo</h1>
+            </div>
+
+            <div class="card-estilo">
+                <div class="card" th:each="produto : ${produtos}">
+                    <img th:src="${produto.imagem}" alt="Imagem produto">
+                    <div class="card-detalhes">
+                        <h3><span th:text="${produto.nome}"></span></h3>
+                        <br>
+                        <p class="style-description"><span th:text="${produto.descricao}"></span></p>
+                        <p><span th:text="${produto.altura} + ' x ' + ${produto.largura}"></span></p>
+                        <p>R$ <span th:text="${produto.valor}"></span></p>
+                        <div class="botoes-acao">
+                            <form th:action="@{/produto/{id}/deletar(id=${produto.id})}" method="post"
+                                style="display: inline;">
+                                <button class="botao-secundario">Excluir</button>
+                            </form>
+                            <button class="botao-primario">Atualizar</button>
                         </div>
                     </div>
-                    <a th:href="@{/produto/admin-novo-produto}" class="novo-orcamento">
-                        <div class="icone-mais">+</div>
-                        <span>Novo Produto</span>
-                    </a>
                 </div>
-            </main>
-        </div>
+                <a th:href="@{/produto/admin-novo-produto}" class="novo-orcamento">
+                    <div class="icone-mais">+</div>
+                    <span>Novo Produto</span>
+                </a>
+            </div>
+        </main>
     </div>
-    <script src="/src/main/resources/static/js/script.js"></script>
 </body>
+
 </html>

@@ -61,7 +61,7 @@ public class ClienteService implements ClienteInterfaceService {
         logins.setEmail(newCliente.getEmail());
         logins.setNome(newCliente.getNomeCompleto());
         logins.setSenha(newCliente.getSenha());
-        logins.setUserRole(Roles.USER);
+        logins.setUserRole(Roles.ADMIN);
 
         // Salva no banco
         clienteRepository.save(newCliente);
@@ -153,6 +153,7 @@ public class ClienteService implements ClienteInterfaceService {
 
         cliente.setNomeCompleto(body.nomeCompleto());
         cliente.setEmail(body.email());
+        cliente.setSenha(body.senha());
         cliente.setTelefone(body.telefone());
         cliente.setCpf(body.cpf());
 

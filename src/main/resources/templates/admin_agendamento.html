@@ -5,69 +5,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Breno Lendas - Studio de Tatuagem</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
     <div class="pagina-layout">
-        <aside class="barra-lateral">
-            <nav class="navegacao-barra-lateral">
-                <a th:href="@{/produto/admin-catalogo}">Catalogo</a>
-                <a th:href="@{/orcamentos/admin-orcamentos}" class="ativo">Orçamentos</a>
-            </nav>
-            <button class="fechar-barra">×</button>
-        </aside>
-        <div class="sobrepor"></div>
-
-        <div class="barra-lateral-principal">
-            <header>
-                <div class="conteudo">
-                    <div class="cabecalho-esquerdo">
-                        <button class="botao-menu" aria-label="Toggle Menu">☰</button>
-                        <img src="/Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
-                    </div>
-                    <nav class="navegacao-principal">
-                        <a th:href="@{/cliente/minha-conta}">Minha Conta</a>
-                        <a th:href="@{/auth/login}">Sair</a>
-                    </nav>
+        <header>
+            <div class="conteudo">
+                <div class="cabecalho-esquerdo">
+                    <img src="/Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
                 </div>
-            </header>
+                <nav class="navegacao-principal">
+                    <a th:href="@{/produto/admin-catalogo}">Catalogo</a>
+                    <a th:href="@{/orcamentos/admin-orcamentos}" class="ativo">Orçamentos</a>
+                    <a th:href="@{/cliente/minha-conta}">Minha Conta</a>
+                    <a th:href="@{/auth/login}">Sair</a>
+                </nav>
+            </div>
+        </header>
 
-            <main class="container">
-                <div class="cabecalho-pagina">
-                    <h1>Novo Agendamento</h1>
-                </div>
+        <main class="container">
+            <div class="cabecalho-pagina">
+                <h1>Novo Agendamento</h1>
+            </div>
 
-                <form class="formulario" th:action="@{/agendamento/{id}/novo(id=${orcamento.id})}" method="post"
-                    enctype="multipart/form-data" th:object="${agendamento}">
-                    <div class="secao-formulario">
-                        <h2>Marque uma Data e Horário</h2>
-                        <div class="formulario-dados">
-                            <label for="data-agendamento">Marcar Agendamento:</label>
-                            <div class="agendamento">
-                                <input type="date" id="data-agendamento" th:field="*{dataAgendamento}"
-                                    placeholder="Agendamento" required>
-                            </div>
-                        </div>
-
-                        <div class="formulario-dados">
-                            <label for="horario">Horário:</label>
-                            <div class="agendamento">
-                                <input type="time" id="horario" placeholder="Horario" th:field="*{horario}" required>
-                            </div>
+            <form class="formulario" th:action="@{/agendamento/{id}/novo(id=${orcamento.id})}" method="post"
+                th:object="${agendamento}">
+                <div class="secao-formulario">
+                    <h2>Marque uma Data e Horário</h2>
+                    <div class="formulario-dados">
+                        <label for="data-agendamento">Marcar Agendamento:</label>
+                        <div class="agendamento">
+                            <input type="date" id="data-agendamento" th:field="*{dataAgendamento}"
+                                placeholder="Agendamento" required>
                         </div>
                     </div>
 
-                    <div class="botoes-acao">
-                        <button type="button" class="botao-secundario"><a
-                                th:href="@{/orcamentos/admin-orcamentos}">Voltar</a></button>
-                        <button type="submit" class="botao-primario">Marcar</button>
+                    <div class="formulario-dados">
+                        <label for="horario">Horário:</label>
+                        <div class="agendamento">
+                            <input type="time" id="horario" placeholder="Horario" th:field="*{horario}" required>
+                        </div>
                     </div>
-                </form>
-            </main>
-        </div>
+                </div>
+
+                <div class="botoes-acao">
+                    <button type="button" class="botao-secundario"><a
+                            th:href="@{/orcamentos/admin-orcamentos}">Voltar</a></button>
+                    <button type="submit" class="botao-primario">Marcar</button>
+                </div>
+            </form>
+        </main>
     </div>
-    <script src="/src/main/resources/static/script.js"></script>
 </body>
 
 </html>

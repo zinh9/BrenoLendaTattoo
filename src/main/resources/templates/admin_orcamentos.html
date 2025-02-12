@@ -1,73 +1,70 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Breno Lendas - Studio de Tatuagem</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
     <div class="pagina-layout">
-        <aside class="barra-lateral">
-            <nav class="navegacao-barra-lateral">
-                <a th:href="@{/produto/admin-catalogo}">Catalogo</a>
-                <a th:href="@{/orcamentos/admin-orcamentos}" class="ativo">Orçamentos</a>
-            </nav>
-            <button class="fechar-barra">×</button>
-        </aside>
-        <div class="sobrepor"></div>
-
-        <div class="barra-lateral-principal">
-            <header>
-                <div class="conteudo">
-                    <div class="cabecalho-esquerdo">
-                        <button class="botao-menu" aria-label="Toggle Menu">☰</button>
-                        <img src="/Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
-                    </div>
-                    <nav class="navegacao-principal">
-                        <a th:href="@{/cliente/minha-conta}">Minha Conta</a>
-                        <a th:href="@{/auth/login}">Sair</a>
-                    </nav>
+        <header>
+            <div class="conteudo">
+                <div class="cabecalho-esquerdo">
+                    <img src="/Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
                 </div>
-            </header>
+                <nav class="navegacao-principal">
+                    <a th:href="@{/produto/admin-catalogo}">Catalogo</a>
+                    <a th:href="@{/orcamentos/admin-orcamentos}" class="ativo">Orçamentos</a>
+                    <a th:href="@{/cliente/minha-conta}">Minha Conta</a>
+                    <a th:href="@{/auth/login}">Sair</a>
+                </nav>
+            </div>
+        </header>
 
-            <main class="container">
-                <div class="cabecalho-pagina">
-                    <h1>Orçamentos</h1>
-                </div>
+        <main class="container">
+            <div class="cabecalho-pagina">
+                <h1>Orçamentos</h1>
+            </div>
 
-                <div class="card-estilo"> 
-                    <div th:each="orcamento : ${orcamentos}" class="card">
-                        <img th:src="${orcamento.imagem}" alt="Orçamento">
-                        <div class="card-detalhes">
-                            <p><strong>Cliente:</strong><span th:text="${orcamento.cliente.nomeCompleto}"></span></p>
-                            <p><strong>Telefone:</strong><span th:text="${orcamento.cliente.telefone}"></span></p>
-                            <p><strong>Email:</strong><span th:text="${orcamento.cliente.email}"></span></p>
-                            <p><strong>Tamanho: </strong><span th:text="${orcamento.altura} + ' x ' + ${orcamento.largura}"></span></p>
-                            <p><strong>Valor: </strong><span th:text="'R$' + ${orcamento.valor}"></span></p>
-                            <p><strong>Descrição: </strong><span th:text="${orcamento.descricao}"></span>
-                            <p><strong>Status: </strong><span th:text="${orcamento.statusOrcamento}"></span></p>
-                            <div th:if="${orcamento.agendamento != null}">
-                                <p><strong>Data: </strong><span th:text="${orcamento.agendamento.dataAgendamento}"></span></p>
-                                <p><strong>Horário: </strong><span th:text="${orcamento.agendamento.horario}"></span></p>
-                            </div>
-                            <div class="botoes-acao">
-                                <form th:action="@{/orcamentos/{id}/deletar(id=${orcamento.id})}" method="post" style="display: inline;">
-                                    <button type="submit" class="botao-secundario">Cancelar</button>
-                                </form>
-                                <form th:action="@{/orcamentos/{id}/concluir(id=${orcamento.id})}" method="post" style="display: inline;">
-                                    <button type="submit" class="botao-primario">Concluir</button>
-                                </form>
-                                <form th:action="@{/agendamento/{id}/novo-agendamento(id=${orcamento.id})}" method="get" style="display: inline;">
-                                    <button type="submit" class="botao-primario">Agendar</button>
-                                </form>
-                            </div>
+            <div class="card-estilo">
+                <div th:each="orcamento : ${orcamentos}" class="card">
+                    <img th:src="${orcamento.imagem}" alt="Orçamento">
+                    <div class="card-detalhes">
+                        <p><strong>Cliente:</strong><span th:text="${orcamento.cliente.nomeCompleto}"></span></p>
+                        <p><strong>Telefone:</strong><span th:text="${orcamento.cliente.telefone}"></span></p>
+                        <p><strong>Email:</strong><span th:text="${orcamento.cliente.email}"></span></p>
+                        <p><strong>Tamanho: </strong><span
+                                th:text="${orcamento.altura} + ' x ' + ${orcamento.largura}"></span></p>
+                        <p><strong>Valor: </strong><span th:text="'R$' + ${orcamento.valor}"></span></p>
+                        <p><strong>Descrição: </strong><span th:text="${orcamento.descricao}"></span>
+                        <p><strong>Status: </strong><span th:text="${orcamento.statusOrcamento}"></span></p>
+                        <div th:if="${orcamento.agendamento != null}">
+                            <p><strong>Data: </strong><span th:text="${orcamento.agendamento.dataAgendamento}"></span>
+                            </p>
+                            <p><strong>Horário: </strong><span th:text="${orcamento.agendamento.horario}"></span></p>
+                        </div>
+                        <div class="botoes-acao">
+                            <form th:action="@{/orcamentos/{id}/deletar(id=${orcamento.id})}" method="post"
+                                style="display: inline;">
+                                <button type="submit" class="botao-secundario">Cancelar</button>
+                            </form>
+                            <form th:action="@{/orcamentos/{id}/concluir(id=${orcamento.id})}" method="post"
+                                style="display: inline;">
+                                <button type="submit" class="botao-primario">Concluir</button>
+                            </form>
+                            <form th:action="@{/agendamento/{id}/novo-agendamento(id=${orcamento.id})}" method="get"
+                                style="display: inline;">
+                                <button type="submit" class="botao-primario">Agendar</button>
+                            </form>
                         </div>
                     </div>
                 </div>
-            </main>
-        </div>
+            </div>
+        </main>
     </div>
-    <script src="/src/main/resources/static/script.js"></script>
 </body>
+
 </html>

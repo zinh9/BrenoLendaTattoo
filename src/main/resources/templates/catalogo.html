@@ -5,59 +5,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Breno Lendas - Studio de Tatuagem</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="../static/css/style.css">
 </head>
 
 <body>
     <div class="pagina-layout">
-        <aside class="barra-lateral">
-            <nav class="navegacao-barra-lateral">
-                <a th:href="@{/produto/catalogo}" class="ativo">Catalogo</a>
-                <a th:href="@{/orcamentos/historico}">Meu Histórico</a>
-                <a th:href="@{/orcamentos/meus-orcamentos}">Orçamentos</a>
-            </nav>
-            <button class="fechar-barra">×</button>
-        </aside>
-        <div class="sobrepor"></div>
-
-        <div class="barra-lateral-principal">
-            <header>
-                <div class="conteudo">
-                    <div class="cabecalho-esquerdo">
-                        <button class="botao-menu" aria-label="Toggle Menu">☰</button>
-                        <img src="/Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
-                    </div>
-                    <nav class="navegacao-principal">
-                        <a th:href="@{/cliente/minha-conta}">Minha Conta</a>
-                        <a th:href="@{/auth/login}">Sair</a>
-                    </nav>
+        <header>
+            <div class="conteudo">
+                <div class="cabecalho-esquerdo">
+                    <img src="/Ilustração_Sem_Título_page-0001.jpg" alt="Logo" class="cabecalho-logo">
                 </div>
-            </header>
+                <nav class="navegacao-principal">
+                    <a th:href="@{/produto/catalogo}" class="ativo">Catalogo</a>
+                    <a th:href="@{/orcamentos/historico}">Meu Histórico</a>
+                    <a th:href="@{/orcamentos/meus-orcamentos}">Orçamentos</a>
+                    <a th:href="@{/cliente/minha-conta}">Minha Conta</a>
+                    <a th:href="@{/auth/login}">Sair</a>
+                </nav>
+            </div>
+        </header>
 
-            <main class="container">
-                <div class="cabecalho-pagina">
-                    <h1>Catálogo de Tattoo</h1>
-                </div>
+        <main class="container">
+            <div class="cabecalho-pagina">
+                <h1>Catálogo de Tattoo</h1>
+            </div>
 
-                <div class="card-estilo">
-                    <div class="card" th:each="produto : ${produtos}">
-                        <img th:src="${produto.imagem}" alt="Imagem produto">
-                        <div class="card-detalhes">
-                            <h3><span th:text="${produto.nome}"></span></h3>
-                            <br>
-                            <p class="style-description"><span th:text="${produto.descricao}"></span></p>
-                            <p><span th:text="${produto.altura} + ' x ' + ${produto.largura}"></span></p>
-                            <p>R$ <span th:text="${produto.valor}"></span></p>
-                            <div class="botoes-acao">
-                                <form th:action="@{/orcamentos/novo-orcamento}" method="get">
-                                    <button class="botao-primario">Pedir Orçamento</button>
-                                </form>
-                            </div>
+            <div class="card-estilo">
+                <div class="card" th:each="produto : ${produtos}">
+                    <img th:src="${produto.imagem}" alt="Imagem produto">
+                    <div class="card-detalhes">
+                        <h3><span th:text="${produto.nome}"></span></h3>
+                        <br>
+                        <p class="style-description"><span th:text="${produto.descricao}"></span></p>
+                        <p><span th:text="${produto.altura} + ' x ' + ${produto.largura}"></span></p>
+                        <p>R$ <span th:text="${produto.valor}"></span></p>
+                        <div class="botoes-acao">
+                            <form th:action="@{/orcamentos/novo-orcamento}" method="get">
+                                <button class="botao-primario">Pedir Orçamento</button>
+                            </form>
                         </div>
                     </div>
                 </div>
-            </main>
-        </div>
+            </div>
+        </main>
     </div>
 </body>
 

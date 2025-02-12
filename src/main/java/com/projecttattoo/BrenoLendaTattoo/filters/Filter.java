@@ -45,7 +45,7 @@ public class Filter extends OncePerRequestFilter {
                 }
             } catch (Exception e) {
                 removeAuthCookies(response);
-                response.sendRedirect("/auth/login");
+                request.getRequestDispatcher("/auth/login").forward(request, response);
                 return;
             }
         }

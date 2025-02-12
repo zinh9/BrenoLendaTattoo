@@ -22,7 +22,6 @@ body.sidebar-open {
 }
 
 .pagina-layout {
-    display: flex;
     min-height: 100vh;
     transition: all 0.3s ease-in-out;
     position: relative;
@@ -376,7 +375,6 @@ header {
 .botao-secundario:hover {
     background-color: #f3f4f6;
 }
-
 
 
 .formulario {

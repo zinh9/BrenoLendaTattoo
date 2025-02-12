@@ -56,7 +56,7 @@ public class ClienteController {
 	    return "redirect:/auth/login";
 	}
 	
-	@PreAuthorize("hasRole'USER'")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	@GetMapping("/minha-conta")
 	public String getById(Model model, Principal principal){
 		String email = principal.getName();
@@ -67,7 +67,7 @@ public class ClienteController {
 		return "minha_conta";
 	}
 	
-	@PreAuthorize("hasRole'USER'")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	@PostMapping("/{id}/atualizar-conta")
 	public String update(@PathVariable("id") Integer id, @ModelAttribute RequestRegisterDto body, Model model){
 		ResponseEntity<RequestRegisterDto> response = clienteService.update(id, body);
@@ -84,7 +84,7 @@ public class ClienteController {
 		return "redirect:/cliente/minha-conta";
 	}
 	
-	@PreAuthorize("hasRole'USER'")
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	@PostMapping("/{id}/deletar")
 	public String delete(@PathVariable("id") Integer id, Model model){
 		ResponseEntity<Integer> response = clienteService.delete(id);
